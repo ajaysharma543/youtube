@@ -28,6 +28,8 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
     },
+
+    // Signup flow
     signupStart: (state) => {
       state.loading = true;
       state.error = null;

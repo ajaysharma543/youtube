@@ -13,6 +13,7 @@ const signupSlice = createSlice({
   name: "signup",
   initialState,
   reducers: {
+    // Step 1
     setBasicInfo: (state, action) => {
       const { fullname, username, avatar, coverImage } = action.payload;
       state.fullname = fullname;
@@ -20,14 +21,34 @@ const signupSlice = createSlice({
       state.avatar = avatar;
       state.coverImage = coverImage;
     },
+
+    // Step 2
+    setEmail: (state, action) => {
+      state.email = action.payload.email;
+    },
+
+    // Step 3
+    setPassword: (state, action) => {
+      state.password = action.payload.password;
+    },
+
+    // Optional combined setter
     setCredentials: (state, action) => {
       const { email, password } = action.payload;
       state.email = email;
       state.password = password;
     },
+
     resetSignup: () => initialState,
   },
 });
 
-export const { setBasicInfo, setCredentials, resetSignup } = signupSlice.actions;
+export const {
+  setBasicInfo,
+  setEmail,
+  setPassword,
+  setCredentials,
+  resetSignup,
+} = signupSlice.actions;
+
 export default signupSlice.reducer;

@@ -57,6 +57,7 @@ coverImage: {
     url: coverImage?.secure_url || ""
 },
 });
+    const {accesstoken,refreshtoken} = await generateAccessAndRefereshTokens(user._id);
 
 const createdUser = await User.findById(user?._id).select("-password -refreshtoken");
 
@@ -64,10 +65,18 @@ if (!createdUser) {
 throw new ApiError(500, "Something went wrong while registering the user");
 }
 
-return res
-    .status(201)
-    
-    .json(new ApiResponse(200,  createdUser, "User registered successfully"));
+  const options = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production", // false for localhost
+  sameSite: "lax", // helps cookies work between frontend and backend on localhost
+  maxAge: 1 * 24 * 60 * 60 * 1000 // 1 day
+};
+
+    res
+    .status(200)
+    .cookie("accesstoken", accesstoken ,options)
+    .cookie("refreshtoken", refreshtoken ,options)
+    .json(new ApiResponse(200,  { user : accesstoken,refreshtoken}, "User registered successfully"));
 });
 
 
