@@ -16,7 +16,7 @@ const userSchema = new Schema(
             type: String,
             required: true,
             unique: true,
-            lowecase: true,
+            lowercase: true,
             trim: true, 
         },
         fullname: {
@@ -50,8 +50,17 @@ const userSchema = new Schema(
         },
         refreshtoken: {
             type: String
-        }
-
+        },
+        otp: {
+      type: String,
+    },
+    otpExpiresAt: {
+      type: Date,
+    },
+    verified: {
+  type: Boolean,
+  default: false
+},
     },
     {
         timestamps: true

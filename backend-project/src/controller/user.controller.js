@@ -5,22 +5,9 @@ import { ApiResponse } from "../utils/apiresponse.js";
 import { asyncHandler } from "../utils/asynchandler.js";
 import { deleteOnCloudinary, uploadcloudinary } from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken"
+import { generateAccessAndRefereshTokens } from "../middlewares/generatetokes.middleware.js";
 
 
-const generateAccessAndRefereshTokens = async(userId) => {
-    try {
-        const user = await User.findById(userId);
-        const accesstoken = user.generateaccesstoken();
-        const refreshtoken = user.generaterefreshtoken();
-
-        user.refreshtoken = refreshtoken;
-        await user.save({validateBeforeSave : false})
-
-        return {accesstoken, refreshtoken}
-    } catch (error) {
-        throw new ApiError(500, "generate access or refresh error")
-    }
-}
 
 const registeruser = asyncHandler(async (req, res) => {
 const { fullname, email, username, password } = req.body;
@@ -70,7 +57,6 @@ coverImage: {
     url: coverImage?.secure_url || ""
 },
 });
-const {accesstoken,refreshtoken} = await generateAccessAndRefereshTokens(user._id);
 
 const createdUser = await User.findById(user?._id).select("-password -refreshtoken");
 
@@ -78,21 +64,12 @@ if (!createdUser) {
 throw new ApiError(500, "Something went wrong while registering the user");
 }
 
-
-  const options = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production", // false for localhost
-  sameSite: "lax", // helps cookies work between frontend and backend on localhost
-  maxAge: 1 * 24 * 60 * 60 * 1000 // 1 day
-};
-
-
 return res
     .status(201)
-    .cookie("accesstoken", accesstoken ,options)
-    .cookie("refreshtoken", refreshtoken ,options)
-    .json(new ApiResponse(200,  {user : createdUser, accesstoken,refreshtoken}, "User registered successfully"));
+    
+    .json(new ApiResponse(200,  createdUser, "User registered successfully"));
 });
+
 
 
 const loginUser = asyncHandler(async(req,res) => {
@@ -478,5 +455,5 @@ export {registeruser,
     changeusercoverimage,
     changeuseravatar,
     getUserChannelProfile,
-    getWatchHistory
+    getWatchHistory,
 }

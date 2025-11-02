@@ -7,7 +7,7 @@ return (
     text={text}
     disabled={loading}
     onClick={onClick}
-    className="w-full bg-blue-600 hover:bg-red-700 text-white py-2 rounded-md transition disabled:opacity-50"
+    className="w-full bg-blue-600 mt-4 hover:bg-red-700 text-white py-2 rounded-md transition disabled:opacity-50"
 >
     {loading ? "Loading..." : text}
     </button>

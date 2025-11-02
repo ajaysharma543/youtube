@@ -11,6 +11,7 @@ import {
   loginStart,
   loginSuccess,
 } from "../../redux/features/authslice";
+import { resetSignup } from "../../redux/features/singupslice";
 
 function Login() {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ function Login() {
             token: response.data.data.accesstoken,
           })
         );
+         dispatch(resetSignup()); 
         navigate("/");
       }
     } catch (error) {

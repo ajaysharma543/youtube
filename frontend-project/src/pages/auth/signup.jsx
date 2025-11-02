@@ -60,7 +60,21 @@ function SignupStep1() {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* ✅ Full Name field */}
+
+ <div className="flex justify-around">
+          <FileUpload
+            label="Avatar"
+            name="avatar"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+          <FileUpload
+            label="Cover Image"
+            name="coverImage"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+        </div>
         <InputField
           label="Full Name"
           type="text"
@@ -83,20 +97,7 @@ function SignupStep1() {
         )}
 
         {/* ✅ File upload fields */}
-        <div className="flex justify-around">
-          <FileUpload
-            label="Avatar"
-            name="avatar"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-          <FileUpload
-            label="Cover Image"
-            name="coverImage"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </div>
+       
 
         {/* ✅ Button with loading state */}
         <Button

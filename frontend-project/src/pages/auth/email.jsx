@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import {
+  resetSignup,
   setCredentials,
 } from "../../redux/features/singupslice";
 import authApi from "../../api/userapi";
@@ -23,7 +24,7 @@ const SignupStep2 = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-const { register, handleSubmit, formState: { errors, isSubmitting }, getValues } = useForm({
+const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
   mode: "onBlur",
 });
 
@@ -51,6 +52,7 @@ const { register, handleSubmit, formState: { errors, isSubmitting }, getValues }
           token: response.data.data.accesstoken,
         })
       );
+      dispatch(resetSignup()); 
       console.log(response);
       
 
@@ -93,41 +95,7 @@ const { register, handleSubmit, formState: { errors, isSubmitting }, getValues }
           </p>
         )}
 
-        {/* Password Field */}
-        <InputField
-          label="Password"
-          type="password"
-          placeholder="Enter Password"
-          {...register("password", {
-            required: "Password is required",
-            minLength: {
-              value: 6,
-              message: "Password must be at least 6 characters",
-            },
-          })}
-        />
-        {errors.password && (
-          <p className="text-red-500 text-sm -mt-8px mb-2">
-            {errors.password.message}
-          </p>
-        )}
-<InputField
-  label="Confirm Password"
-  type="password"
-  placeholder="Confirm Password"
-  {...register("confirmPassword", {
-    validate: (value) =>
-      value === getValues("password") || "Passwords do not match",
-  })}
-/>
-{errors.confirmPassword && (
-  <p className="text-red-500 text-sm -mt-8px mb-2">
-    {errors.confirmPassword.message}
-  </p>
-)}
 
-
-        {/* Error Message */}
         {error && (
           <p className="text-red-400 text-sm mb-3 text-center">{error}</p>
         )}

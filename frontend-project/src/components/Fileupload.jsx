@@ -13,7 +13,7 @@ const FileUpload = ({ label, name, onChange, accept = "image/*" }) => {
   };
 
   return (
-    <div className="mb-6">
+    <div className="mb-3">
       {/* Label aligned to left */}
       <label className="block text-sm font-semibold mb-2 text-gray-300 text-left">
         {label}
