@@ -14,7 +14,7 @@ useEffect(() => {
       setvideo(videos.data.data.docs);
       // console.log(videos);
     } catch (error) {
-      console.log(error.response?.data || error.message);
+      console.log("video not showing",error.response?.data || error.message);
     }
     setLoading(false);
   };

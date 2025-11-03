@@ -1,22 +1,21 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import authApi from "../../../api/userapi";
 
 const VideoCard = ({ video }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const handleClick = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    if (user) {
-      console.log("🎬 Video clicked:", video);
-    } else {
-      setLoading(true);
+    authApi.getcurrentuser()
+    .then((video)=>console.log("🎬 Video clicked:", video))
+    .catch(() => {
+ setLoading(true);
       setTimeout(() => {
         setLoading(false);
         navigate("/signup");
       }, 2000);
-    }
+    })
   };
 
   const getTimeAgo = (dateString) => {

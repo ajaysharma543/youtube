@@ -21,7 +21,6 @@ function LogoutButton() {
 
       dispatch(logout());
 
-      // ✅ Redirect to login
       navigate("/login");
     } catch (err) {
       console.error("❌ Error logging out:", err.response?.data || err.message);
@@ -32,18 +31,19 @@ function LogoutButton() {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <Button
-        type="button"
-        onClick={handleLogout}
-        text={loading ? "Logging out..." : "Logout"}
-        loading={loading}
-        disabled={loading}
-      />
-
-      {/* ✅ Error Message */}
+    <>
+     <button
+  type="button"
+  onClick={handleLogout}
+  className={` rounded-lg  text-white font-semibold cursor-pointer transition ${
+    loading ? "opacity-50 cursor-not-allowed" : ""
+  }`}
+  disabled={loading}
+>
+  {loading ? "Logging out..." : "Logout"}
+</button>
       {error && <p className="text-red-500 text-sm mt-2 text-center">{error}</p>}
-    </div>
+    </>
   );
 }
 

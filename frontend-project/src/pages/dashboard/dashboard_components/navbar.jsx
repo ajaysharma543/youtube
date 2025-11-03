@@ -1,58 +1,69 @@
 import React, { useEffect, useState } from "react";
-import { Search } from "lucide-react";
-import authApi from "../../../api/userapi";
-import { Link } from "react-router-dom";
+import { PartyPopperIcon, Search, Youtube } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { fetchCurrentUser } from "../../../redux/features/userdetailsslice";
 
 function Navbar() {
-  const [user, setUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { data } = useSelector((state) => state.user);
 
   useEffect(() => {
-    authApi
-      .getcurrentuser()
-      .then((res) => setUser(res.data.data))
-      .catch((err) => console.log("Failed to fetch user:", err));
-  }, []);
-
-  if (!user) return <p>Loading...</p>;
+    dispatch(fetchCurrentUser());
+  }, [dispatch]);
 
   const handleUploadClick = () => {
     setShowDropdown(false);
+    if (data) navigate("/upload");
+    else navigate("/signup");
   };
 
   return (
-    <header className="border-none shadow-md p-4 flex items-center justify-between bg-black relative">
-      <h1 className="text-xl font-bold text-white">{user.fullname}</h1>
+    <header className="flex items-center justify-between bg-gradient-to-r from-black via-gray-900 to-black px-6 py-3 shadow-lg border-b border-gray-800">
+      <div className="flex items-center gap-3 cursor-pointer">
+        <Youtube className="text-red-600 w-8 h-8" />
+        <h1 className="text-2xl font-bold text-white tracking-wide">
+          Tube<span className="text-red-600">Hub</span>
+        </h1>
+        <PartyPopperIcon className="text-yellow-400 w-5 h-5 animate-bounce" />
+      </div>
 
-      {/* Search Box */}
       <div className="relative w-72">
-        <Search className="absolute right-3 top-2.5 text-black w-5 h-5" />
+        <Search className="absolute right-3 top-2.5 text-gray-400 w-5 h-5" />
         <input
           type="search"
           placeholder="Search videos..."
-          className="w-full bg-black text-white placeholder-gray-800 rounded-lg pl-10 pr-4 py-2 outline-none focus:ring-2 focus:ring-white transition"
+          className="w-full bg-gray-900 text-white placeholder-gray-500 rounded-full pl-5 pr-10 py-2 outline-none focus:ring-2 focus:ring-red-600 transition"
         />
       </div>
 
-      {/* Create Dropdown */}
-      <div className="relative">
+      <div className="flex items-center gap-4 relative">
         <button
           onClick={() => setShowDropdown((prev) => !prev)}
-          className="bg-black cursor-pointer text-white font-bold text-lg px-4 py-2 rounded-md hover:bg-black transition"
+          className="bg-gray-900 hover:bg-red-700 text-white font-semibold px-5 py-2 rounded-full transition-all duration-200 shadow-md"
         >
           Create +
         </button>
 
         {showDropdown && (
-          <div className="absolute  right-0 border-white border mt-2 w-40 bg-black text-white rounded-lg shadow-lg">
-            <Link to="/upload"
+          <div className="absolute right-0 top-12 w-44 bg-gray-900 border border-gray-700 rounded-xl shadow-lg overflow-hidden animate-fadeIn z-50">
+            <button
               onClick={handleUploadClick}
-              className="block w-full cursor-pointer text-left px-4 py-2 hover:bg-black"
+              className="block w-full text-left px-5 py-3 text-white hover:bg-red-700 transition"
             >
               Upload Video
-            </Link>
+            </button>
           </div>
         )}
+
+        <div
+          onClick={() => navigate("/profile")}
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-red-600 text-white font-bold text-lg cursor-pointer hover:bg-red-700 transition"
+        >
+          {data?.fullname ? data.fullname.charAt(0).toUpperCase() : "?"}
+        </div>
       </div>
     </header>
   );

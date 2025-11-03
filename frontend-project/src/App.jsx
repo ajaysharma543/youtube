@@ -7,7 +7,12 @@ import Login from "./pages/auth/login";
 import authApi from "./api/userapi";
 import SignupStep2 from "./pages/auth/emails";
 import Password from "./pages/auth/password";
-import VideoUpload from "./pages/video/videoupload";
+import Videouploads from "./pages/video/videouploads";
+import VideoUpload from "./pages/video/title_Description";
+import Finalpage from "./pages/video/finalpage";
+import PublishPage from "./pages/video/publish";
+import Profile from "./pages/profile/profile";
+import Channel_customize from "./pages/profile/channel_customize";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -18,17 +23,24 @@ function App() {
     const fetchCurrentUser = async () => {
       try {
         const res = await authApi.getcurrentuser();
+
+        // ✅ If user is logged in and tries to access auth pages, redirect to dashboard
         if (
-          res &&
-          (location.pathname === "/login" ||
-            location.pathname === "/signup" ||
-            location.pathname === "/signup-email" ||
-            location.pathname === "/set-password")
+          location.pathname === "/login" ||
+          location.pathname === "/signup" ||
+          location.pathname === "/signup-email" ||
+          location.pathname === "/set-password"
         ) {
           navigate("/");
         }
       } catch (err) {
         console.error("❌ No active session:", err.response?.data || err.message);
+
+        // ✅ If not logged in and trying to access protected pages, redirect to login
+        const protectedRoutes = ["/", "/upload", "/video-details", "/publish", "/profile"];
+        if (protectedRoutes.some((path) => location.pathname.startsWith(path))) {
+          navigate("/login");
+        }
       } finally {
         setLoading(false);
       }
@@ -41,6 +53,7 @@ function App() {
 
   return (
     <Routes>
+      {/* Protected Routes (with DashboardLayout) */}
       <Route
         path="/"
         element={
@@ -49,11 +62,34 @@ function App() {
           </DashboardLayout>
         }
       />
+      <Route
+        path="/profile"
+        element={
+          <DashboardLayout>
+            <Profile />
+          </DashboardLayout>
+        }
+      />
+        <Route
+        path="/channel-customize"
+        element={
+          <DashboardLayout>
+            <Channel_customize />
+          </DashboardLayout>
+        }
+      />
+
+      {/* Auth Routes */}
       <Route path="/signup" element={<Signup />} />
       <Route path="/signup-email" element={<SignupStep2 />} />
       <Route path="/set-password" element={<Password />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/upload" element={<VideoUpload />} />
+
+      {/* Video Upload Routes */}
+      <Route path="/upload" element={<Videouploads />} />
+      <Route path="/video-details" element={<VideoUpload />} />
+      <Route path="/publish/:videoId" element={<PublishPage />} />
+      
     </Routes>
   );
 }
