@@ -9,10 +9,10 @@ import SignupStep2 from "./pages/auth/emails";
 import Password from "./pages/auth/password";
 import Videouploads from "./pages/video/videouploads";
 import VideoUpload from "./pages/video/title_Description";
-import Finalpage from "./pages/video/finalpage";
 import PublishPage from "./pages/video/publish";
 import Profile from "./pages/profile/profile";
 import Channel_customize from "./pages/profile/channel_customize";
+import ProfileDashboardLayout from "./pages/profile/prifile_dashboard.jsx/dashboard";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -73,9 +73,9 @@ function App() {
         <Route
         path="/channel-customize"
         element={
-          <DashboardLayout>
+          <ProfileDashboardLayout>
             <Channel_customize />
-          </DashboardLayout>
+          </ProfileDashboardLayout>
         }
       />
 

@@ -13,14 +13,12 @@ function Profile() {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
-      {/* === Top Section === */}
       <div className="flex items-center justify-between px-10 py-8 h-[30vh] bg-linear-to-r from-gray-900 via-black to-gray-900">
         <div className="flex items-start gap-6">
           <div className="w-40 h-40 flex items-center justify-center rounded-full bg-gray-800 text-6xl font-bold shadow-lg">
             {data.fullname ? data.fullname.charAt(0).toUpperCase() : "?"}
           </div>
 
-          {/* Info */}
           <div>
             <h2 className="text-3xl font-bold mb-1">{data.fullname}</h2>
             <p className="text-gray-400 text-lg mt-3">@{data.username}</p>
