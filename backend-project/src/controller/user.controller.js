@@ -210,6 +210,27 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, {}, "Password changed successfully"))
 });
+const resetPassword = asyncHandler(async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  if (!email || !newPassword) {
+    throw new ApiError(400, "Email and new password are required");
+  }
+
+  // Find user by email
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  // Set new password
+  user.password = newPassword;
+  await user.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password reset successfully"));
+});
 
 
 const changeaccountdetails = asyncHandler(async(req,res) => {
@@ -466,4 +487,5 @@ export {registeruser,
     changeuseravatar,
     getUserChannelProfile,
     getWatchHistory,
+    resetPassword
 }

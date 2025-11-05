@@ -60,5 +60,58 @@ const verifyotp = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, { verified: true, email }, "OTP verified successfully"));
 });
 
+const getResetOtp = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  if (!email) throw new ApiError(400, "Email is required");
 
-export { getotp, verifyotp };
+  const existingUser = await User.findOne({ email });
+  if (!existingUser) throw new ApiError(404, "User not found with this email");
+
+  const OTP = Math.floor(100000 + Math.random() * 900000);
+
+  await TempOtp.findOneAndUpdate(
+    { email },
+    {
+      otp: OTP,
+      otpExpiresAt: new Date(Date.now() + 5 * 60 * 1000), // valid for 5 minutes
+    },
+    { upsert: true, new: true }
+  );
+
+  await sendEmail(email, "Reset Password OTP", `Your password reset OTP is: ${OTP}`);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { email }, "Password reset OTP sent successfully"));
+});
+export const sendChangeEmailOtp = asyncHandler(async (req, res) => {
+  const userId = req.user._id; // ✅ fixed
+  const user = await User.findById(userId);
+
+  if (!user) throw new ApiError(404, "User not found");
+
+  const OTP = Math.floor(100000 + Math.random() * 900000);
+
+  await TempOtp.findOneAndUpdate(
+    { email: user.email },
+    {
+      otp: OTP,
+      otpExpiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes
+    },
+    { upsert: true, new: true }
+  );
+
+  await sendEmail(
+    user.email,
+    "Verify Your Email Change",
+    `Your OTP is: ${OTP}`
+  );
+
+  return res.status(200).json(
+    new ApiResponse(200, { email: user.email }, "OTP sent to current email")
+  );
+});
+
+
+
+export { getotp, verifyotp,getResetOtp };

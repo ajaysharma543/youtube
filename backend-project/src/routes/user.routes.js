@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { changeaccountdetails, changeCurrentPassword, changeuseravatar, changeusercoverimage, getCurrentUser, getUserChannelProfile, getWatchHistory, loginUser, logoutuser, refreshAccesstoken, registeruser } from "../controller/user.controller.js";
+import { changeaccountdetails, changeCurrentPassword, changeuseravatar, changeusercoverimage, getCurrentUser, getUserChannelProfile, getWatchHistory, loginUser, logoutuser, refreshAccesstoken, registeruser, resetPassword } from "../controller/user.controller.js";
 import {uplaod} from '../middlewares/multer.middleware.js'
 import { veryfyJWT } from "../middlewares/auth.middleware.js";
 
@@ -27,5 +27,6 @@ router.route("/register").post(
     router.route("/change-coverimage").patch(veryfyJWT ,uplaod.single("coverImage"), changeusercoverimage )
     router.route("/c/:username").get(veryfyJWT , getUserChannelProfile )
     router.route("/watch-history").get(veryfyJWT , getWatchHistory )
+    router.post("/reset-password", resetPassword);
 
 export default router

@@ -25,14 +25,12 @@ const SignupStep2 = () => {
     formState: { errors },
   } = useForm();
 
-  // ✅ Send OTP
   const handleSendOtp = async () => {
     const email = getValues("email");
     if (!email) return setLocalError("Please enter an email first");
 
     dispatch(signupStart());
     setLocalError("");
-
     try {
       const res = await OtpApi.sendOtp(email);
       console.log("OTP sent:", res.data);

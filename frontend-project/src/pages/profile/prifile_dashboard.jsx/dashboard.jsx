@@ -7,13 +7,8 @@ import LogoutButton from "../../auth/logout";
 const ProfileDashboardLayout = ({ children }) => {
   return (
     <div className="flex flex-col h-screen bg-black text-white overflow-hidden">
-      <div className="flex items-center justify-between px-6 py-3 border-b border-gray-800 bg-black z-50">
-        <div className="flex items-center gap-4">
-          <Link to="/signup" className="text-gray-300 hover:text-white">
-            Signup
-          </Link>
-          <LogoutButton />
-        </div>
+      <div className=" px-6 py-3 border-b border-gray-800 bg-black z-50">
+     
         <Navbar />
       </div>
 

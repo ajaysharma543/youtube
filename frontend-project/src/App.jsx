@@ -13,6 +13,8 @@ import PublishPage from "./pages/video/publish";
 import Profile from "./pages/profile/profile";
 import Channel_customize from "./pages/profile/channel_customize";
 import ProfileDashboardLayout from "./pages/profile/prifile_dashboard.jsx/dashboard";
+import Resetpassword from "./pages/auth/resetpassword";
+import New_password from "./pages/auth/new password";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -24,7 +26,6 @@ function App() {
       try {
         const res = await authApi.getcurrentuser();
 
-        // ✅ If user is logged in and tries to access auth pages, redirect to dashboard
         if (
           location.pathname === "/login" ||
           location.pathname === "/signup" ||
@@ -37,7 +38,7 @@ function App() {
         console.error("❌ No active session:", err.response?.data || err.message);
 
         // ✅ If not logged in and trying to access protected pages, redirect to login
-        const protectedRoutes = ["/", "/upload", "/video-details", "/publish", "/profile"];
+        const protectedRoutes = [ "/upload", "/video-details", "/publish", "/profile"];
         if (protectedRoutes.some((path) => location.pathname.startsWith(path))) {
           navigate("/login");
         }
@@ -84,6 +85,8 @@ function App() {
       <Route path="/signup-email" element={<SignupStep2 />} />
       <Route path="/set-password" element={<Password />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/login/resetpassword" element={<Resetpassword />} />
+      <Route path="/login/newpassword" element={<New_password />} />
 
       {/* Video Upload Routes */}
       <Route path="/upload" element={<Videouploads />} />

@@ -58,11 +58,22 @@ function Navbar() {
           </div>
         )}
 
+        {/* ✅ Avatar Section */}
         <div
           onClick={() => navigate("/profile")}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-red-600 text-white font-bold text-lg cursor-pointer hover:bg-red-700 transition"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-red-600 text-white font-bold text-lg cursor-pointer hover:bg-red-700 transition overflow-hidden"
         >
-          {data?.fullname ? data.fullname.charAt(0).toUpperCase() : "?"}
+          {data?.avatar.url ? (
+            <img
+              src={data.avatar.url}
+              alt="Profile"
+              className="w-full h-full object-cover rounded-full"
+            />
+          ) : (
+            <span>
+              {data?.fullname ? data.fullname.charAt(0).toUpperCase() : "?"}
+            </span>
+          )}
         </div>
       </div>
     </header>

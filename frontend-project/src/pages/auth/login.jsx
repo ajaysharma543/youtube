@@ -4,7 +4,7 @@ import Button from "../../components/button";
 import FormContainer from "../../components/form-container";
 import InputField from "../../components/inputfiled";
 import authApi from "../../api/userapi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loginFailure,
@@ -50,6 +50,7 @@ function Login() {
   };
 
   return (
+<>
     <FormContainer
       title="Login Account"
       toggle={
@@ -73,7 +74,6 @@ function Login() {
           <p className="text-red-500 text-sm">{errors.email.message}</p>
         )}
 
-        {/* Password */}
         <InputField
           label="Password"
           type="password"
@@ -83,13 +83,14 @@ function Login() {
         {errors.password && (
           <p className="text-red-500 text-sm">{errors.password.message}</p>
         )}
+       <Link to="resetpassword" > <span className="text-white">Forget Password</span></Link>
 
-        {/* Error from backend */}
         {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
 
         <Button type="submit" text="Login" loading={loading} disabled={loading} />
       </form>
     </FormContainer>
+</>
   );
 }
 
