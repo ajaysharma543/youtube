@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Showallvideos from "./showallvideos";
 
 function Profile() {
   const { data, loading } = useSelector((state) => state.user);
@@ -61,17 +62,16 @@ function Profile() {
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
 
                 {activeTab === tab && (
-                  <div className="absolute bottom-0 left-0 w-full h-[3px] bg-white rounded-t-full transition-all duration-300" />
+                  <div className="absolute bottom-0 flex items-center w-[80%] h-[3px] bg-white rounded-t-full transition-all duration-300" />
                 )}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Tab Content */}
         <div className="flex-1 flex items-center justify-center">
           {activeTab === "videos" && (
-            <p className="text-gray-400 text-lg">Here are your videos...</p>
+            <Showallvideos />
           )}
           {activeTab === "playlist" && (
             <p className="text-gray-400 text-lg">Here are your playlists...</p>

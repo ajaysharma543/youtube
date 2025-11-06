@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
-    <aside className="w-64 min-h-screen bg-gradient-to-b from-black via-gray-900 to-black text-white p-6 hidden md:flex flex-col border-r border-gray-800">
+    <aside className="w-64 min-h-screen bg-linear-to-b from-black via-gray-900 to-black text-white p-6 hidden md:flex flex-col border-r border-gray-800">
 
       <nav className="flex flex-col gap-5 text-gray-400">
         <Link to="/"

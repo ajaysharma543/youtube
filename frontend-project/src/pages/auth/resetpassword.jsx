@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import InputField from "../../components/inputfiled";
 import FormContainer from "../../components/form-container";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import Inputfields from "../profile/inputfields";
 import { loginFailure, loginStart } from "../../redux/features/authslice";
 import OtpApi from "../../api/otp";
 import { CheckCircle } from "lucide-react";
+import InputField from "../../components/inputfiled";
+import Inputfields from "../profile/channel_customize/inputfields";
 
 function Resetpassword() {
   const {

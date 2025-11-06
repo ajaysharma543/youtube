@@ -14,13 +14,13 @@ function Dashboard() {
       setLoading(true);
       try {
         const videos = await VideoApi.getallvideos({ page: 1, limit: 10 });
-console.log("vdieo",videos.data.data.docs); 
+// console.log("video",videos.data.data.docs); 
         const filteredVideos = videos.data.data.docs.filter(
           (vid) => vid.owner._id !== user?._id
         );
 
         setVideo(filteredVideos);
-        console.log("filter",filteredVideos);
+        // console.log("filter",filteredVideos);
         
       } catch (error) {
         console.log(

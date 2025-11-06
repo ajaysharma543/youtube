@@ -3,6 +3,7 @@ import authReducer from "../features/authslice";
 import signupReducer from "../features/singupslice";
 import videoReducer  from "../features/videoslice";
 import userReducer  from "../features/userdetailsslice";
+import getvideoReducer  from "../features/fetchvideoslice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
      signup: signupReducer,
      video : videoReducer,
      user: userReducer,
+     videos: getvideoReducer,
   },
    middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

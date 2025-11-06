@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import ImageUploader from "./imageuploader";
-import authApi from "../../api/userapi";
+import authApi from "../../../api/userapi";
 import { CheckCircle, Loader2 } from "lucide-react"; 
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Inputfields from "./inputfields";
-import OtpApi from "../../api/otp";
-import InputField from "../../components/inputfiled";
+import OtpApi from "../../../api/otp";
+import InputField from "../../../components/inputfiled";
 
 function CustomizeChannel() {
   const {data} = useSelector((state) => state.user)
@@ -63,7 +63,7 @@ const newPassword = watch("newPassword");
 
   
   const [otpSent, setOtpSent] = useState(false);
-const isPublishDisabled =(!banner &&  !avatar &&  !fullname &&  email === originalEmail &&  !password &&  !otpSent) || isloading;
+const isPublishDisabled =!banner &&  !avatar &&  !fullname &&  email === originalEmail &&  !password &&  !otpSent || isloading;
 
 
  const handlesendotp = async () => {

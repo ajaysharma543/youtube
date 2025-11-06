@@ -86,7 +86,9 @@ const getChannelVideos = asyncHandler(async (req, res) => {
     const video = await Video.aggregate([
         {
             $match : {
-                owner : new mongoose.Types.ObjectId(userId)
+                owner : new mongoose.Types.ObjectId(userId),
+                isPublished: true, // ✅ only published videos
+
             }
         },
         {
@@ -102,9 +104,7 @@ const getChannelVideos = asyncHandler(async (req, res) => {
                 likecount : {
                     $size : "$likes"
                 },
-                createdAt: {
-                    $dateToParts: { date: "$createdAt" }
-                },  
+              
                     }
         },
         {
@@ -119,12 +119,9 @@ const getChannelVideos = asyncHandler(async (req, res) => {
                 "thumbnail.url": 1,
                 title: 1,
                 description: 1,
-                createdAt : {
-                    year : 1,
-                    month : 1,
-                    day : 1,
-                },
+                createdAt : 1,
                 isPublished: 1,
+                views : 1,
                 likecount: 1
             }
         }

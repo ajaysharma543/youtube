@@ -11,11 +11,12 @@ import Videouploads from "./pages/video/videouploads";
 import VideoUpload from "./pages/video/title_Description";
 import PublishPage from "./pages/video/publish";
 import Profile from "./pages/profile/profile";
-import Channel_customize from "./pages/profile/channel_customize";
 import ProfileDashboardLayout from "./pages/profile/prifile_dashboard.jsx/dashboard";
 import Resetpassword from "./pages/auth/resetpassword";
 import New_password from "./pages/auth/new password";
-
+import CustomizeChannel from "./pages/profile/channel_customize/channel_customize"
+import Content from "./pages/profile/content/content";
+import Edit from "./pages/profile/content/edit";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -75,7 +76,24 @@ function App() {
         path="/channel-customize"
         element={
           <ProfileDashboardLayout>
-            <Channel_customize />
+            <CustomizeChannel />
+          </ProfileDashboardLayout>
+        }
+      />
+       <Route
+        path="/content"
+        element={
+          <ProfileDashboardLayout>
+            <Content />
+          </ProfileDashboardLayout>
+        }
+      />
+
+  <Route
+        path="/edit_video/:videoId"
+        element={
+          <ProfileDashboardLayout>
+            <Edit />
           </ProfileDashboardLayout>
         }
       />
