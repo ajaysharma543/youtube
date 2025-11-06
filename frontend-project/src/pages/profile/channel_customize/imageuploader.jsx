@@ -40,7 +40,11 @@ const ImageUploader = ({
       <div className="flex items-center gap-6">
         <div className="w-[90%] h-[180px] rounded-xl bg-gray-800 flex items-center justify-center overflow-hidden">
           {preview ? (
-            <img src={preview} alt="Uploaded" className="w-full h-full object-cover" />
+            <img
+              src={preview}
+              alt="Uploaded"
+              className="w-full h-full object-cover"
+            />
           ) : (
             <Upload className="w-40 h-40 text-gray-500" />
           )}

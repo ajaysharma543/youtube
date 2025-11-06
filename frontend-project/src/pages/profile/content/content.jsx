@@ -99,21 +99,23 @@ function ShowAllVideos() {
 
                 {/* Title + Description */}
                 <div>
-                  <h3 className="text-white font-semibold truncate">{v.title}</h3>
+                  <h3 className="text-white font-semibold truncate">
+                    {v.title}
+                  </h3>
                   <p className="text-gray-400 text-sm truncate">
                     {v.description || "No description available"}
                   </p>
                 </div>
 
                 {/* Edit Button */}
-               <div className="flex justify-center">
-  <button
-    onClick={() => navigate(`/edit_video/${v._id}`)} 
-    className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition"
-  >
-    <Edit size={18} /> Edit
-  </button>
-</div>
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => navigate(`/edit_video/${v._id}`)}
+                    className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition"
+                  >
+                    <Edit size={18} /> Edit
+                  </button>
+                </div>
 
                 {/* Created At */}
                 <div className="text-gray-300 text-sm text-center">
@@ -123,7 +125,9 @@ function ShowAllVideos() {
                 {/* Publish Status */}
                 <div className="text-center">
                   {v.isPublished ? (
-                    <span className="text-green-500 font-semibold">Published</span>
+                    <span className="text-green-500 font-semibold">
+                      Published
+                    </span>
                   ) : (
                     <span className="text-yellow-500 font-semibold">Draft</span>
                   )}

@@ -39,7 +39,6 @@ function Inputfields({
             {isSendingOtp ? "Sending..." : "Send OTP"}
           </button>
         )}
-        
       </div>
 
       {errors[name] && (

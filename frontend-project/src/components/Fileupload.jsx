@@ -30,8 +30,8 @@ const FileUpload = ({ label, name, onChange, accept = "image/*" }) => {
             />
           ) : (
             <div className="flex flex-col  items-center justify-center w-full h-full bg-black text-gray-400 text-xs">
-             <Upload className="w-12 h-8 mb-2 bg-white" />
-             Click to upload
+              <Upload className="w-12 h-8 mb-2 bg-white" />
+              Click to upload
             </div>
           )}
 
@@ -46,7 +46,6 @@ const FileUpload = ({ label, name, onChange, accept = "image/*" }) => {
           />
         </div>
       </div>
-
     </div>
   );
 };

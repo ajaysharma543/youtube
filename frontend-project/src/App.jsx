@@ -14,7 +14,7 @@ import Profile from "./pages/profile/profile";
 import ProfileDashboardLayout from "./pages/profile/prifile_dashboard.jsx/dashboard";
 import Resetpassword from "./pages/auth/resetpassword";
 import New_password from "./pages/auth/new password";
-import CustomizeChannel from "./pages/profile/channel_customize/channel_customize"
+import CustomizeChannel from "./pages/profile/channel_customize/channel_customize";
 import Content from "./pages/profile/content/content";
 import Edit from "./pages/profile/content/edit";
 function App() {
@@ -36,11 +36,21 @@ function App() {
           navigate("/");
         }
       } catch (err) {
-        console.error("❌ No active session:", err.response?.data || err.message);
+        console.error(
+          "❌ No active session:",
+          err.response?.data || err.message
+        );
 
         // ✅ If not logged in and trying to access protected pages, redirect to login
-        const protectedRoutes = [ "/upload", "/video-details", "/publish", "/profile"];
-        if (protectedRoutes.some((path) => location.pathname.startsWith(path))) {
+        const protectedRoutes = [
+          "/upload",
+          "/video-details",
+          "/publish",
+          "/profile",
+        ];
+        if (
+          protectedRoutes.some((path) => location.pathname.startsWith(path))
+        ) {
           navigate("/login");
         }
       } finally {
@@ -72,7 +82,7 @@ function App() {
           </DashboardLayout>
         }
       />
-        <Route
+      <Route
         path="/channel-customize"
         element={
           <ProfileDashboardLayout>
@@ -80,7 +90,7 @@ function App() {
           </ProfileDashboardLayout>
         }
       />
-       <Route
+      <Route
         path="/content"
         element={
           <ProfileDashboardLayout>
@@ -89,7 +99,7 @@ function App() {
         }
       />
 
-  <Route
+      <Route
         path="/edit_video/:videoId"
         element={
           <ProfileDashboardLayout>
@@ -110,7 +120,6 @@ function App() {
       <Route path="/upload" element={<Videouploads />} />
       <Route path="/video-details" element={<VideoUpload />} />
       <Route path="/publish/:videoId" element={<PublishPage />} />
-      
     </Routes>
   );
 }

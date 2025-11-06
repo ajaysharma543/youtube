@@ -75,9 +75,8 @@ function EditVideo() {
       }
 
       const res = await VideoApi.updateVideo(videoId, formData);
-await dispatch(fetchUserVideos());
+      await dispatch(fetchUserVideos());
       navigate("/content");
-
     } catch (err) {
       console.error("❌ Update failed:", err);
       dispatch(fetchVideosFailure("Failed to update video"));
@@ -120,7 +119,9 @@ await dispatch(fetchUserVideos());
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           {/* Thumbnail */}
           <div>
-            <label className="block text-sm text-gray-400 mb-2">Thumbnail</label>
+            <label className="block text-sm text-gray-400 mb-2">
+              Thumbnail
+            </label>
             <div className="relative">
               {preview ? (
                 <img
@@ -144,7 +145,9 @@ await dispatch(fetchUserVideos());
             </div>
             <button
               type="button"
-              onClick={() => document.querySelector('input[type="file"]').click()}
+              onClick={() =>
+                document.querySelector('input[type="file"]').click()
+              }
               className="mt-3 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg font-semibold"
             >
               Change Thumbnail
@@ -160,13 +163,17 @@ await dispatch(fetchUserVideos());
               className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg px-3 py-2 focus:outline-none"
             />
             {errors.title && (
-              <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.title.message}
+              </p>
             )}
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-sm text-gray-400 mb-2">Description</label>
+            <label className="block text-sm text-gray-400 mb-2">
+              Description
+            </label>
             <textarea
               {...register("description")}
               rows="5"
@@ -179,7 +186,9 @@ await dispatch(fetchUserVideos());
             type="submit"
             disabled={saving}
             className={`${
-              saving ? "bg-gray-600 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
+              saving
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700"
             } px-6 py-2 rounded-lg font-semibold self-start`}
           >
             {saving ? "Saving..." : "Save Changes"}

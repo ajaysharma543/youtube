@@ -26,11 +26,8 @@ const videoSlice = createSlice({
   },
 });
 
-export const {
-  fetchVideosStart,
-  fetchVideosSuccess,
-  fetchVideosFailure,
-} = videoSlice.actions;
+export const { fetchVideosStart, fetchVideosSuccess, fetchVideosFailure } =
+  videoSlice.actions;
 
 // ✅ Thunk to fetch user videos
 export const fetchUserVideos = () => async (dispatch) => {

@@ -8,7 +8,6 @@ const ProfileDashboardLayout = ({ children }) => {
   return (
     <div className="flex flex-col h-screen bg-black text-white overflow-hidden">
       <div className=" px-6 py-3 border-b border-gray-800 bg-black z-50">
-     
         <Navbar />
       </div>
 
@@ -17,9 +16,9 @@ const ProfileDashboardLayout = ({ children }) => {
           <Sidebar />
         </div>
 
-      <main className="flex-1 overflow-y-auto p-6 dark-scrollbar">
-  {children}
-</main>
+        <main className="flex-1 overflow-y-auto p-6 dark-scrollbar">
+          {children}
+        </main>
       </div>
     </div>
   );

@@ -18,8 +18,16 @@ const Sidebar = () => {
   const navItems = [
     { to: "/", label: "Dashboard", icon: <Home className="w-5 h-5" /> },
     { to: "/content", label: "Content", icon: <Users className="w-5 h-5" /> },
-    { to: "/channel-customize", label: "Customization", icon: <PlayCircle className="w-5 h-5" /> },
-    { to: "/settings", label: "Settings", icon: <Settings className="w-5 h-5" /> },
+    {
+      to: "/channel-customize",
+      label: "Customization",
+      icon: <PlayCircle className="w-5 h-5" />,
+    },
+    {
+      to: "/settings",
+      label: "Settings",
+      icon: <Settings className="w-5 h-5" />,
+    },
   ];
 
   return (

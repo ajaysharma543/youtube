@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { clearVideo, setError, setLoading } from "../../redux/features/videoslice";
+import {
+  clearVideo,
+  setError,
+  setLoading,
+} from "../../redux/features/videoslice";
 import VideoApi from "../../api/videoapi";
 
 function Finalpage() {
@@ -30,7 +34,7 @@ function Finalpage() {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
-formData.append("videoFile", file);
+      formData.append("videoFile", file);
       formData.append("thumbnail", thumbnail);
 
       const response = await VideoApi.uploadvideo(formData);
@@ -55,11 +59,13 @@ formData.append("videoFile", file);
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black to-gray-800 text-white p-8">
       <div className="h-[650px] max-w-6xl w-full flex flex-col border-2 border-gray-600 rounded-3xl overflow-hidden shadow-lg">
-        
         {/* Header */}
         <div className="h-[10%] w-full border-b border-gray-500 flex items-center justify-between px-6 bg-black/40">
           <h1 className="font-bold text-2xl">Preview Before Upload</h1>
-          <button onClick={handleClose} className="hover:text-red-500 transition-colors">
+          <button
+            onClick={handleClose}
+            className="hover:text-red-500 transition-colors"
+          >
             <X size={28} />
           </button>
         </div>
@@ -116,7 +122,9 @@ formData.append("videoFile", file);
         {/* Footer */}
         <div className="h-[13%] border-t border-gray-600 flex flex-col justify-center items-end px-8 py-4 bg-black/40">
           {(localError || error) && (
-            <p className="text-red-500 text-sm mb-2 self-start">{localError || error}</p>
+            <p className="text-red-500 text-sm mb-2 self-start">
+              {localError || error}
+            </p>
           )}
 
           <button

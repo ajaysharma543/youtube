@@ -40,57 +40,68 @@ function Login() {
             token: response.data.data.accesstoken,
           })
         );
-         dispatch(resetSignup()); 
+        dispatch(resetSignup());
         navigate("/");
       }
     } catch (error) {
-      console.error("❌ Error logging in:", error.response?.data || error.message);
+      console.error(
+        "❌ Error logging in:",
+        error.response?.data || error.message
+      );
       dispatch(loginFailure(error.response?.data?.message || error.message));
     }
   };
 
   return (
-<>
-    <FormContainer
-      title="Login Account"
-      toggle={
-        <p>
-          Don’t have an account?{" "}
-          <Link to="/signup" className="text-blue-400 hover:underline">
-            Sign up
+    <>
+      <FormContainer
+        title="Login Account"
+        toggle={
+          <p>
+            Don’t have an account?{" "}
+            <Link to="/signup" className="text-blue-400 hover:underline">
+              Sign up
+            </Link>
+          </p>
+        }
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* Email */}
+          <InputField
+            label="Email"
+            type="email"
+            placeholder="Enter Email"
+            {...register("email", { required: "Email is required" })}
+          />
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email.message}</p>
+          )}
+
+          <InputField
+            label="Password"
+            type="password"
+            placeholder="Enter Password"
+            {...register("password", { required: "Password is required" })}
+          />
+          {errors.password && (
+            <p className="text-red-500 text-sm">{errors.password.message}</p>
+          )}
+          <Link to="resetpassword">
+            {" "}
+            <span className="text-white">Forget Password</span>
           </Link>
-        </p>
-      }
-    >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Email */}
-        <InputField
-          label="Email"
-          type="email"
-          placeholder="Enter Email"
-          {...register("email", { required: "Email is required" })}
-        />
-        {errors.email && (
-          <p className="text-red-500 text-sm">{errors.email.message}</p>
-        )}
 
-        <InputField
-          label="Password"
-          type="password"
-          placeholder="Enter Password"
-          {...register("password", { required: "Password is required" })}
-        />
-        {errors.password && (
-          <p className="text-red-500 text-sm">{errors.password.message}</p>
-        )}
-       <Link to="resetpassword" > <span className="text-white">Forget Password</span></Link>
+          {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
 
-        {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-
-        <Button type="submit" text="Login" loading={loading} disabled={loading} />
-      </form>
-    </FormContainer>
-</>
+          <Button
+            type="submit"
+            text="Login"
+            loading={loading}
+            disabled={loading}
+          />
+        </form>
+      </FormContainer>
+    </>
   );
 }
 

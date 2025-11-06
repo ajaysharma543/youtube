@@ -2,10 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import {
-  resetSignup,
-  setCredentials,
-} from "../../redux/features/singupslice";
+import { resetSignup, setCredentials } from "../../redux/features/singupslice";
 import authApi from "../../api/userapi";
 import FormContainer from "../../components/form-container";
 import InputField from "../../components/inputfiled";
@@ -24,9 +21,13 @@ const SignupStep2 = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
-  mode: "onBlur",
-});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    mode: "onBlur",
+  });
 
   const onSubmit = async (data) => {
     dispatch(signupStart());
@@ -52,9 +53,8 @@ const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm(
           token: response.data.data.accesstoken,
         })
       );
-      dispatch(resetSignup()); 
+      dispatch(resetSignup());
       console.log(response);
-      
 
       navigate("/");
     } catch (error) {
@@ -94,7 +94,6 @@ const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm(
             {errors.email.message}
           </p>
         )}
-
 
         {error && (
           <p className="text-red-400 text-sm mb-3 text-center">{error}</p>

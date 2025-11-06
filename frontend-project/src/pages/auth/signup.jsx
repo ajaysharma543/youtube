@@ -27,8 +27,6 @@ function SignupStep1() {
   const handleFileChange = (e) => {
     if (e.target.name === "avatar") setAvatar(e.target.files[0]);
     if (e.target.name === "coverImage") setCoverImage(e.target.files[0]);
-
-    
   };
 
   // ✅ Submit handler
@@ -41,7 +39,7 @@ function SignupStep1() {
     setLoading(true);
     try {
       dispatch(setBasicInfo({ ...data, avatar, coverImage }));
-      
+
       navigate("/signup-email");
     } catch (error) {
       console.error("❌ Signup step 1 error:", error);
@@ -63,8 +61,7 @@ function SignupStep1() {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-
- <div className="flex justify-around">
+        <div className="flex justify-around">
           <FileUpload
             label="Avatar"
             name="avatar"
@@ -100,7 +97,6 @@ function SignupStep1() {
         )}
 
         {/* ✅ File upload fields */}
-       
 
         {/* ✅ Button with loading state */}
         <Button

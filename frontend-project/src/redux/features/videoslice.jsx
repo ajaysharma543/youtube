@@ -1,15 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  file: null,             
-  videourl: null,         
-  name: "",               
-  title: "",              
-  description: "",        
-  thumbnail: null,        
-  thumbnailUrl: null,     
-  loading: false,         
-    error: null, 
+  file: null,
+  videourl: null,
+  name: "",
+  title: "",
+  description: "",
+  thumbnail: null,
+  thumbnailUrl: null,
+  loading: false,
+  error: null,
 };
 
 const videoslice = createSlice({

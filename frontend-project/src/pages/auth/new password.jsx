@@ -11,15 +11,19 @@ import { useDispatch } from "react-redux";
 function NewPassword() {
   const { state } = useLocation();
   const navigate = useNavigate();
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const email = state?.email;
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-  dispatch(loginFailure(null)); // clears error and sets loading = false
-}, [dispatch]);
+    dispatch(loginFailure(null)); // clears error and sets loading = false
+  }, [dispatch]);
   const onSubmit = async (data) => {
     try {
       setLoading(true);

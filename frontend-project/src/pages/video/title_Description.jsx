@@ -15,7 +15,9 @@ import VideoApi from "../../api/videoapi";
 function VideoDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { videourl, name, loading, error,file } = useSelector((state) => state.video);
+  const { videourl, name, loading, error, file } = useSelector(
+    (state) => state.video
+  );
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [localError, setLocalError] = useState("");
@@ -47,7 +49,7 @@ function VideoDetails() {
     }
   };
 
-  const onSubmit = async(data) => {
+  const onSubmit = async (data) => {
     if (!data.title || !data.description || !thumbnailFile) {
       dispatch(setError("All fields are required"));
       return;
@@ -57,23 +59,23 @@ function VideoDetails() {
     dispatch(setDetails({ title: data.title, description: data.description }));
     try {
       dispatch(setLoading(true));
-       setLocalError("");
+      setLocalError("");
 
       const formData = new FormData();
       formData.append("title", data.title);
       formData.append("description", data.description);
-formData.append("videoFile", file);
+      formData.append("videoFile", file);
       formData.append("thumbnail", thumbnailFile);
 
       const response = await VideoApi.uploadvideo(formData);
-   const videoId = response.data.data._id; 
+      const videoId = response.data.data._id;
 
-    navigate(`/publish/${videoId}`);
+      navigate(`/publish/${videoId}`);
       console.log("✅ Upload Success:", response);
     } catch (error) {
-       const message = error.response?.data?.message || error.message;
-            setLocalError(message);
-            dispatch(setError(message));
+      const message = error.response?.data?.message || error.message;
+      setLocalError(message);
+      dispatch(setError(message));
     }
     setTimeout(() => {
       dispatch(setLoading(false));
@@ -81,9 +83,9 @@ formData.append("videoFile", file);
   };
 
   const handleCancel = () => {
-      dispatch(clearVideo());
-        navigate("/");
-  }
+    dispatch(clearVideo());
+    navigate("/");
+  };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black to-gray-800 text-white p-8">
       <form
@@ -120,7 +122,9 @@ formData.append("videoFile", file);
                 hover:border-white focus:border-white focus:ring-0 outline-none transition-colors"
               />
               {errors.title && (
-                <p className="text-red-500 text-sm mb-2">{errors.title.message}</p>
+                <p className="text-red-500 text-sm mb-2">
+                  {errors.title.message}
+                </p>
               )}
 
               {/* DESCRIPTION */}
@@ -134,7 +138,9 @@ formData.append("videoFile", file);
                 hover:border-white focus:border-white focus:ring-0 outline-none transition-colors resize-none"
               ></textarea>
               {errors.description && (
-                <p className="text-red-500 text-sm mb-2">{errors.description.message}</p>
+                <p className="text-red-500 text-sm mb-2">
+                  {errors.description.message}
+                </p>
               )}
 
               {/* THUMBNAIL — MANUAL INPUT */}
@@ -168,7 +174,9 @@ formData.append("videoFile", file);
               </label>
 
               {!thumbnailFile && (
-                <p className="text-red-500 text-sm mt-2">Thumbnail is required</p>
+                <p className="text-red-500 text-sm mt-2">
+                  Thumbnail is required
+                </p>
               )}
               {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
             </div>
@@ -191,7 +199,9 @@ formData.append("videoFile", file);
         {/* FOOTER */}
         <div className="w-full border-t border-gray-600 flex justify-end px-8 py-4 bg-black/40">
           {(localError || error) && (
-            <p className="text-red-500 text-sm mb-2 self-start">{localError || error}</p>
+            <p className="text-red-500 text-sm mb-2 self-start">
+              {localError || error}
+            </p>
           )}
 
           <button

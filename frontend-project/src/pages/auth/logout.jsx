@@ -24,7 +24,9 @@ function LogoutButton() {
       navigate("/login");
     } catch (err) {
       console.error("❌ Error logging out:", err.response?.data || err.message);
-      setError(err.response?.data?.message || "Something went wrong while logging out.");
+      setError(
+        err.response?.data?.message || "Something went wrong while logging out."
+      );
     } finally {
       setLoading(false);
     }
@@ -32,17 +34,19 @@ function LogoutButton() {
 
   return (
     <>
-     <button
-  type="button"
-  onClick={handleLogout}
-  className={` rounded-lg  text-white font-semibold cursor-pointer transition ${
-    loading ? "opacity-50 cursor-not-allowed" : ""
-  }`}
-  disabled={loading}
->
-  {loading ? "Logging out..." : "Logout"}
-</button>
-      {error && <p className="text-red-500 text-sm mt-2 text-center">{error}</p>}
+      <button
+        type="button"
+        onClick={handleLogout}
+        className={` rounded-lg  text-white font-semibold cursor-pointer transition ${
+          loading ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+        disabled={loading}
+      >
+        {loading ? "Logging out..." : "Logout"}
+      </button>
+      {error && (
+        <p className="text-red-500 text-sm mt-2 text-center">{error}</p>
+      )}
     </>
   );
 }

@@ -20,7 +20,7 @@ const InputField = React.forwardRef(
           {label}
         </label>
         <input
-          ref={ref} 
+          ref={ref}
           type={type}
           name={name}
           value={value}

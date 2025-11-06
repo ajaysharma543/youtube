@@ -61,7 +61,6 @@ function Password() {
         })
       );
       console.log(response);
-      
 
       dispatch(resetSignup());
       navigate("/");
@@ -98,9 +97,7 @@ function Password() {
           })}
         />
         {errors.password && (
-          <p className="text-red-500 text-sm mb-2">
-            {errors.password.message}
-          </p>
+          <p className="text-red-500 text-sm mb-2">{errors.password.message}</p>
         )}
 
         <InputField

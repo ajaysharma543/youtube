@@ -7,15 +7,16 @@ const VideoCard = ({ video }) => {
   const [loading, setLoading] = useState(false);
 
   const handleClick = () => {
-    authApi.getcurrentuser()
-    .then((video)=>console.log("🎬 Video clicked:", video))
-    .catch(() => {
- setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        navigate("/signup");
-      }, 2000);
-    })
+    authApi
+      .getcurrentuser()
+      .then((video) => console.log("🎬 Video clicked:", video))
+      .catch(() => {
+        setLoading(true);
+        setTimeout(() => {
+          setLoading(false);
+          navigate("/signup");
+        }, 2000);
+      });
   };
 
   const getTimeAgo = (dateString) => {
@@ -75,11 +76,13 @@ const VideoCard = ({ video }) => {
               alt={video.owner?.username}
               className="w-6 h-6 rounded-full"
             />
-            <span className="text-gray-300 text-sm">{video.owner?.username}</span>
+            <span className="text-gray-300 text-sm">
+              {video.owner?.username}
+            </span>
           </div>
 
           <div className="flex pl-2 items-center mt-3 text-gray-400 text-sm">
-            <span className="pl-2">{video.views} views  .</span>
+            <span className="pl-2">{video.views} views .</span>
             <span className="pl-2">{uploadTime}</span>
           </div>
         </div>

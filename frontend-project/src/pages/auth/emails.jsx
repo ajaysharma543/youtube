@@ -75,36 +75,38 @@ const SignupStep2 = () => {
       }
     >
       <form onSubmit={handleSubmit(handleVerifyOtp)}>
-      <div className="flex items-end gap-3 mb-4">
-  <div className="flex flex-col flex-[0.7]">
-    <label className="text-sm font-semibold mb-1">Email</label>
-    <input
-      type="email"
-      placeholder="Enter your email"
-      className="border border-gray-300 text-white rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-      {...register("email", {
-        required: "Email is required",
-        pattern: {
-          value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-          message: "Invalid email format",
-        },
-      })}
-    />
-    {errors.email && (
-      <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-    )}
-  </div>
+        <div className="flex items-end gap-3 mb-4">
+          <div className="flex flex-col flex-[0.7]">
+            <label className="text-sm font-semibold mb-1">Email</label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="border border-gray-300 text-white rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Invalid email format",
+                },
+              })}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
 
-  <div className="flex-[0.3] flex items-end">
-    <Button
-      type="button"
-      text={loading && !otpSent ? "Sending..." : "Send OTP"}
-      onClick={handleSendOtp}
-      disabled={loading}
-      className="w-full"
-    />
-  </div>
-</div>
+          <div className="flex-[0.3] flex items-end">
+            <Button
+              type="button"
+              text={loading && !otpSent ? "Sending..." : "Send OTP"}
+              onClick={handleSendOtp}
+              disabled={loading}
+              className="w-full"
+            />
+          </div>
+        </div>
 
         <InputField
           label="Enter OTP"

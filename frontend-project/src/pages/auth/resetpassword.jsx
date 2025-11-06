@@ -57,7 +57,6 @@ function Resetpassword() {
       console.log("✅ Verification:", res.data);
       setIsOtpVerified(true);
 
-
       navigate("/login/newpassword", { state: { email } });
     } catch (error) {
       const message = error.response?.data?.message || "Invalid or expired OTP";

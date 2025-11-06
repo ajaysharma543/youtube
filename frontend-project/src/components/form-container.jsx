@@ -1,6 +1,6 @@
 import React from "react";
 
-const FormContainer = ({ title, children,toggle }) => {
+const FormContainer = ({ title, children, toggle }) => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-black/90 backdrop-blur-sm">
       <div className="bg-linear-to-b from-black to-gray-950 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-700">
@@ -9,11 +9,8 @@ const FormContainer = ({ title, children,toggle }) => {
         </h2>
 
         <div className="space-y-4">{children}</div>
-        <div className="text-center mt-3 text-white text-sm">
-          {toggle}
+        <div className="text-center mt-3 text-white text-sm">{toggle}</div>
       </div>
-      </div>
-     
     </div>
   );
 };

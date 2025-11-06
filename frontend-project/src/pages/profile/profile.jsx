@@ -8,26 +8,31 @@ function Profile() {
   const [activeTab, setActiveTab] = useState("videos");
   const navigate = useNavigate();
 
-  if (loading) return <p className="text-white text-center mt-10">Loading...</p>;
+  if (loading)
+    return <p className="text-white text-center mt-10">Loading...</p>;
   if (!data)
-    return <p className="text-white text-center mt-10">No user found. Please log in.</p>;
+    return (
+      <p className="text-white text-center mt-10">
+        No user found. Please log in.
+      </p>
+    );
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       <div className="flex items-center justify-between px-10 py-8 h-[30vh] bg-linear-to-r from-gray-900 via-black to-gray-900">
         <div className="flex items-start gap-6">
           <div className="w-40 h-40 flex items-center justify-center rounded-full bg-gray-800 text-6xl font-bold shadow-lg">
-          {data?.avatar.url ? (
-            <img
-              src={data.avatar.url}
-              alt="Profile"
-              className="w-full h-full object-cover rounded-full"
-            />
-          ) : (
-            <span>
-              {data?.fullname ? data.fullname.charAt(0).toUpperCase() : "?"}
-            </span>
-          )}
+            {data?.avatar.url ? (
+              <img
+                src={data.avatar.url}
+                alt="Profile"
+                className="w-full h-full object-cover rounded-full"
+              />
+            ) : (
+              <span>
+                {data?.fullname ? data.fullname.charAt(0).toUpperCase() : "?"}
+              </span>
+            )}
           </div>
 
           <div>
@@ -35,7 +40,10 @@ function Profile() {
             <p className="text-gray-400 text-lg mt-3">@{data.username}</p>
 
             <div className="flex gap-4 mt-4">
-              <button className="bg-gray-700 hover:bg-gray-800 cursor-pointer transition px-5 py-2 rounded-full font-semibold" onClick={() => navigate("/channel-customize")}>
+              <button
+                className="bg-gray-700 hover:bg-gray-800 cursor-pointer transition px-5 py-2 rounded-full font-semibold"
+                onClick={() => navigate("/channel-customize")}
+              >
                 Customize Channel
               </button>
               <button className="bg-gray-700 hover:bg-gray-800 cursor-pointer transition px-5 py-2 rounded-full font-semibold">
@@ -70,9 +78,7 @@ function Profile() {
         </div>
 
         <div className="flex-1 flex items-center justify-center">
-          {activeTab === "videos" && (
-            <Showallvideos />
-          )}
+          {activeTab === "videos" && <Showallvideos />}
           {activeTab === "playlist" && (
             <p className="text-gray-400 text-lg">Here are your playlists...</p>
           )}

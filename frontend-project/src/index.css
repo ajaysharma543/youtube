@@ -4,8 +4,8 @@
 }
 
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* for Internet Explorer and Edge */
-  scrollbar-width: none;     /* for Firefox */
+  -ms-overflow-style: none; /* for Internet Explorer and Edge */
+  scrollbar-width: none; /* for Firefox */
 }
 /* Hide scrollbar track (white bg) and style thumb */
 .dark-scrollbar::-webkit-scrollbar {
@@ -27,6 +27,6 @@
 
 /* Firefox support */
 .dark-scrollbar {
-  scrollbar-width : 20px;
+  scrollbar-width: 20px;
   scrollbar-color: rgba(255, 255, 225, 0.2) transparent;
 }

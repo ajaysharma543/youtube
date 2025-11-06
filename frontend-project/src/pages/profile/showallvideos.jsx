@@ -19,7 +19,8 @@ const timeAgo = (dateString) => {
 
   for (const [unit, value] of Object.entries(intervals)) {
     const interval = Math.floor(seconds / value);
-    if (interval >= 1) return `${interval} ${unit}${interval > 1 ? "s" : ""} ago`;
+    if (interval >= 1)
+      return `${interval} ${unit}${interval > 1 ? "s" : ""} ago`;
   }
 
   return "just now";
@@ -34,11 +35,19 @@ function ShowAllVideos() {
   }, [dispatch]);
 
   if (loading) {
-    return <div className="text-gray-400 text-lg text-center mt-10">Loading videos...</div>;
+    return (
+      <div className="text-gray-400 text-lg text-center mt-10">
+        Loading videos...
+      </div>
+    );
   }
 
   if (videos.length === 0) {
-    return <div className="text-gray-400 text-lg text-center mt-10">No published videos found.</div>;
+    return (
+      <div className="text-gray-400 text-lg text-center mt-10">
+        No published videos found.
+      </div>
+    );
   }
 
   return (
@@ -60,7 +69,9 @@ function ShowAllVideos() {
           </div>
 
           <div className="p-3">
-            <h3 className="text-white font-semibold text-lg truncate">{v.title}</h3>
+            <h3 className="text-white font-semibold text-lg truncate">
+              {v.title}
+            </h3>
             <div className="flex justify-between items-center mt-3 text-gray-400 text-sm">
               <span>{v.views || 0} views</span>
               <span>{timeAgo(v.createdAt)}</span>

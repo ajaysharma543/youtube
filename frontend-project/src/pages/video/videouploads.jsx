@@ -2,7 +2,12 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { UploadIcon, X } from "lucide-react";
-import { setVideo, setLoading, setError, clearVideo } from "../../redux/features/videoslice";
+import {
+  setVideo,
+  setLoading,
+  setError,
+  clearVideo,
+} from "../../redux/features/videoslice";
 
 function Videouploads() {
   const dispatch = useDispatch();
@@ -34,23 +39,25 @@ function Videouploads() {
     }, 2000);
   };
 
-  const cancel  = () => {
-    dispatch(setLoading(true))
-    dispatch(clearVideo())
-   setTimeout(() => {
-  dispatch(setLoading(false));
-     navigate("/")
-   }, 1000);
-  }
+  const cancel = () => {
+    dispatch(setLoading(true));
+    dispatch(clearVideo());
+    setTimeout(() => {
+      dispatch(setLoading(false));
+      navigate("/");
+    }, 1000);
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black to-gray-800 text-white p-8">
       <div className="h-[600px] max-w-6xl w-full flex flex-col border-2 border-gray-600 rounded-3xl overflow-hidden shadow-lg">
-        
         {/* Header */}
         <div className="h-[10%] w-full border-b border-gray-500 flex items-center justify-between px-6 bg-black/40">
           <h1 className="font-bold text-2xl">Upload Videos</h1>
-          <button className="hover:text-red-500 transition-colors" onClick={cancel}>
+          <button
+            className="hover:text-red-500 transition-colors"
+            onClick={cancel}
+          >
             <X size={28} />
           </button>
         </div>
@@ -79,9 +86,7 @@ function Videouploads() {
                 />
               </label>
 
-              {error && (
-                <p className="text-red-500 text-sm">{error}</p>
-              )}
+              {error && <p className="text-red-500 text-sm">{error}</p>}
 
               <p className="text-lg font-semibold mb-2">
                 Click or Drag to Upload Video

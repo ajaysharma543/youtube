@@ -46,5 +46,4 @@ export const fetchCurrentUser = () => async (dispatch) => {
   }
 };
 
-
 export default userSlice.reducer;

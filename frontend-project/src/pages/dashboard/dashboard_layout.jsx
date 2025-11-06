@@ -8,16 +8,15 @@ import LogoutButton from "../auth/logout";
 const DashboardLayout = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
-     <Link to="/signup">
-     <p>singup</p></Link>
+      <Link to="/signup">
+        <p>singup</p>
+      </Link>
 
-    <LogoutButton />
-              <Navbar />
+      <LogoutButton />
+      <Navbar />
 
       <div className="flex flex-1">
-                       <Sidebar />
-
-
+        <Sidebar />
 
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>
