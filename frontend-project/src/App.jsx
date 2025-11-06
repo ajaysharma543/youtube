@@ -11,12 +11,13 @@ import Videouploads from "./pages/video/videouploads";
 import VideoUpload from "./pages/video/title_Description";
 import PublishPage from "./pages/video/publish";
 import Profile from "./pages/profile/profile";
-import ProfileDashboardLayout from "./pages/profile/prifile_dashboard.jsx/dashboard";
+import ProfileDashboardLayout from "./pages/profile/profile_dashboard/dashboard";
 import Resetpassword from "./pages/auth/resetpassword";
 import New_password from "./pages/auth/new password";
 import CustomizeChannel from "./pages/profile/channel_customize/channel_customize";
 import Content from "./pages/profile/content/content";
 import Edit from "./pages/profile/content/edit";
+import Dashboardpage from "./pages/profile/dashboard/dashboard";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -65,7 +66,6 @@ function App() {
 
   return (
     <Routes>
-      {/* Protected Routes (with DashboardLayout) */}
       <Route
         path="/"
         element={
@@ -107,6 +107,15 @@ function App() {
           </ProfileDashboardLayout>
         }
       />
+       <Route
+        path="/dashboard"
+        element={
+          <ProfileDashboardLayout>
+            <Dashboardpage />
+          </ProfileDashboardLayout>
+        }
+      />
+
 
       {/* Auth Routes */}
       <Route path="/signup" element={<Signup />} />

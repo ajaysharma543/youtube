@@ -7,6 +7,8 @@ const VideoApi = {
     axiosclient.patch(`/video/toggle-publish/${videoId}`),
   updateVideo: (videoId, data) =>
     axiosclient.patch(`/video/v/${videoId}`, data),
+   deletevideo: (videoId) =>
+    axiosclient.delete(`/video/v/${videoId}`),
 };
 
 export default VideoApi;

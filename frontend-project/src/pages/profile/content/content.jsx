@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { Play, Edit, Trash2, Upload } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom"; // ✅ for navigation
+import { useNavigate } from "react-router-dom";
 import { fetchUserVideos } from "../../../redux/features/fetchvideoslice";
+import VideoApi from "../../../api/videoapi";
 
 const timeAgo = (dateString) => {
   const date = new Date(dateString);
@@ -31,12 +32,33 @@ function ShowAllVideos() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { videos, loading } = useSelector((state) => state.videos);
+
   useEffect(() => {
     dispatch(fetchUserVideos());
   }, [dispatch]);
 
   const handleUploadClick = () => {
-    navigate("/upload"); // ✅ go to your upload page route
+    navigate("/upload");
+  };
+
+  const deletes = async(videoId) => {
+try {
+      await VideoApi.deletevideo(videoId)
+       dispatch(fetchUserVideos());
+} catch (error) {
+      console.error("Error toggling delete:", error);
+  
+}  }
+
+  const handleToggle = async (videoId) => {
+    try {
+      await VideoApi.publishvideo(videoId)
+ dispatch(fetchUserVideos());
+//  console.log(res);
+ 
+    } catch (error) {
+      console.error("Error toggling publish status:", error);
+    }
   };
 
   return (
@@ -59,33 +81,29 @@ function ShowAllVideos() {
           </div>
         ) : videos.length === 0 ? (
           <div className="text-gray-400 text-lg text-center mt-10">
-            No published videos found.
+            No videos found.
           </div>
         ) : (
           <div className="space-y-4">
-            {/* Table Header */}
             <div className="grid grid-cols-[50px_120px_1fr_100px_140px_120px_100px] text-gray-400 text-sm font-semibold border-b border-gray-700 pb-2">
               <span></span>
               <span>Thumbnail</span>
               <span>Title & Description</span>
               <span>Edit</span>
               <span>Created At</span>
-              <span>Status</span>
+              <span>Published</span>
               <span>Delete</span>
             </div>
 
-            {/* Video Rows */}
             {videos.map((v) => (
               <div
                 key={v._id}
                 className="grid grid-cols-[50px_120px_1fr_100px_140px_120px_100px] items-center bg-[#181818] hover:bg-[#202020] transition rounded-lg p-2"
               >
-                {/* Select */}
                 <div className="flex justify-center">
                   <input type="checkbox" className="w-4 h-4 accent-red-600" />
                 </div>
 
-                {/* Thumbnail */}
                 <div className="relative group">
                   <img
                     src={v.thumbnail?.url}
@@ -97,7 +115,6 @@ function ShowAllVideos() {
                   </div>
                 </div>
 
-                {/* Title + Description */}
                 <div>
                   <h3 className="text-white font-semibold truncate">
                     {v.title}
@@ -107,7 +124,6 @@ function ShowAllVideos() {
                   </p>
                 </div>
 
-                {/* Edit Button */}
                 <div className="flex justify-center">
                   <button
                     onClick={() => navigate(`/edit_video/${v._id}`)}
@@ -117,25 +133,30 @@ function ShowAllVideos() {
                   </button>
                 </div>
 
-                {/* Created At */}
                 <div className="text-gray-300 text-sm text-center">
                   {timeAgo(v.createdAt)}
                 </div>
 
-                {/* Publish Status */}
-                <div className="text-center">
-                  {v.isPublished ? (
-                    <span className="text-green-500 font-semibold">
-                      Published
-                    </span>
-                  ) : (
-                    <span className="text-yellow-500 font-semibold">Draft</span>
-                  )}
+                <div className="flex justify-center">
+                  <label className="inline-flex items-center cursor-pointer">
+                 <input
+                  type="checkbox"
+                  checked={v.isPublished}
+                  onChange={() => handleToggle(v._id)}
+                  className="sr-only peer"
+                />
+                    <div className="relative w-11 h-6 bg-gray-600 rounded-full peer peer-checked:bg-green-500 
+                      after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
+                      after:bg-white after:h-5 after:w-5 after:rounded-full after:transition-all 
+                      peer-checked:after:translate-x-full">
+                    </div>
+                  </label>
                 </div>
 
-                {/* Delete Button */}
-                <div className="flex justify-center">
-                  <button className="text-red-500 hover:text-red-400 transition">
+                {/* Delete */}
+                <div className="flex justify-center cursor-pointer"          
+                          onClick={() => deletes(v._id)}>
+                  <button className="text-red-500 cursor-pointer hover:text-red-400 transition">
                     <Trash2 size={18} />
                   </button>
                 </div>
@@ -144,8 +165,7 @@ function ShowAllVideos() {
           </div>
         )}
 
-        {/* ✅ Upload Button at the End */}
-        <div className="flex justify-end mt-6">
+       <div className="flex justify-end mt-6">
           <button
             onClick={handleUploadClick}
             className="flex items-center gap-2 bg-red-600 hover:bg-red-700 px-5 py-2 rounded-lg font-semibold transition"

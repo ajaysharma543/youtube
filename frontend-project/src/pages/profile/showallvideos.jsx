@@ -29,7 +29,7 @@ const timeAgo = (dateString) => {
 function ShowAllVideos() {
   const dispatch = useDispatch();
   const { videos, loading } = useSelector((state) => state.videos);
-
+const publishedVideos = videos.filter((v) => v.isPublished);
   useEffect(() => {
     dispatch(fetchUserVideos());
   }, [dispatch]);
@@ -52,7 +52,7 @@ function ShowAllVideos() {
 
   return (
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-3">
-      {videos.map((v) => (
+      {publishedVideos.map((v) => (
         <div
           key={v._id}
           className="from-gray-900 via-black cursor-pointer to-gray-900 rounded-2xl overflow-hidden hover:shadow-red-600/20 "

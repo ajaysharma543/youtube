@@ -16,7 +16,7 @@ const Sidebar = () => {
     );
 
   const navItems = [
-    { to: "/", label: "Dashboard", icon: <Home className="w-5 h-5" /> },
+    { to: "/dashboard", label: "Dashboard", icon: <Home className="w-5 h-5" /> },
     { to: "/content", label: "Content", icon: <Users className="w-5 h-5" /> },
     {
       to: "/channel-customize",

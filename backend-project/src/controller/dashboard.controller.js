@@ -63,7 +63,7 @@ const getChannelStats = asyncHandler(async (req, res) => {
     ])
 
     const channelStats = {
-        totalSubscribers : totalSubscribers[0].subscribercount || 0,
+totalSubscribers : totalSubscribers[0]?.subscribercount || 0,
         totallikes: Videos[0]?.totallikes || 0,
         totalviews: Videos[0]?.totalviews || 0,
         totalVideos: Videos[0]?.totalVideos || 0
@@ -87,8 +87,6 @@ const getChannelVideos = asyncHandler(async (req, res) => {
         {
             $match : {
                 owner : new mongoose.Types.ObjectId(userId),
-                isPublished: true, // ✅ only published videos
-
             }
         },
         {
@@ -100,11 +98,27 @@ const getChannelVideos = asyncHandler(async (req, res) => {
             }
         },
         {
+      $lookup: {
+        from: "comments", // ✅ assuming your comment collection name is 'comments'
+        localField: "_id",
+        foreignField: "video",
+        as: "comments",
+      },
+    },
+        
+        {
             $addFields : {
                 likecount : {
                     $size : "$likes"
                 },
-              
+                      commentcount: { $size: "$comments" }, // ✅ new comment count field
+likePercentage: {
+                    $cond: [
+                        { $eq: ["$views", 0] }, 
+                        0,
+                        { $multiply: [{ $divide: [{ $size: "$likes" }, "$views"] }, 100] }
+                    ]
+                }
                     }
         },
         {
@@ -122,7 +136,9 @@ const getChannelVideos = asyncHandler(async (req, res) => {
                 createdAt : 1,
                 isPublished: 1,
                 views : 1,
-                likecount: 1
+                likecount: 1,
+                  commentcount: 1, 
+                  likePercentage : 1,
             }
         }
     ])
