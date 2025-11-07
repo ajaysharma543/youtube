@@ -18,6 +18,7 @@ import CustomizeChannel from "./pages/profile/channel_customize/channel_customiz
 import Content from "./pages/profile/content/content";
 import Edit from "./pages/profile/content/edit";
 import Dashboardpage from "./pages/profile/dashboard/dashboard";
+import Go_to_video from "./pages/dashboard/go_to_video";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -42,7 +43,6 @@ function App() {
           err.response?.data || err.message
         );
 
-        // ✅ If not logged in and trying to access protected pages, redirect to login
         const protectedRoutes = [
           "/upload",
           "/video-details",
@@ -129,6 +129,7 @@ function App() {
       <Route path="/upload" element={<Videouploads />} />
       <Route path="/video-details" element={<VideoUpload />} />
       <Route path="/publish/:videoId" element={<PublishPage />} />
+      <Route path="/video/:videoId" element={<Go_to_video />} />
     </Routes>
   );
 }

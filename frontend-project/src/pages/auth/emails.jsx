@@ -12,11 +12,15 @@ import OtpApi from "../../api/otp.jsx";
 const SignupStep2 = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error: globalError } = useSelector((state) => state.auth);
+  const { error: globalError } = useSelector((state) => state.auth);
 
   const [otpSent, setOtpSent] = useState(false);
   const [enteredOtp, setEnteredOtp] = useState("");
   const [localError, setLocalError] = useState("");
+
+  // ✅ Local loading states
+  const [sendingOtp, setSendingOtp] = useState(false);
+  const [verifyingOtp, setVerifyingOtp] = useState(false);
 
   const {
     register,
@@ -29,9 +33,10 @@ const SignupStep2 = () => {
     const email = getValues("email");
     if (!email) return setLocalError("Please enter an email first");
 
-    dispatch(signupStart());
+    setSendingOtp(true);
     setLocalError("");
     try {
+      dispatch(signupStart());
       const res = await OtpApi.sendOtp(email);
       console.log("OTP sent:", res.data);
       dispatch(setEmail({ email }));
@@ -40,15 +45,18 @@ const SignupStep2 = () => {
       const message = err.response?.data?.message || "Failed to send OTP";
       dispatch(signupFailure(message));
       setLocalError(message);
+    } finally {
+      setSendingOtp(false);
     }
   };
 
   const handleVerifyOtp = async (data) => {
     const { email } = data;
-    dispatch(signupStart());
+    setVerifyingOtp(true);
     setLocalError("");
 
     try {
+      dispatch(signupStart());
       const res = await OtpApi.verifyOtp({ email, otp: enteredOtp });
       console.log("Verification:", res.data);
 
@@ -59,6 +67,8 @@ const SignupStep2 = () => {
       const message = err.response?.data?.message || "Invalid or expired OTP";
       dispatch(signupFailure(message));
       setLocalError(message);
+    } finally {
+      setVerifyingOtp(false);
     }
   };
 
@@ -100,9 +110,9 @@ const SignupStep2 = () => {
           <div className="flex-[0.3] flex items-end">
             <Button
               type="button"
-              text={loading && !otpSent ? "Sending..." : "Send OTP"}
+              text={sendingOtp ? "Sending..." : "Send OTP"}
               onClick={handleSendOtp}
-              disabled={loading}
+              disabled={sendingOtp}
               className="w-full"
             />
           </div>
@@ -118,19 +128,17 @@ const SignupStep2 = () => {
           required
         />
 
-        {/* ERROR MESSAGE */}
         {(localError || globalError) && (
           <p className="text-red-500 text-sm mt-2">
             {localError || globalError}
           </p>
         )}
 
-        {/* VERIFY OTP BUTTON */}
         <Button
           type="submit"
-          text={loading && otpSent ? "Verifying..." : "Verify OTP"}
+          text={verifyingOtp ? "Verifying..." : "Verify OTP"}
           className="w-full mt-4"
-          disabled={loading}
+          disabled={verifyingOtp}
         />
       </form>
     </FormContainer>

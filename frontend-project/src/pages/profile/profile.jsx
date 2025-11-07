@@ -46,7 +46,8 @@ function Profile() {
               >
                 Customize Channel
               </button>
-              <button className="bg-gray-700 hover:bg-gray-800 cursor-pointer transition px-5 py-2 rounded-full font-semibold">
+              <button onClick={() => navigate("/content")}
+                 className="bg-gray-700 hover:bg-gray-800 cursor-pointer transition px-5 py-2 rounded-full font-semibold">
                 Manage Videos
               </button>
             </div>

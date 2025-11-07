@@ -39,11 +39,12 @@ export const fetchCurrentUser = () => async (dispatch) => {
     dispatch(setUserStart());
     const res = await authApi.getcurrentuser();
     dispatch(setUserSuccess(res.data.data));
+    return res.data.data; // ✅ important: return data
   } catch (error) {
-    dispatch(
-      setUserFailure(error.response?.data || "Failed to fetch current user")
-    );
+    dispatch(setUserFailure(error.response?.data || "Failed to fetch current user"));
+    throw error; // ✅ rethrow for .unwrap() to catch
   }
 };
+
 
 export default userSlice.reducer;

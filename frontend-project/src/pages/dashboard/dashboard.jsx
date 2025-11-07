@@ -6,21 +6,17 @@ import VideoCard from "./dashboard_components/video_show";
 function Dashboard() {
   const [video, setVideo] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const {query} = useSelector((state) => state.videos)
   const { data: user } = useSelector((state) => state.user);
 
-  useEffect(() => {
     const fetchVideos = async () => {
       setLoading(true);
       try {
         const videos = await VideoApi.getallvideos({ page: 1, limit: 10 });
-        // console.log("video",videos.data.data.docs);
-        const filteredVideos = videos.data.data.docs.filter(
-          (vid) => vid.owner._id !== user?._id
-        );
-
+     const filteredVideos = user
+  ? videos.data.data.docs.filter((vid) => vid.owner._id !== user._id)
+  : videos.data.data.docs;
         setVideo(filteredVideos);
-        // console.log("filter",filteredVideos);
       } catch (error) {
         console.log("video not showing", error.response?.data || error.message);
       } finally {
@@ -28,8 +24,18 @@ function Dashboard() {
       }
     };
 
-    if (user) fetchVideos();
-  }, [user]);
+  useEffect(() => {
+  fetchVideos();
+}, []);
+
+const displayedVideos = video.filter((v) => {
+  const titleMatch = v.title?.toLowerCase().includes(query.toLowerCase());
+  const descMatch = v.description?.toLowerCase().includes(query.toLowerCase());
+  const useridmatch = v.owner._id?.toLowerCase().includes(query.toLowerCase());
+  const usernamematch = v.owner.username?.toLowerCase().includes(query.toLowerCase());
+  return titleMatch || descMatch || useridmatch || usernamematch ;
+});
+
 
   if (loading) {
     return (
@@ -43,7 +49,7 @@ function Dashboard() {
         <p>No Video Found</p>
       ) : (
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {video.map((item) => (
+          {displayedVideos.map((item) => (
             <VideoCard key={item._id} video={item} />
           ))}
         </div>

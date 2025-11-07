@@ -5,6 +5,7 @@ const initialState = {
   videos: [],
   stats : null,
   loading: false,
+  query : "",
   error: null,
 };
 
@@ -24,6 +25,9 @@ const videoSlice = createSlice({
       state.loading = false;
       state.stats = action.payload;
     },
+     setSearchQuery: (state, action) => {
+      state.query = action.payload;
+    },
     fetchVideosFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
@@ -31,10 +35,9 @@ const videoSlice = createSlice({
   },
 });
 
-export const { fetchVideosStart, fetchVideosSuccess,fetchStatsSuccess, fetchVideosFailure } =
+export const { fetchVideosStart, fetchVideosSuccess,setSearchQuery,fetchStatsSuccess, fetchVideosFailure } =
   videoSlice.actions;
 
-// ✅ Thunk to fetch user videos
 export const fetchUserVideos = () => async (dispatch) => {
   try {
     dispatch(fetchVideosStart());

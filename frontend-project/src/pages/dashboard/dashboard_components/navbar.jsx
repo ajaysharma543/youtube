@@ -3,17 +3,28 @@ import { PartyPopperIcon, Search, Youtube } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchCurrentUser } from "../../../redux/features/userdetailsslice";
+import { setSearchQuery } from "../../../redux/features/fetchvideoslice";
 
 function Navbar() {
   const [showDropdown, setShowDropdown] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { data } = useSelector((state) => state.user);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     dispatch(fetchCurrentUser());
-  }, [dispatch]);
+    
+  },[dispatch])
+     useEffect(() => {
+    const handler = setTimeout(() => {
+      dispatch(setSearchQuery(searchValue));
+    }, 500);
 
+    return () => {
+      clearTimeout(handler); 
+    };
+  }, [searchValue,data, dispatch]);
   const handleUploadClick = () => {
     setShowDropdown(false);
     if (data) navigate("/upload");
@@ -33,7 +44,8 @@ function Navbar() {
       <div className="relative w-72">
         <Search className="absolute right-3 top-2.5 text-gray-400 w-5 h-5" />
         <input
-          type="search"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}          type="search"
           placeholder="Search videos..."
           className="w-full bg-gray-900 text-white placeholder-gray-500 rounded-full pl-5 pr-10 py-2 outline-none focus:ring-2 focus:ring-red-600 transition"
         />

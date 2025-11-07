@@ -9,6 +9,8 @@ const VideoApi = {
     axiosclient.patch(`/video/v/${videoId}`, data),
    deletevideo: (videoId) =>
     axiosclient.delete(`/video/v/${videoId}`),
+   getVideoById : (videoId) =>
+    axiosclient.get(`/video/v/${videoId}`),
 };
 
 export default VideoApi;
