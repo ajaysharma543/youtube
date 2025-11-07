@@ -1,14 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import authApi from "../../api/userapi";
 
-// ✅ Initial state
 const initialState = {
   data: null,
   loading: false,
   error: null,
 };
 
-// ✅ Create slice
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -39,7 +37,7 @@ export const fetchCurrentUser = () => async (dispatch) => {
     dispatch(setUserStart());
     const res = await authApi.getcurrentuser();
     dispatch(setUserSuccess(res.data.data));
-    return res.data.data; // ✅ important: return data
+    return res.data.data; 
   } catch (error) {
     dispatch(setUserFailure(error.response?.data || "Failed to fetch current user"));
     throw error; // ✅ rethrow for .unwrap() to catch

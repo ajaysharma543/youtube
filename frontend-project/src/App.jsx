@@ -18,7 +18,8 @@ import CustomizeChannel from "./pages/profile/channel_customize/channel_customiz
 import Content from "./pages/profile/content/content";
 import Edit from "./pages/profile/content/edit";
 import Dashboardpage from "./pages/profile/dashboard/dashboard";
-import Go_to_video from "./pages/dashboard/go_to_video";
+import VideoDashboardLayout from "./pages/playvideo_dahboard/dashboard_layout";
+import Mainvideo_page from "./pages/playvideo_dahboard/mainvideo_page";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -115,6 +116,14 @@ function App() {
           </ProfileDashboardLayout>
         }
       />
+       <Route
+        path="/video/:videoId"     
+          element={
+          <VideoDashboardLayout>
+            <Mainvideo_page />
+          </VideoDashboardLayout>
+        }
+      />
 
 
       {/* Auth Routes */}
@@ -129,7 +138,7 @@ function App() {
       <Route path="/upload" element={<Videouploads />} />
       <Route path="/video-details" element={<VideoUpload />} />
       <Route path="/publish/:videoId" element={<PublishPage />} />
-      <Route path="/video/:videoId" element={<Go_to_video />} />
+      
     </Routes>
   );
 }

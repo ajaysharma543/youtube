@@ -89,7 +89,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
                     owner : {
                         _id : 1,
                         username : 1,
-                        "avatar.url" : 1,
+                                                        "avatar.url" : 1,
                     }
                 }
             },
@@ -236,6 +236,7 @@ const getVideoById = asyncHandler(async (req, res) => {
                                     issubscribed  : 1,
                                     username : 1,
                                     "avatar.url" : 1,
+                                    fullname : 1,
                                 }
                             }
                             ]
