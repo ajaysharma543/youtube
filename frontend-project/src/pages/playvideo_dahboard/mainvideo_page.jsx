@@ -1,39 +1,52 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import VideoApi from "../../api/videoapi";
+import VideoDetails from "./go_to_video";
+import { useSelector } from "react-redux";
+import Subscriber from "./subscriber";
+import Likes from "./likes";
 
 function Mainvideo_page() {
   const { videoId } = useParams();
   const [video, setVideo] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(false);
+  const [currentVideoId, setCurrentVideoId] = useState(videoId);
   const videoRef = useRef(null);
-
+  const { data: user } = useSelector((state) => state.user);
+const navigate = useNavigate()
+    const handleVideoSelect = (id) => {
+    setCurrentVideoId(id);       
+    navigate(`/video/${id}`);    
+  };
+  // ✅ Fetch video data
   useEffect(() => {
     const fetchVideo = async () => {
-      setLoading(true);
+      setPageLoading(true);
       setError(null);
       setVideo(null);
       try {
-        const res = await VideoApi.getVideoById(videoId);
+        const res = await VideoApi.getVideoById(currentVideoId);
+        console.log(res);
+        
         setVideo(res.data.data);
-        console.log("Video owner:", res.data.data.owner);
       } catch (err) {
         console.error("Error fetching video:", err);
         setError("You must be logged in to view this video.");
       } finally {
-        setLoading(false);
+        setPageLoading(false);
       }
     };
     fetchVideo();
-  }, [videoId]);
+  }, [currentVideoId]);
 
-  if (loading)
+  if (pageLoading)
     return (
       <div className="min-h-screen flex items-center justify-center bg-black text-white">
         <div className="flex flex-col items-center">
           <div className="w-12 h-12 border-4 border-gray-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-          <p>Loading video...</p>
+          <p>Loading video data...</p>
         </div>
       </div>
     );
@@ -49,18 +62,28 @@ function Mainvideo_page() {
 
   return (
     <div className="flex justify-center gap-5 p-5">
-      {/* Left section: Video + info */}
       <div className="w-[70%]">
-        {/* Video player */}
         <div className="bg-black p-5 border-2 border-gray-800 rounded-3xl mb-4">
           <div className="relative w-full max-w-4xl mx-auto group">
+            {/* ✅ Loader during buffering */}
+            {videoLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 z-10 rounded-lg">
+                <div className="w-12 h-12 border-4 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            )}
+
             <video
               ref={videoRef}
               src={video.videoFile.url}
               className="w-full rounded-lg h-[450px] bg-black cursor-pointer"
               controls
               autoPlay
+              onLoadStart={() => setVideoLoading(true)}
+              onCanPlay={() => setVideoLoading(false)}
+              onWaiting={() => setVideoLoading(true)}
+              onPlaying={() => setVideoLoading(false)}
             />
+
             <style>{`
               video::-webkit-media-controls {
                 opacity: 0;
@@ -76,50 +99,36 @@ function Mainvideo_page() {
         {/* Video title */}
         <h1 className="text-white text-2xl font-bold mb-3">{video.title}</h1>
 
-      <div className="flex items-center justify-between mb-4">
-  {/* Left side: Owner info + Subscribe */}
-  <div className="flex items-center gap-3">
-    <img
-      src={video.owner?.avatar?.url || "/default-avatar.png"}
-      alt={video.owner?.fullname || "User"}
-      className="w-12 h-12 rounded-full"
-    />
-    <div>
-      <h2 className="text-white font-semibold">
-        {video.owner?.fullname || "Unknown"}
-      </h2>
-      <p className="text-gray-400 text-sm">
-        {video.owner?.subscriberscount || 0} subscribers
-      </p>
-    </div>
-    <button className="bg-white text-black px-4 py-2 cursor-pointer rounded-4xl ml-4">
-      {video.issubscribed ? "Subscribed" : "Subscribe"}
-    </button>
-  </div>
+        <div className="flex items-center justify-between mb-4">
+          {/* Owner info */}
+          <div className="flex items-center gap-3">
+            <img
+              src={video.owner?.avatar?.url || "/default-avatar.png"}
+              alt={video.owner?.fullname || "User"}
+              className="w-12 h-12 rounded-full"
+            />
 
-  {/* Right side: Like / Dislike / Download */}
-  <div className="flex items-end justify-center">
-    <div className="flex items-center bg-[#564c4c] rounded-4xl overflow-hidden mr-2">
-    <button className="flex items-center justify-center text-white px-4 py-2">
-      👍 Like {video.likes || 0}
-    </button>
-    <span className="w-px bg-[#564c4c] h-6 mx-1">|</span>
-    <button className="flex items-center justify-center text-white px-4 py-2">
-      👎 Dislike {video.dislikes || 0}
-    </button> 
-  </div>
-     <button
-      onClick={() => window.open(video.videoFile.url, "_blank")}
-      className="flex items-center justify-center bg-[#564c4c] rounded-4xl text-white px-4 py-2"
-    >
-      ⬇️ Download
-    </button>
-  </div>
-</div>
+                           <Subscriber video={video} />
+          </div>
+
+          <div className="flex items-end justify-center">
+          <Likes video={video} />
+            <button
+              onClick={() => window.open(video.videoFile.url, "_blank")}
+              className="flex items-center justify-center bg-[#564c4c] rounded-4xl text-white px-4 py-2"
+            >
+              ⬇️ Download
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="w-[30%] flex flex-col gap-4">
-       
+        <VideoDetails
+          currentVideoId={currentVideoId}
+          currentUserId={user?._id}
+          onVideoSelect={handleVideoSelect}
+        />
       </div>
     </div>
   );

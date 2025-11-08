@@ -3,7 +3,7 @@ import authApi from "../../api/userapi";
 
 const initialState = {
   data: null,
-  loading: false,
+  loading: true,
   error: null,
 };
 

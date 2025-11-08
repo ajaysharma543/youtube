@@ -79,7 +79,7 @@ const handleClick = async () => {
         ></div>
 
         <div
-          className="relative bg-black rounded-2xl overflow-hidden hover:bg-[#5d5151]
+          className="relative pb-4 bg-black rounded-2xl overflow-hidden hover:bg-[#5d5151]
                transition-all duration-700 ease-in-out"
         >
           <img

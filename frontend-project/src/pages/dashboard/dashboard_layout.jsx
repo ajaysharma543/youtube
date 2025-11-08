@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "./dashboard_components/navbar";
-// import LogoutButton from "../auth/logout";
+import LogoutButton from "../auth/logout";
 // import { Link } from "react-router-dom";
 import Sidebar from "./dashboard_components/slidebar"
 const DashboardLayout = ({ children }) => {
@@ -9,7 +9,7 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <div className="flex flex-col mt-15 min-h-screen bg-black text-white">
-      {/* <LogoutButton /> */}
+      <LogoutButton />
 
       <Navbar
         onToggleSidebar={() => setCollapse((prev) => !prev)}
