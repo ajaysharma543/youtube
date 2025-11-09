@@ -5,6 +5,7 @@ import VideoDetails from "./go_to_video";
 import { useSelector } from "react-redux";
 import Subscriber from "./subscriber";
 import Likes from "./likes";
+import Comments from "./comments";
 
 function Mainvideo_page() {
   const { videoId } = useParams();
@@ -12,7 +13,9 @@ function Mainvideo_page() {
   const [error, setError] = useState(null);
   const [pageLoading, setPageLoading] = useState(false);
   const [videoLoading, setVideoLoading] = useState(false);
+     const [showFull, setShowFull] = useState(false);
   const [currentVideoId, setCurrentVideoId] = useState(videoId);
+  const [commentVideoId, setcommentVideoId] = useState(videoId);
   const videoRef = useRef(null);
   const { data: user } = useSelector((state) => state.user);
 const navigate = useNavigate()
@@ -20,7 +23,8 @@ const navigate = useNavigate()
     setCurrentVideoId(id);       
     navigate(`/video/${id}`);    
   };
-  // ✅ Fetch video data
+
+
   useEffect(() => {
     const fetchVideo = async () => {
       setPageLoading(true);
@@ -29,7 +33,7 @@ const navigate = useNavigate()
       try {
         const res = await VideoApi.getVideoById(currentVideoId);
         console.log(res);
-        
+        setcommentVideoId(res.data.data._id);
         setVideo(res.data.data);
       } catch (err) {
         console.error("Error fetching video:", err);
@@ -40,6 +44,40 @@ const navigate = useNavigate()
     };
     fetchVideo();
   }, [currentVideoId]);
+
+    const getTimeAgo = (dateString) => {
+    const now = new Date();
+    const created = new Date(dateString);
+    const diffInSeconds = Math.floor((now - created) / 1000);
+
+    const intervals = {
+      year: 31536000,
+      month: 2592000,
+      week: 604800,
+      day: 86400,
+      hour: 3600,
+      minute: 60,
+      second: 1,
+    };
+
+    for (const [unit, seconds] of Object.entries(intervals)) {
+      const count = Math.floor(diffInSeconds / seconds);
+      if (count >= 1) {
+        return `${count} ${unit}${count > 1 ? "s" : ""} ago`;
+      }
+    }
+    return "just now";
+  };
+if (!video) return null;
+
+const uploadTime = getTimeAgo(video.createdAt);
+
+  const charLimit = 100; 
+
+  const isLong = video.description.length > charLimit;
+  const displayText = showFull || !isLong
+    ? video.description
+    : video.description.slice(0, charLimit) + "...";
 
   if (pageLoading)
     return (
@@ -96,11 +134,9 @@ const navigate = useNavigate()
           </div>
         </div>
 
-        {/* Video title */}
         <h1 className="text-white text-2xl font-bold mb-3">{video.title}</h1>
 
         <div className="flex items-center justify-between mb-4">
-          {/* Owner info */}
           <div className="flex items-center gap-3">
             <img
               src={video.owner?.avatar?.url || "/default-avatar.png"}
@@ -112,18 +148,35 @@ const navigate = useNavigate()
           </div>
 
           <div className="flex items-end justify-center">
-                <div className="flex items-center bg-gray-700 rounded-4xl overflow-hidden mr-2">
+                <div className="flex items-center bg-[#222222] rounded-4xl overflow-hidden mr-2">
                             <Likes video={video} />
 
 </div>
             <button
               onClick={() => window.open(video.videoFile.url, "_blank")}
-              className="flex items-center justify-center bg-[#564c4c] rounded-4xl text-white px-4 py-2"
+              className="flex items-center justify-center bg-[#222222] rounded-4xl text-white px-4 py-2"
             >
               ⬇️ Download
             </button>
           </div>
         </div>
+    <div className="w-full bg-[#222222] rounded-3xl p-4 pt-2 text-white">
+  <div className="flex gap-4 text-sm text-gray-400 mb-2">
+    <span>{video.views} views</span>
+          <span>{uploadTime}</span>
+  </div>
+        <h1 className="text-base whitespace-pre-line">{displayText}</h1>
+ {isLong && (
+        <button
+          onClick={() => setShowFull(!showFull)}
+          className="mt-2 text-white cursor-pointer hover:underline text-sm"
+        >
+          {showFull ? "Show less" : "Show more"}
+        </button>
+      )}</div>
+
+      <Comments video={video} commentVideoId={commentVideoId} />
+
       </div>
 
       <div className="w-[30%] flex flex-col gap-4">

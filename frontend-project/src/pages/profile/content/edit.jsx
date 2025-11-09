@@ -6,7 +6,6 @@ import {
   fetchUserVideos,
   fetchVideosStart,
   fetchVideosFailure,
-  fetchVideosSuccess,
 } from "../../../redux/features/fetchvideoslice";
 import VideoApi from "../../../api/videoapi";
 
@@ -19,12 +18,7 @@ function EditVideo() {
   const [preview, setPreview] = useState(null);
   const [saving, setSaving] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
     defaultValues: {
       title: "",
       description: "",
@@ -32,14 +26,14 @@ function EditVideo() {
     },
   });
 
-  // ✅ Fetch videos if not already loaded
+  // Fetch videos if not loaded
   useEffect(() => {
     if (!videos || videos.length === 0) {
       dispatch(fetchUserVideos());
     }
   }, [dispatch, videos]);
 
-  // ✅ Set current video data
+  // Set current video in form
   useEffect(() => {
     if (videos && videos.length > 0 && videoId) {
       const found = videos.find((v) => String(v._id) === String(videoId));
@@ -52,16 +46,16 @@ function EditVideo() {
     }
   }, [videos, videoId, setValue]);
 
-  // ✅ Handle new thumbnail selection
+  // Handle thumbnail change
   const handleThumbnailChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setValue("thumbnail", file);
+    setValue("thumbnail", file); // store as File directly
       setPreview(URL.createObjectURL(file));
     }
   };
 
-  // ✅ Handle update submission
+  // Submit form
   const onSubmit = async (data) => {
     try {
       setSaving(true);
@@ -70,12 +64,11 @@ function EditVideo() {
       const formData = new FormData();
       formData.append("title", data.title);
       formData.append("description", data.description);
-      if (data.thumbnail instanceof File) {
-        formData.append("thumbnail", data.thumbnail);
-      }
-
-      const res = await VideoApi.updateVideo(videoId, formData);
-      await dispatch(fetchUserVideos());
+    if (data.thumbnail instanceof File) {
+      formData.append("thumbnail", data.thumbnail);
+    }
+      await VideoApi.updateVideo(videoId, formData);
+      await dispatch(fetchUserVideos()); 
       navigate("/content");
     } catch (err) {
       console.error("❌ Update failed:", err);

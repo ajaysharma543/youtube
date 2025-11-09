@@ -34,17 +34,17 @@ function Likes({ video }) {
   if (error) return <p>Something went wrong. Please try again.</p>;
 
   return (
-    <div className="flex items-center  rounded-4xl overflow-hidden mr-2">
+    <div className="flex items-center  rounded-4xl overflow-hidden pl-1 pr-1">
       <button
         onClick={handleLikes}
         disabled={loading}
-        className={`flex cursor-pointer items-center justify-center text-white px-4 py-2`}
+        className={`flex cursor-pointer items-center justify-center text-white pl-2 py-2`}
       >
-        👍 {isLiked ? "Liked" : "Like"}
+         {isLiked ? "👍" : "like"}
       </button>
 
       <span className="text-white ml-2">{likeCount}</span>
-      <span className="w-px bg-gray-700 h-6 mx-2" />
+      <span className="w-px bg-[#aaa] h-6 ml-2" />
       <Dislikes video={video} />
     </div>
   );

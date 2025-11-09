@@ -52,7 +52,7 @@ dispatch(setSubscriptionState(subscribed))
       onClick={handleSubscriber}
       disabled={loading}
       className={`px-4 py-2 rounded-4xl ml-4 cursor-pointer transition-all duration-300 ${
-        isSubscribed ? "bg-gray-700 text-white" : "bg-gray-600 text-white"
+        isSubscribed ? "bg-[#222222] text-white" : "bg-white text-black"
       } ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
     >
       { isSubscribed

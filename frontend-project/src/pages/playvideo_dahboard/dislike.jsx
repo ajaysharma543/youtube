@@ -38,9 +38,9 @@ function Dislikes({ video }) {
     <button
       onClick={handleDisLikes}
       disabled={loading}
-      className={`flex cursor-pointer items-center rounded-3xl justify-center text-white px-4 py-2`}
+      className={`flex cursor-pointer items-center rounded-3xl justify-center text-white px-2 py-2`}
     >
-      {isDisliked ? "👎 Disliked" : "👎 Dislike"} {dislikeCount}
+      {isDisliked ? "👎" : "👎"} {dislikeCount}
     </button>
   );
 }
