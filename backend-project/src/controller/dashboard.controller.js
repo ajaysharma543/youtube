@@ -59,14 +59,28 @@ const getChannelStats = asyncHandler(async (req, res) => {
                     $sum : "$totalviews"
                 }
             }
-        }
+        },
+            {
+                  $addFields: {
+        likePercentage: {
+          $cond: [
+            { $eq: ["$totalviews", 0] },
+            0,
+            { $multiply: [{ $divide: ["$totallikes", "$totalviews"] }, 100] },
+          ],
+        },
+      },
+            }
+
     ])
 
+    
     const channelStats = {
 totalSubscribers : totalSubscribers[0]?.subscribercount || 0,
         totallikes: Videos[0]?.totallikes || 0,
         totalviews: Videos[0]?.totalviews || 0,
-        totalVideos: Videos[0]?.totalVideos || 0
+        totalVideos: Videos[0]?.totalVideos || 0,
+         likePercentage: Videos[0].likePercentage,
     }
 
     return res

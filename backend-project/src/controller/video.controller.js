@@ -190,6 +190,14 @@ const getVideoById = asyncHandler(async (req, res) => {
                     as : "likes",
                 }
             },
+             {
+                $lookup:{
+                    from : "dislikes",
+                    localField : "_id",
+                    foreignField :"video",
+                    as : "dislikes",
+                }
+            },
             {
             $lookup : {
             from : "comments",
@@ -248,6 +256,9 @@ const getVideoById = asyncHandler(async (req, res) => {
         likesCount  : {
             $size  :"$likes"
         },
+          dislikesCount  : {
+            $size  :"$dislikes"
+        },
         commentsCount : {
             $size : "$comments"
         },
@@ -258,6 +269,15 @@ const getVideoById = asyncHandler(async (req, res) => {
             $cond : {
                 if : {
                     $in : [req.user?._id , "$likes.likedBy" ]
+                },
+                then : true,
+                else : false
+            }
+        },
+          isdisLiked : {
+            $cond : {
+                if : {
+                    $in : [req.user?._id , "$dislikes.dislikedBy" ]
                 },
                 then : true,
                 else : false
@@ -282,7 +302,9 @@ const getVideoById = asyncHandler(async (req, res) => {
                 duration: 1,
                 owner: 1,
                 likesCount: 1,
+                dislikesCount : 1,
                 isLiked: 1,
+                isdisLiked : 1,
                 commentsCount : 1,
                 iscomment : 1
         }

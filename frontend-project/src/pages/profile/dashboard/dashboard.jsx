@@ -11,11 +11,14 @@ function Dashboard() {
     dispatch(fetchUserVideos());
     dispatch(fetchVideossubs());
   }, [dispatch]);
+const { videos = [], stats = {}, loading } = useSelector((state) => state.videos);
 
-  const { videos = [], stats = {}, loading } = useSelector((state) => state.videos);
-  console.log(stats);
+const publishedVideos = videos
+  .filter((v) => v.isPublished === true)
+  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  const latestVideo = videos.length ? videos[0] : null;
+const latestVideo = publishedVideos.length ? publishedVideos[0] : null;
+
 
   return (
     <div className="min-h-screen bg-black p-10">
@@ -56,19 +59,19 @@ function Dashboard() {
 
               <div className="border-t border-gray-700 pt-4 space-y-2">
                 <div className="flex justify-between items-center">
-                  <p className="text-white font-medium">Likes</p>
+                  <p className="text-white font-medium">total Likes</p>
                   <p className="text-gray-300">{stats?.totallikes || 0}</p>
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <p className="text-white font-medium">Views</p>
+                  <p className="text-white font-medium">total Views</p>
                   <p className="text-gray-300">{stats?.totalviews || 0}</p>
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <p className="text-white font-medium">Likes Percentage</p>
+                  <p className="text-white font-medium">total Likes Percentage</p>
                   <p className="text-gray-300">
-                    {latestVideo.likePercentage?.toFixed(2) || 0}%
+                    {stats?.likePercentage?.toFixed(2) || 0}%
                   </p>
                 </div>
 

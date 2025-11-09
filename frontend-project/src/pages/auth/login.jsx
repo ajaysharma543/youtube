@@ -44,11 +44,11 @@ function Login() {
         navigate("/");
       }
     } catch (error) {
-      console.error(
-        "❌ Error logging in:",
-        error.response?.data || error.message
-      );
-      dispatch(loginFailure(error.response?.data?.message || error.message));
+       const errorMessage =
+    error.response?.data?.message ||
+    error.response?.data?.error ||
+    "Invalid email or password. Please try again."
+      dispatch(loginFailure(errorMessage));
     }
   };
 

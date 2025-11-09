@@ -112,7 +112,10 @@ const navigate = useNavigate()
           </div>
 
           <div className="flex items-end justify-center">
-          <Likes video={video} />
+                <div className="flex items-center bg-gray-700 rounded-4xl overflow-hidden mr-2">
+                            <Likes video={video} />
+
+</div>
             <button
               onClick={() => window.open(video.videoFile.url, "_blank")}
               className="flex items-center justify-center bg-[#564c4c] rounded-4xl text-white px-4 py-2"

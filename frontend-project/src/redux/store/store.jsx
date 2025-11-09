@@ -6,6 +6,7 @@ import userReducer from "../features/userdetailsslice";
 import getvideoReducer from "../features/fetchvideoslice";
 import subscriberReducer from "../features/subscription";
 import likeReducer from "../features/likes";
+import dislikeReducer from "../features/disliked";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     videos: getvideoReducer,
     subscriber: subscriberReducer,
     like: likeReducer,
+    dislike : dislikeReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
