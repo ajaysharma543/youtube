@@ -92,10 +92,12 @@ function Comments({ commentVideoId }) {
 
   return (
     <div className="mt-4" ref={commentsRef}>
+       <h1 className="pl-5 mb-4"> {comments.length} comments </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex items-start gap-3 w-full"
       >
+       
         <img
           src={user?.avatar?.url || "/default-avatar.png"}
           alt="User Avatar"

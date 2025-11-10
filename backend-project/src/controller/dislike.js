@@ -5,6 +5,7 @@ import { Video } from "../models/video.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { Comment } from "../models/comment.model.js";
 
 const toggleVideodisLike = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
@@ -73,6 +74,69 @@ const getVideoDislikeStatus = asyncHandler(async (req, res) => {
     })
   );
 });
+const toggleCommentDislike = asyncHandler(async (req, res) => {
+  const { commentId } = req.params;
+  const userId = req.user._id;
+
+  if (!mongoose.isValidObjectId(commentId)) {
+    throw new ApiError(400, "Invalid comment ID");
+  }
+
+  const comment = await Comment.findById(commentId);
+  if (!comment) throw new ApiError(404, "Comment not found");
+
+  // Remove like if exists
+  await Like.findOneAndDelete({ comment: commentId, likedBy: userId });
+
+  // Toggle dislike
+  const existingDislike = await Dislike.findOne({
+    comment: commentId,
+    dislikedBy: userId,
+  });
+
+  let isDisliked;
+  if (existingDislike) {
+    await Dislike.findByIdAndDelete(existingDislike._id);
+    isDisliked = false;
+  } else {
+    await Dislike.create({ comment: commentId, dislikedBy: userId });
+    isDisliked = true;
+  }
+
+  const dislikeCount = await Dislike.countDocuments({ comment: commentId });
+  const likeCount = await Like.countDocuments({ comment: commentId });
+
+  res.status(200).json({
+    status: 200,
+    data: { isDisliked, dislikeCount, likeCount },
+    message: isDisliked ? "Comment disliked successfully" : "Dislike removed",
+  });
+});
+
+const getCommentDislikeStatus = asyncHandler(async (req, res) => {
+  const { commentId } = req.params;
+  const userId = req.user._id;
+
+  if (!isValidObjectId(commentId)) {
+    throw new ApiError(400, "Invalid comment ID");
+  }
+
+  const dislikeCount = await Dislike.countDocuments({ comment: commentId });
+  const likeCount = await Like.countDocuments({ comment: commentId });
+  const existingDislike = await Dislike.findOne({
+    comment: commentId,
+    dislikedBy: userId,
+  });
+
+  res.status(200).json(
+    new ApiResponse(200, {
+      isDisliked: !!existingDislike,
+      dislikeCount,
+      likeCount,
+    })
+  );
+});
+
 
 const getdisLikedVideos = asyncHandler(async (req, res) => {
   const dislikedaggregate = await Dislike.aggregate([
@@ -144,4 +208,4 @@ const getdisLikedVideos = asyncHandler(async (req, res) => {
     );
 });
 
-export { getdisLikedVideos, getVideoDislikeStatus, toggleVideodisLike };
+export { getdisLikedVideos,toggleCommentDislike,getCommentDislikeStatus, getVideoDislikeStatus, toggleVideodisLike };

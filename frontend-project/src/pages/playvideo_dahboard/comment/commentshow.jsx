@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import commentApi from "../../../api/comments";
 import { useForm } from "react-hook-form";
 import Deletecomment from "./deletecomment";
+import { ThumbsUp } from "lucide-react";
+import Likecomment from "./likecomment";
 
 const CommentList = ({
   comments,
@@ -79,7 +81,7 @@ const CommentList = ({
                   <p className="text-xs pl-2 text-gray-400">{uploadTime}</p>
                 </div>
 
-                {!isEditing && ( // 👈 only show menu when not editing
+                {!isEditing && (
                   <div className="relative">
                     <button
                       onClick={() =>
@@ -144,6 +146,8 @@ const CommentList = ({
                   {comment.content}
                 </p>
               )}
+              <Likecomment commentId={comment._id} />
+
             </div>
           </div>
         );

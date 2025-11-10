@@ -5,6 +5,7 @@ import { Video } from "../models/video.model.js";
 import { Dislike } from "../models/dislike.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { Comment } from "../models/comment.model.js";
 
 const toggleVideoLike = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
@@ -65,42 +66,62 @@ const getVideoLikeStatus = asyncHandler(async (req, res) => {
 
 const toggleCommentLike = asyncHandler(async (req, res) => {
   const { commentId } = req.params;
+  const userId = req.user._id;
 
   if (!isValidObjectId(commentId)) {
-    throw new ApiError(400, "comment not found");
+    throw new ApiError(400, "Invalid comment ID");
   }
 
-  const likedAlready = await Like.findOne({
-    comment: commentId,
-    likedBy: req.user?._id,
-  });
-  if (likedAlready) {
-    await Like.findByIdAndDelete(likedAlready?._id);
+  const comment = await Comment.findById(commentId);
+  if (!comment) throw new ApiError(404, "Comment not found");
 
-    return res.status(200).json(
-      new ApiResponse(
-        200,
-        {
-          isLiked: false,
-        },
-        "comment liked deleted sucessfully"
-      )
-    );
+  // Remove dislike if exists
+  await Dislike.findOneAndDelete({ comment: commentId, dislikedBy: userId });
+
+  // Toggle like
+  const existingLike = await Like.findOne({ comment: commentId, likedBy: userId });
+  let isLiked;
+
+  if (existingLike) {
+    await Like.findByIdAndDelete(existingLike._id);
+    isLiked = false;
+  } else {
+    await Like.create({ comment: commentId, likedBy: userId });
+    isLiked = true;
   }
 
-  await Like.create({
-    comment: commentId,
-    likedBy: req.user?._id,
-  });
+  // Get updated counts
+  const likeCount = await Like.countDocuments({ comment: commentId });
+  const dislikeCount = await Dislike.countDocuments({ comment: commentId });
 
   return res.status(200).json(
     new ApiResponse(
       200,
-      {
-        isLiked: true,
-      },
-      "comment liked sucessfully"
+      { isLiked, likeCount, dislikeCount },
+      isLiked ? "Comment liked successfully" : "Like removed"
     )
+  );
+});
+
+
+const getCommentLikeStatus = asyncHandler(async (req, res) => {
+  const { commentId } = req.params;
+  const userId = req.user._id;
+
+  if (!isValidObjectId(commentId)) {
+    throw new ApiError(400, "Invalid comment ID");
+  }
+
+  const likeCount = await Like.countDocuments({ comment: commentId });
+  const dislikeCount = await Dislike.countDocuments({ comment: commentId });
+  const existingLike = await Like.findOne({ comment: commentId, likedBy: userId });
+
+  res.status(200).json(
+    new ApiResponse(200, {
+      isLiked: !!existingLike,
+      likeCount,
+      dislikeCount,
+    })
   );
 });
 
@@ -211,4 +232,5 @@ export {
   toggleVideoLike,
   getLikedVideos,
   getVideoLikeStatus,
+  getCommentLikeStatus,
 };
