@@ -7,7 +7,9 @@ function Dashboard() {
   const [video, setVideo] = useState([]);
   const [loading, setLoading] = useState(false);
   const { query } = useSelector((state) => state.videos);
-  const { data: user, loading: userLoading } = useSelector((state) => state.user);
+  const { data: user, loading: userLoading } = useSelector(
+    (state) => state.user
+  );
 
   useEffect(() => {
     // ✅ Fetch videos only after user data is known (including null)
@@ -24,7 +26,7 @@ function Dashboard() {
           user && user._id
             ? allVideos.filter((vid) => vid.owner._id !== user._id)
             : allVideos;
-// console.log(filteredVideos);
+        // console.log(filteredVideos);
 
         setVideo(filteredVideos);
       } catch (error) {
@@ -37,9 +39,10 @@ function Dashboard() {
     fetchVideos();
   }, [userLoading, user?._id]);
 
-
   if (loading) {
-    return <div className="text-white text-center mt-10">Loading videos...</div>;
+    return (
+      <div className="text-white text-center mt-10">Loading videos...</div>
+    );
   }
 
   const displayedVideos = video.filter((v) => {

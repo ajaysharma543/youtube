@@ -18,9 +18,7 @@ const VideoDashboardLayout = ({ children }) => {
           mobileOpen={mobileOpen}
           setMobileOpen={setMobileOpen}
         />
-        <main className="flex-1 overflow-y-auto p-6 pt-[80px]">
-          {children}
-        </main>
+        <main className="flex-1 overflow-y-auto p-6 pt-[80px]">{children}</main>
       </div>
     </div>
   );

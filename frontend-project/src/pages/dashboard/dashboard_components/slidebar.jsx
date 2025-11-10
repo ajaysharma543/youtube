@@ -5,8 +5,16 @@ import { Link } from "react-router-dom";
 const Sidebar = ({ collapse }) => {
   const navItems = [
     { name: "Home", icon: <Home className="w-5 h-5" />, path: "/" },
-    { name: "Subscriptions", icon: <Users className="w-5 h-5" />, path: "/subscriptions" },
-    { name: "Settings", icon: <Settings className="w-5 h-5" />, path: "/settings" },
+    {
+      name: "Subscriptions",
+      icon: <Users className="w-5 h-5" />,
+      path: "/subscriptions",
+    },
+    {
+      name: "Settings",
+      icon: <Settings className="w-5 h-5" />,
+      path: "/settings",
+    },
   ];
 
   return (

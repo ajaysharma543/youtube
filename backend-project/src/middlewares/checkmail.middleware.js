@@ -22,4 +22,4 @@ export const sendEmail = asyncHandler(async (to, subject, text) => {
     console.error("❌ Error sending email:", error.message);
     throw error;
   }
-})
+});

@@ -29,7 +29,7 @@ const timeAgo = (dateString) => {
 function ShowAllVideos() {
   const dispatch = useDispatch();
   const { videos, loading } = useSelector((state) => state.videos);
-const publishedVideos = videos.filter((v) => v.isPublished);
+  const publishedVideos = videos.filter((v) => v.isPublished);
   useEffect(() => {
     dispatch(fetchUserVideos());
   }, [dispatch]);

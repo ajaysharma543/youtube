@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserVideos, fetchVideossubs } from "../../../redux/features/fetchvideoslice";
+import {
+  fetchUserVideos,
+  fetchVideossubs,
+} from "../../../redux/features/fetchvideoslice";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
@@ -11,14 +14,17 @@ function Dashboard() {
     dispatch(fetchUserVideos());
     dispatch(fetchVideossubs());
   }, [dispatch]);
-const { videos = [], stats = {}, loading } = useSelector((state) => state.videos);
+  const {
+    videos = [],
+    stats = {},
+    loading,
+  } = useSelector((state) => state.videos);
 
-const publishedVideos = videos
-  .filter((v) => v.isPublished === true)
-  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const publishedVideos = videos
+    .filter((v) => v.isPublished === true)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-const latestVideo = publishedVideos.length ? publishedVideos[0] : null;
-
+  const latestVideo = publishedVideos.length ? publishedVideos[0] : null;
 
   return (
     <div className="min-h-screen bg-black p-10">
@@ -69,19 +75,20 @@ const latestVideo = publishedVideos.length ? publishedVideos[0] : null;
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <p className="text-white font-medium">total Likes Percentage</p>
+                  <p className="text-white font-medium">
+                    total Likes Percentage
+                  </p>
                   <p className="text-gray-300">
                     {stats?.likePercentage?.toFixed(2) || 0}%
                   </p>
                 </div>
 
-               
-                 <button
-            onClick={() => navigate("/profile")}
-            className="mt-6 w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 rounded-lg transition-all"
-          >
-            comments : {videos.commentcount ||0 }
-          </button>
+                <button
+                  onClick={() => navigate("/profile")}
+                  className="mt-6 w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 rounded-lg transition-all"
+                >
+                  comments : {videos.commentcount || 0}
+                </button>
               </div>
             </>
           ) : (

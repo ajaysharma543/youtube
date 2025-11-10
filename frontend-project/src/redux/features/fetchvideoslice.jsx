@@ -3,9 +3,9 @@ import dashboardApi from "../../api/dashboard";
 
 const initialState = {
   videos: [],
-  stats : null,
+  stats: null,
   loading: false,
-  query : "",
+  query: "",
   error: null,
 };
 
@@ -21,11 +21,11 @@ const videoSlice = createSlice({
       state.loading = false;
       state.videos = action.payload;
     },
-     fetchStatsSuccess: (state, action) => {
+    fetchStatsSuccess: (state, action) => {
       state.loading = false;
       state.stats = action.payload;
     },
-     setSearchQuery: (state, action) => {
+    setSearchQuery: (state, action) => {
       state.query = action.payload;
     },
     fetchVideosFailure: (state, action) => {
@@ -35,8 +35,13 @@ const videoSlice = createSlice({
   },
 });
 
-export const { fetchVideosStart, fetchVideosSuccess,setSearchQuery,fetchStatsSuccess, fetchVideosFailure } =
-  videoSlice.actions;
+export const {
+  fetchVideosStart,
+  fetchVideosSuccess,
+  setSearchQuery,
+  fetchStatsSuccess,
+  fetchVideosFailure,
+} = videoSlice.actions;
 
 export const fetchUserVideos = () => async (dispatch) => {
   try {

@@ -18,7 +18,12 @@ function EditVideo() {
   const [preview, setPreview] = useState(null);
   const [saving, setSaving] = useState(false);
 
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       title: "",
       description: "",
@@ -50,7 +55,7 @@ function EditVideo() {
   const handleThumbnailChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-    setValue("thumbnail", file); // store as File directly
+      setValue("thumbnail", file); // store as File directly
       setPreview(URL.createObjectURL(file));
     }
   };
@@ -64,11 +69,11 @@ function EditVideo() {
       const formData = new FormData();
       formData.append("title", data.title);
       formData.append("description", data.description);
-    if (data.thumbnail instanceof File) {
-      formData.append("thumbnail", data.thumbnail);
-    }
+      if (data.thumbnail instanceof File) {
+        formData.append("thumbnail", data.thumbnail);
+      }
       await VideoApi.updateVideo(videoId, formData);
-      await dispatch(fetchUserVideos()); 
+      await dispatch(fetchUserVideos());
       navigate("/content");
     } catch (err) {
       console.error("❌ Update failed:", err);

@@ -18,28 +18,28 @@ function PublishPage() {
     formState: { errors },
   } = useForm();
 
-const onSubmit = async () => {
-  try {
-    dispatch(setLoading(true));
-    setLocalError("");
-    dispatch(setError(null));
+  const onSubmit = async () => {
+    try {
+      dispatch(setLoading(true));
+      setLocalError("");
+      dispatch(setError(null));
 
-    if (publish === "public") {
-      const response = await VideoApi.publishvideo(videoId);
-      console.log("✅ Video published:", response.data);
-            navigate("/")
-    } else {
-      console.log("Video set as private, skipping publish API.");
-      navigate("/")
+      if (publish === "public") {
+        const response = await VideoApi.publishvideo(videoId);
+        console.log("✅ Video published:", response.data);
+        navigate("/");
+      } else {
+        console.log("Video set as private, skipping publish API.");
+        navigate("/");
+      }
+    } catch (error) {
+      const message = error.response?.data?.message || error.message;
+      setLocalError(message);
+      dispatch(setError(message));
+    } finally {
+      dispatch(setLoading(false));
     }
-  } catch (error) {
-    const message = error.response?.data?.message || error.message;
-    setLocalError(message);
-    dispatch(setError(message));
-  } finally {
-    dispatch(setLoading(false));
-  }
-};
+  };
 
   return (
     <div className="min-h-screen bg-linear-to-br from-black to-gray-900 flex items-center justify-center text-white">

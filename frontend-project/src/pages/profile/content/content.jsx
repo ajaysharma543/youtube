@@ -41,21 +41,20 @@ function ShowAllVideos() {
     navigate("/upload");
   };
 
-  const deletes = async(videoId) => {
-try {
-      await VideoApi.deletevideo(videoId)
-       dispatch(fetchUserVideos());
-} catch (error) {
+  const deletes = async (videoId) => {
+    try {
+      await VideoApi.deletevideo(videoId);
+      dispatch(fetchUserVideos());
+    } catch (error) {
       console.error("Error toggling delete:", error);
-  
-}  }
+    }
+  };
 
   const handleToggle = async (videoId) => {
     try {
-      await VideoApi.publishvideo(videoId)
- dispatch(fetchUserVideos());
-//  console.log(res);
- 
+      await VideoApi.publishvideo(videoId);
+      dispatch(fetchUserVideos());
+      //  console.log(res);
     } catch (error) {
       console.error("Error toggling publish status:", error);
     }
@@ -139,23 +138,26 @@ try {
 
                 <div className="flex justify-center">
                   <label className="inline-flex items-center cursor-pointer">
-                 <input
-                  type="checkbox"
-                  checked={v.isPublished}
-                  onChange={() => handleToggle(v._id)}
-                  className="sr-only peer"
-                />
-                    <div className="relative w-11 h-6 bg-gray-600 rounded-full peer peer-checked:bg-green-500 
+                    <input
+                      type="checkbox"
+                      checked={v.isPublished}
+                      onChange={() => handleToggle(v._id)}
+                      className="sr-only peer"
+                    />
+                    <div
+                      className="relative w-11 h-6 bg-gray-600 rounded-full peer peer-checked:bg-green-500 
                       after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
                       after:bg-white after:h-5 after:w-5 after:rounded-full after:transition-all 
-                      peer-checked:after:translate-x-full">
-                    </div>
+                      peer-checked:after:translate-x-full"
+                    ></div>
                   </label>
                 </div>
 
                 {/* Delete */}
-                <div className="flex justify-center cursor-pointer"          
-                          onClick={() => deletes(v._id)}>
+                <div
+                  className="flex justify-center cursor-pointer"
+                  onClick={() => deletes(v._id)}
+                >
                   <button className="text-red-500 cursor-pointer hover:text-red-400 transition">
                     <Trash2 size={18} />
                   </button>
@@ -165,7 +167,7 @@ try {
           </div>
         )}
 
-       <div className="flex justify-end mt-6">
+        <div className="flex justify-end mt-6">
           <button
             onClick={handleUploadClick}
             className="flex items-center gap-2 bg-red-600 hover:bg-red-700 px-5 py-2 rounded-lg font-semibold transition"

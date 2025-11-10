@@ -3,18 +3,17 @@ import React, { useEffect, useState } from "react";
 import VideoApi from "../../api/videoapi";
 import VideoCard from "./videoshow";
 
-const VideoDetails = ({ currentVideoId,currentUserId, onVideoSelect }) => {
-    const [video, setVideo] = useState([]);
+const VideoDetails = ({ currentVideoId, currentUserId, onVideoSelect }) => {
+  const [video, setVideo] = useState([]);
   const [loading, setLoading] = useState(false);
   // const { data: user } = useSelector((state) => state.user);
-  
 
   useEffect(() => {
-  const fetchVideos = async () => {
+    const fetchVideos = async () => {
       setLoading(true);
       try {
         const res = await VideoApi.getallvideos({ page: 1, limit: 10 });
-      let allVideos = res.data.data.docs;
+        let allVideos = res.data.data.docs;
 
         // ✅ Filter out the current video and the logged-in user’s videos
         const filtered = allVideos.filter(
@@ -28,8 +27,8 @@ const VideoDetails = ({ currentVideoId,currentUserId, onVideoSelect }) => {
         setLoading(false);
       }
     };
-    fetchVideos()
-}, [currentVideoId]);
+    fetchVideos();
+  }, [currentVideoId]);
 
   if (loading) {
     return (
@@ -38,25 +37,23 @@ const VideoDetails = ({ currentVideoId,currentUserId, onVideoSelect }) => {
   }
 
   return (
-   <>
-     <div className="p-6 min-h-screen bg-black text-white">
-      {Array.isArray(video) && video.length === 0 ? (
-        <p>No Video Found</p>
-      ) : (
-        <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6">
-        {video.map((item) => (
-  <VideoCard
-    key={item._id}
-    video={item}
-    onSelect={() => onVideoSelect(item._id)} // call function passed from parent
-  />
-))}
-        </div>
-      )}
-    </div>
-
-   
-   </>
+    <>
+      <div className="p-6 min-h-screen bg-black text-white">
+        {Array.isArray(video) && video.length === 0 ? (
+          <p>No Video Found</p>
+        ) : (
+          <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6">
+            {video.map((item) => (
+              <VideoCard
+                key={item._id}
+                video={item}
+                onSelect={() => onVideoSelect(item._id)} // call function passed from parent
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

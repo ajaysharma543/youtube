@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "./dashboard_components/navbar";
 import LogoutButton from "../auth/logout";
 // import { Link } from "react-router-dom";
-import Sidebar from "./dashboard_components/slidebar"
+import Sidebar from "./dashboard_components/slidebar";
 const DashboardLayout = ({ children }) => {
   const [collapse, setCollapse] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false); // ✅ For mobile drawer
@@ -17,7 +17,11 @@ const DashboardLayout = ({ children }) => {
       />
 
       <div className="flex flex-1">
-        <Sidebar collapse={collapse} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
+        <Sidebar
+          collapse={collapse}
+          mobileOpen={mobileOpen}
+          setMobileOpen={setMobileOpen}
+        />
 
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>

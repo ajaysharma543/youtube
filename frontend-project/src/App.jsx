@@ -108,7 +108,7 @@ function App() {
           </ProfileDashboardLayout>
         }
       />
-       <Route
+      <Route
         path="/dashboard"
         element={
           <ProfileDashboardLayout>
@@ -116,15 +116,14 @@ function App() {
           </ProfileDashboardLayout>
         }
       />
-       <Route
-        path="/video/:videoId"     
-          element={
+      <Route
+        path="/video/:videoId"
+        element={
           <VideoDashboardLayout>
             <Mainvideo_page />
           </VideoDashboardLayout>
         }
       />
-
 
       {/* Auth Routes */}
       <Route path="/signup" element={<Signup />} />
@@ -138,7 +137,6 @@ function App() {
       <Route path="/upload" element={<Videouploads />} />
       <Route path="/video-details" element={<VideoUpload />} />
       <Route path="/publish/:videoId" element={<PublishPage />} />
-      
     </Routes>
   );
 }

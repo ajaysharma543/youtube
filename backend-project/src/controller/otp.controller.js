@@ -31,7 +31,6 @@ const getotp = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, { email }, "OTP sent successfully"));
 });
 
-
 const verifyotp = asyncHandler(async (req, res) => {
   const { email, otp } = req.body;
 
@@ -41,7 +40,10 @@ const verifyotp = asyncHandler(async (req, res) => {
   if (!record) throw new ApiError(404, "Email not found or OTP not sent");
 
   if (!record.otpExpiresAt || record.otpExpiresAt < new Date()) {
-    await TempOtp.findOneAndUpdate({ email }, { otp: null, otpExpiresAt: null });
+    await TempOtp.findOneAndUpdate(
+      { email },
+      { otp: null, otpExpiresAt: null }
+    );
     throw new ApiError(400, "OTP expired, please request a new one.");
   }
 
@@ -50,14 +52,17 @@ const verifyotp = asyncHandler(async (req, res) => {
   }
 
   // ✅ clear OTP after verification
-  await TempOtp.findOneAndUpdate(
-    { email },
-    { otp: null, otpExpiresAt: null }
-  );
+  await TempOtp.findOneAndUpdate({ email }, { otp: null, otpExpiresAt: null });
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { verified: true, email }, "OTP verified successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { verified: true, email },
+        "OTP verified successfully"
+      )
+    );
 });
 
 const getResetOtp = asyncHandler(async (req, res) => {
@@ -78,11 +83,17 @@ const getResetOtp = asyncHandler(async (req, res) => {
     { upsert: true, new: true }
   );
 
-  await sendEmail(email, "Reset Password OTP", `Your password reset OTP is: ${OTP}`);
+  await sendEmail(
+    email,
+    "Reset Password OTP",
+    `Your password reset OTP is: ${OTP}`
+  );
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { email }, "Password reset OTP sent successfully"));
+    .json(
+      new ApiResponse(200, { email }, "Password reset OTP sent successfully")
+    );
 });
 export const sendChangeEmailOtp = asyncHandler(async (req, res) => {
   const userId = req.user._id; // ✅ fixed
@@ -107,11 +118,11 @@ export const sendChangeEmailOtp = asyncHandler(async (req, res) => {
     `Your OTP is: ${OTP}`
   );
 
-  return res.status(200).json(
-    new ApiResponse(200, { email: user.email }, "OTP sent to current email")
-  );
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, { email: user.email }, "OTP sent to current email")
+    );
 });
 
-
-
-export { getotp, verifyotp,getResetOtp };
+export { getotp, verifyotp, getResetOtp };

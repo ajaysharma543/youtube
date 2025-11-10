@@ -2,44 +2,55 @@ import { createSlice } from "@reduxjs/toolkit";
 import likeApi from "../../api/like";
 
 const likesSlice = createSlice({
-  name: "like",
+  name: "likes",
   initialState: {
-    isLiked: false,
-    likeCount: 0,
+    byVideoId: {},
     loading: false,
     error: null,
   },
   reducers: {
-    resetlikeState: (state) => {
-      state.loading = true;
-      state.error = null;
+    setLikeState: (state, action) => {
+      const { videoId, isLiked, likeCount, dislikeCount } = action.payload;
+      state.byVideoId[videoId] = { isLiked, likeCount, dislikeCount };
     },
-    setlikeState: (state, action) => {
-      const { isLiked, likeCount } = action.payload;
-      if (isLiked !== undefined) state.isLiked = isLiked;
-      if (likeCount !== undefined) state.likeCount = likeCount;
-      state.loading = false;
+    setLikeLoading: (state, action) => {
+      state.loading = action.payload;
     },
-    togglelikeFailure: (state, action) => {
-      state.loading = false;
+    setLikeError: (state, action) => {
       state.error = action.payload;
     },
   },
 });
 
-export const { resetlikeState, setlikeState, togglelikeFailure } = likesSlice.actions;
-export default likesSlice.reducer;
+export const { setLikeState, setLikeLoading, setLikeError } =
+  likesSlice.actions;
 
-// ✅ Thunk
 export const togglelikes = (videoId) => async (dispatch) => {
   try {
-    dispatch(resetlikeState());
+    dispatch(setLikeLoading(true));
     const res = await likeApi.toggleVideoLike(videoId);
     const { isLiked, likeCount, dislikeCount } = res.data?.data || {};
-    dispatch(setlikeState({ isLiked, likeCount }));
-    return { isLiked, likeCount, dislikeCount };
+    dispatch(setLikeState({ videoId, isLiked, likeCount, dislikeCount }));
   } catch (error) {
-    dispatch(togglelikeFailure(error.response?.data?.message || "Failed to toggle like"));
-    throw error;
+    console.error(error);
+    dispatch(setLikeError(error.message));
+  } finally {
+    dispatch(setLikeLoading(false));
   }
 };
+
+export const fetchLikeStatus = (videoId) => async (dispatch) => {
+  try {
+    dispatch(setLikeLoading(true));
+    const res = await likeApi.getVideoLikeStatus(videoId);
+    const { isLiked, likeCount, dislikeCount } = res.data?.data || {};
+    dispatch(setLikeState({ videoId, isLiked, likeCount, dislikeCount }));
+  } catch (error) {
+    console.error(error);
+    dispatch(setLikeError(error.message));
+  } finally {
+    dispatch(setLikeLoading(false));
+  }
+};
+
+export default likesSlice.reducer;

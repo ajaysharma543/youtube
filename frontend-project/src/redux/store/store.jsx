@@ -17,7 +17,7 @@ const store = configureStore({
     videos: getvideoReducer,
     subscriber: subscriberReducer,
     like: likeReducer,
-    dislike : dislikeReducer,
+    dislike: dislikeReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

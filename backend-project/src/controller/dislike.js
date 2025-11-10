@@ -6,7 +6,6 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-
 const toggleVideodisLike = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   const userId = req.user._id;
@@ -18,11 +17,13 @@ const toggleVideodisLike = asyncHandler(async (req, res) => {
   const video = await Video.findById(videoId);
   if (!video) throw new ApiError(404, "Video not found");
 
-  // Remove like if exists
   await Like.findOneAndDelete({ video: videoId, likedBy: userId });
 
   // Check if already disliked
-  const existingDislike = await Dislike.findOne({ video: videoId, dislikedBy: userId });
+  const existingDislike = await Dislike.findOne({
+    video: videoId,
+    dislikedBy: userId,
+  });
 
   if (existingDislike) {
     await Dislike.findByIdAndDelete(existingDislike._id);
@@ -46,9 +47,33 @@ const toggleVideodisLike = asyncHandler(async (req, res) => {
   );
 });
 
+const getVideoDislikeStatus = asyncHandler(async (req, res) => {
+  const { videoId } = req.params;
+  const userId = req.user._id;
 
+  if (!isValidObjectId(videoId)) {
+    throw new ApiError(400, "Invalid video ID");
+  }
 
-// ✅ Get All Disliked Videos
+  // Count total dislikes and likes for the video
+  const dislikeCount = await Dislike.countDocuments({ video: videoId });
+  const likeCount = await Like.countDocuments({ video: videoId });
+
+  // Check if the user has disliked the video
+  const existingDislike = await Dislike.findOne({
+    video: videoId,
+    dislikedBy: userId,
+  });
+
+  res.status(200).json(
+    new ApiResponse(200, {
+      isDisliked: !!existingDislike,
+      dislikeCount,
+      likeCount,
+    })
+  );
+});
+
 const getdisLikedVideos = asyncHandler(async (req, res) => {
   const dislikedaggregate = await Dislike.aggregate([
     {
@@ -110,7 +135,13 @@ const getdisLikedVideos = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, dislikedaggregate, "Disliked videos fetched successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        dislikedaggregate,
+        "Disliked videos fetched successfully"
+      )
+    );
 });
 
-export { getdisLikedVideos, toggleVideodisLike };
+export { getdisLikedVideos, getVideoDislikeStatus, toggleVideodisLike };

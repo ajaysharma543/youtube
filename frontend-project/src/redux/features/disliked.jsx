@@ -1,49 +1,59 @@
 import { createSlice } from "@reduxjs/toolkit";
-import dislikeApi from "../../api/dislike";
-
-const dislikesSlice = createSlice({
-  name: "dislike",
+import dislikeapi from "../../api/dislike";
+const dislikeSlice = createSlice({
+  name: "dislikes",
   initialState: {
-    isDisliked: false,
-    dislikeCount: 0,
+    byVideoId: {}, // store dislike state per video
     loading: false,
     error: null,
   },
   reducers: {
-    resetdislikeState: (state) => {
-      state.loading = true;
-      state.error = null;
+    setDislikeState: (state, action) => {
+      const { videoId, isDisliked, dislikeCount, likeCount } = action.payload;
+      state.byVideoId[videoId] = { isDisliked, dislikeCount, likeCount };
     },
-    setdislikeState: (state, action) => {
-      const { isDisliked, dislikeCount } = action.payload;
-      if (isDisliked !== undefined) state.isDisliked = isDisliked;
-      if (dislikeCount !== undefined) state.dislikeCount = dislikeCount;
-      state.loading = false;
+    setDislikeLoading: (state, action) => {
+      state.loading = action.payload;
     },
-    toggledislikeFailure: (state, action) => {
-      state.loading = false;
+    setDislikeError: (state, action) => {
       state.error = action.payload;
     },
   },
 });
 
-export const { resetdislikeState, setdislikeState, toggledislikeFailure } =
-  dislikesSlice.actions;
-export default dislikesSlice.reducer;
+export const { setDislikeState, setDislikeLoading, setDislikeError } =
+  dislikeSlice.actions;
 
-export const toggledislikes = (videoId) => async (dispatch) => {
+// ✅ Toggle dislike
+export const toggleDislikes = (videoId) => async (dispatch) => {
   try {
-    dispatch(resetdislikeState());
-    const res = await dislikeApi.toggleVideodisLike(videoId);
+    dispatch(setDislikeLoading(true));
+    const res = await dislikeapi.toggleVideodisLike(videoId);
     const { isDisliked, dislikeCount, likeCount } = res.data?.data || {};
-    dispatch(setdislikeState({ isDisliked, dislikeCount }));
-    return { isDisliked, dislikeCount, likeCount };
+
+    // ✅ Update both counts here too
+    dispatch(setDislikeState({ videoId, isDisliked, dislikeCount, likeCount }));
   } catch (error) {
-    dispatch(
-      toggledislikeFailure(
-        error.response?.data?.message || "Failed to toggle dislike"
-      )
-    );
-    throw error;
+    console.error(error);
+    dispatch(setDislikeError(error.message));
+  } finally {
+    dispatch(setDislikeLoading(false));
   }
 };
+
+// ✅ Fetch current dislike status
+export const fetchDislikeStatus = (videoId) => async (dispatch) => {
+  try {
+    dispatch(setDislikeLoading(true));
+    const res = await dislikeapi.getVideoDislikeStatus(videoId);
+    const { isDisliked, dislikeCount, likeCount } = res.data?.data || {};
+    dispatch(setDislikeState({ videoId, isDisliked, dislikeCount, likeCount }));
+  } catch (error) {
+    console.error(error);
+    dispatch(setDislikeError(error.message));
+  } finally {
+    dispatch(setDislikeLoading(false));
+  }
+};
+
+export default dislikeSlice.reducer;

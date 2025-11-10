@@ -6,25 +6,24 @@ import { useDispatch, useSelector } from "react-redux";
 const VideoCard = ({ video }) => {
   const navigate = useNavigate();
   const [isloading, setLoading] = useState(false);
-  const {loading} = useSelector((state) => state.user)
-const dispatch = useDispatch()
-const handleClick = async () => {
-  setLoading(true);
-  try {
-    const userData = await dispatch(fetchCurrentUser()); 
-    if (userData) {
-      setLoading(false)
-      navigate(`/video/${video._id}`);
+  const { loading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const handleClick = async () => {
+    setLoading(true);
+    try {
+      const userData = await dispatch(fetchCurrentUser());
+      if (userData) {
+        setLoading(false);
+        navigate(`/video/${video._id}`);
+      }
+    } catch (error) {
+      setLoading(true);
+      console.error("User not logged in:", error);
+      navigate("/signup");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    setLoading(true)
-    console.error("User not logged in:", error);
-    navigate("/signup");
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   const getTimeAgo = (dateString) => {
     const now = new Date();
@@ -71,7 +70,10 @@ const handleClick = async () => {
         </div>
       )}
 
-      <div onClick={handleClick} className="relative group cursor-pointer bg-black">
+      <div
+        onClick={handleClick}
+        className="relative group cursor-pointer bg-black"
+      >
         <div
           className="absolute inset-0 bg-[#5d5151] rounded-2xl scale-100 opacity-0 
                group-hover:scale-106 group-hover:opacity-100 
@@ -99,7 +101,9 @@ const handleClick = async () => {
                 alt={video.owner?.username}
                 className="w-6 h-6 rounded-full"
               />
-              <span className="text-gray-300 text-sm">{video.owner?.username}</span>
+              <span className="text-gray-300 text-sm">
+                {video.owner?.username}
+              </span>
             </div>
 
             <div className="flex pl-2 items-center mt-3 text-gray-400 text-sm">

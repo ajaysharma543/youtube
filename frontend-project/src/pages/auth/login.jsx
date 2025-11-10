@@ -44,10 +44,10 @@ function Login() {
         navigate("/");
       }
     } catch (error) {
-       const errorMessage =
-    error.response?.data?.message ||
-    error.response?.data?.error ||
-    "Invalid email or password. Please try again."
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Invalid email or password. Please try again.";
       dispatch(loginFailure(errorMessage));
     }
   };
