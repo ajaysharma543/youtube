@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import Subscriber from "./subscriber";
 import Likes from "./likes";
 import Comments from "./comment/comments";
+import Playlist from "./playlist/playlist";
 
 function Mainvideo_page() {
   const { videoId } = useParams();
@@ -99,9 +100,9 @@ function Mainvideo_page() {
   if (!video) return null;
 
   return (
-    <div className="flex justify-center gap-5 p-5">
-      <div className="w-[70%]">
-        <div className="bg-black p-5 border-2 border-gray-800 rounded-3xl mb-4">
+    <div className="flex justify-center  p-6">
+      <div className="w-[60%]">
+        <div className="bg-black p-5 border-2 border-gray-800 rounded-2xl mb-4">
           <div className="relative w-full max-w-4xl mx-auto group">
             {/* ✅ Loader during buffering */}
             {videoLoading && (
@@ -147,28 +148,31 @@ function Mainvideo_page() {
             <Subscriber video={video} />
           </div>
 
-          <div className="flex items-end justify-center">
-            <div className="flex items-center bg-[#222222] px-2 rounded-4xl overflow-hidden mr-2">
-              <Likes video={video} />
-            </div>
-            <button
-              onClick={() => window.open(video.videoFile.url, "_blank")}
-              className="flex items-center justify-center bg-[#222222] rounded-4xl text-white px-4 py-2"
-            >
-              ⬇️ Download
-            </button>
-          </div>
+        <div className="flex items-end justify-around space-x-3">
+  <div className="flex items-center bg-[#222222] px-2 rounded-4xl overflow-hidden">
+    <Likes video={video} />
+  </div>
+
+  <button
+    onClick={() => window.open(video.videoFile.url, "_blank")}
+    className="flex items-center justify-center bg-[#222222] rounded-4xl text-white px-4 py-2"
+  >
+    ⬇️ Download
+  </button>
+
+  <Playlist video={video} />
+</div>     
         </div>
-        <div className="w-full bg-[#222222] rounded-3xl p-4 pt-2 text-white">
+        <div className="w-full bg-[#222222] rounded-3xl p-4 hover:bg-[#6e2424] pt-2 text-white">
           <div className="flex gap-4 text-sm text-gray-400 mb-2">
             <span>{video.views} views</span>
             <span>{uploadTime}</span>
           </div>
-          <h1 className="text-base whitespace-pre-line">{displayText}</h1>
+          <h1 className="text-base  whitespace-pre-line">{displayText}</h1>
           {isLong && (
             <button
               onClick={() => setShowFull(!showFull)}
-              className="mt-2 text-white cursor-pointer hover:underline text-sm"
+              className="mt-2 text-white  cursor-pointer hover:underline text-sm"
             >
               {showFull ? "Show less" : "Show more"}
             </button>

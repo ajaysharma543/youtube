@@ -15,7 +15,6 @@ const VideoDetails = ({ currentVideoId, currentUserId, onVideoSelect }) => {
         const res = await VideoApi.getallvideos({ page: 1, limit: 10 });
         let allVideos = res.data.data.docs;
 
-        // ✅ Filter out the current video and the logged-in user’s videos
         const filtered = allVideos.filter(
           (v) => v._id !== currentVideoId && v.owner._id !== currentUserId
         );
@@ -42,7 +41,7 @@ const VideoDetails = ({ currentVideoId, currentUserId, onVideoSelect }) => {
         {Array.isArray(video) && video.length === 0 ? (
           <p>No Video Found</p>
         ) : (
-          <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6">
+          <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-1">
             {video.map((item) => (
               <VideoCard
                 key={item._id}

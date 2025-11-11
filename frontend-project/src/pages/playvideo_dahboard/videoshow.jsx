@@ -69,7 +69,7 @@ const VideoCard = ({ video, onSelect }) => {
 
       <div
         onClick={() => onSelect(video._id)}
-        className="relative group cursor-pointer bg-black rounded-2xl overflow-hidden w-[360px] transition-all duration-400 ease-in-out"
+        className="relative group cursor-pointer bg-black rounded-2xl overflow-hidden w-[400px] transition-all duration-400 ease-in-out"
       >
         <div className="flex gap-3 p-3">
           <div className="relative flex-shrink-0">
