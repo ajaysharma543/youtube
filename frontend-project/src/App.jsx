@@ -20,6 +20,8 @@ import Edit from "./pages/profile/content/edit";
 import Dashboardpage from "./pages/profile/dashboard/dashboard";
 import VideoDashboardLayout from "./pages/playvideo_dahboard/dashboard_layout";
 import Mainvideo_page from "./pages/playvideo_dahboard/mainvideo_page";
+import History from "./pages/dashboard/history";
+import Playlist from "./pages/dashboard/playlist";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -80,6 +82,22 @@ function App() {
         element={
           <DashboardLayout>
             <Profile />
+          </DashboardLayout>
+        }
+      />
+        <Route
+        path="/History"
+        element={
+          <DashboardLayout>
+            <History />
+          </DashboardLayout>
+        }
+      />
+         <Route
+        path="/Playlist"
+        element={
+          <DashboardLayout>
+            <Playlist />
           </DashboardLayout>
         }
       />

@@ -21,7 +21,6 @@ function Dashboard() {
         const res = await VideoApi.getallvideos({ page: 1, limit: 10 });
         const allVideos = res.data.data.docs;
 
-        // ✅ Always filter based on current user (even if null)
         const filteredVideos =
           user && user._id
             ? allVideos.filter((vid) => vid.owner._id !== user._id)

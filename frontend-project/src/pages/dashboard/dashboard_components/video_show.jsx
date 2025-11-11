@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchCurrentUser } from "../../../redux/features/userdetailsslice";
 import { useDispatch, useSelector } from "react-redux";
+import Playlist from "../../playvideo_dahboard/playlist/playlist";
 
 const VideoCard = ({ video }) => {
   const navigate = useNavigate();
@@ -53,7 +54,6 @@ const VideoCard = ({ video }) => {
 
   return (
     <>
-      {/* 🔄 Loading Overlay */}
       {isloading && (
         <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
           <div className="flex flex-col items-center">
@@ -70,49 +70,43 @@ const VideoCard = ({ video }) => {
         </div>
       )}
 
-      <div
-        onClick={handleClick}
-        className="relative group cursor-pointer bg-black"
-      >
-        <div
-          className="absolute inset-0 bg-[#5d5151] rounded-2xl scale-100 opacity-0 
-               group-hover:scale-106 group-hover:opacity-100 
-               transition-all duration-700 ease-in-out"
-        ></div>
+<div className="relative group cursor-pointer bg-black rounded-2xl">
+  <div className="absolute inset-0 bg-[#5d5151] rounded-2xl scale-100 opacity-0 
+                  group-hover:scale-106 group-hover:opacity-100 
+                  transition-all duration-700 ease-in-out pointer-events-none"></div>
 
-        <div
-          className="relative pb-4 bg-black rounded-2xl overflow-hidden hover:bg-[#5d5151]
-               transition-all duration-700 ease-in-out"
-        >
-          <img
-            src={video.thumbnail.url}
-            alt={video.title}
-            className="w-full h-48 object-cover"
-          />
+  <div
+    onClick={handleClick}
+    className="relative pb-4 bg-black rounded-2xl hover:bg-[#5d5151] transition-all duration-700 ease-in-out"
+  >
+    <img src={video.thumbnail.url} alt={video.title} className="w-full h-48 object-cover rounded-t-2xl" />
+    <div className="p-3">
+   <h3 className="text-white font-semibold text-lg truncate">
+        {video.title}
+      </h3>
 
-          <div className="p-3">
-            <h3 className="text-white font-semibold text-lg truncate">
-              {video.title}
-            </h3>
-
-            <div className="flex items-center gap-2 mt-2">
-              <img
-                src={video.owner?.avatar?.url}
-                alt={video.owner?.username}
-                className="w-6 h-6 rounded-full"
-              />
-              <span className="text-gray-300 text-sm">
-                {video.owner?.username}
-              </span>
-            </div>
-
-            <div className="flex pl-2 items-center mt-3 text-gray-400 text-sm">
-              <span className="pl-2">{video.views} views ·</span>
-              <span className="pl-2">{uploadTime}</span>
-            </div>
-          </div>
-        </div>
+      <div className="flex items-center gap-2 mt-2">
+        <img
+          src={video.owner?.avatar?.url}
+          alt={video.owner?.username}
+          className="w-6 h-6 rounded-full"
+        />
+        <span className="text-gray-300 text-sm">{video.owner?.username}</span>
       </div>
+
+      <div className="flex pl-2 items-center mt-3 text-gray-400 text-sm">
+        <span className="pl-2">{video.views} views ·</span>
+        <span className="pl-2">{uploadTime}</span>
+      </div>  
+        </div>
+  </div>
+
+  <div className="absolute bottom-3 right-3 z-50">
+    <Playlist video={video} />
+  </div>
+</div>
+
+
     </>
   );
 };

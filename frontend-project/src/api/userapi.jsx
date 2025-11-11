@@ -10,6 +10,7 @@ const authApi = {
   userdetails: (data) => axiosclient.patch("users/change-accountdetails", data),
   changepassword: (data) => axiosclient.patch("users/change-password", data),
   resetPassword: (data) => axiosclient.post("/users/reset-password", data),
+  getwatchhistory: () => axiosclient.get("/users/watch-history"),
 };
 
 export default authApi;
