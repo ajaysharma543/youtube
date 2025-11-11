@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 // import { useSelector } from "react-redux";
 import VideoApi from "../../api/videoapi";
 import VideoCard from "./videoshow";
+import Playlist from "./playlist/playlist";
 
 const VideoDetails = ({ currentVideoId, currentUserId, onVideoSelect }) => {
   const [video, setVideo] = useState([]);

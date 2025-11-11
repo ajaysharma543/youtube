@@ -26,13 +26,12 @@ export const { setPlaylistState, setPlaylistLoading, setPlaylistError } =
 
 export default playlistSlice.reducer;
 
-export const createPlaylist = (data) => async (dispatch, getState) => {
+export const createPlaylist = (data) => async (dispatch) => {
   try {
     dispatch(setPlaylistLoading(true));
     const res = await playlistApi.createplaylist(data);
     const newPlaylist = res.data.data;
-    const { list } = getState().playlist;
-    dispatch(setPlaylistState([...list, newPlaylist]));
+    dispatch(setPlaylistState(newPlaylist));
     return newPlaylist;
   } catch (error) {
     dispatch(setPlaylistError(error.response?.data?.message || error.message));
@@ -46,7 +45,7 @@ export const getUserPlaylists = (userId) => async (dispatch) => {
     dispatch(setPlaylistLoading(true));
     const res = await playlistApi.getUserPlaylists(userId);
     const playlistData = res.data.data; // array
-    dispatch(setPlaylistState(Array.isArray(playlistData) ? playlistData : []));
+    dispatch(setPlaylistState(playlistData));
     return playlistData;
   } catch (error) {
     dispatch(setPlaylistError(error.response?.data?.message || error.message));
@@ -59,14 +58,15 @@ export const addVideoToPlaylist = (playlistId, videoId) => async (dispatch, getS
   try {
     dispatch(setPlaylistLoading(true));
     const res = await playlistApi.addVideoToPlaylist({ playlistId, videoId });
-    const updatedPlaylist = res.data.data; 
-    const { list } = getState().playlist;
+    const updatedPlaylist = res.data.data;
+    console.log("play",updatedPlaylist);
+    const { list } = getState().playlist
     const updatedList = list.map((p) =>
       p._id === updatedPlaylist._id ? updatedPlaylist : p
     );
-
+console.log("playlist",updatedList);
     dispatch(setPlaylistState(updatedList));
-    return updatedPlaylist;
+    return updatedList;
   } catch (error) {
     dispatch(setPlaylistError(error.response?.data?.message || error.message));
   } finally {
