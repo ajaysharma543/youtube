@@ -19,8 +19,7 @@ const store = configureStore({
     subscriber: subscriberReducer,
     like: likeReducer,
     dislike: dislikeReducer,
-        playlist: playlistReducer, 
-
+    playlist: playlistReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

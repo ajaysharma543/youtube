@@ -91,15 +91,15 @@ function History() {
                         onClick={() => handleVideoClick(video._id)}
                         className="bg-black flex overflow-visible cursor-pointer transition-all rounded-2xl hover:bg-black relative"
                       >
-                      <div className="relative w-52 aspect-video rounded-2xl overflow-hidden">
-  <img
-    src={video.thumbnail.url}
-    alt={video.title}
-    className="w-full h-full object-cover"
-  />
-  <div className="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">
-    {formatDuration(video.duration)}
-  </div>
+                        <div className="relative w-52 aspect-video rounded-2xl overflow-hidden">
+                          <img
+                            src={video.thumbnail.url}
+                            alt={video.title}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">
+                            {formatDuration(video.duration)}
+                          </div>
                         </div>
 
                         {/* Video info */}

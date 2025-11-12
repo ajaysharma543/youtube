@@ -148,20 +148,20 @@ function Mainvideo_page() {
             <Subscriber video={video} />
           </div>
 
-        <div className="flex items-end justify-around space-x-3">
-  <div className="flex items-center bg-[#222222] px-2 rounded-4xl overflow-hidden">
-    <Likes video={video} />
-  </div>
+          <div className="flex items-end justify-around space-x-3">
+            <div className="flex items-center bg-[#222222] px-2 rounded-4xl overflow-hidden">
+              <Likes video={video} />
+            </div>
 
-  <button
-    onClick={() => window.open(video.videoFile.url, "_blank")}
-    className="flex items-center justify-center bg-[#222222] rounded-4xl text-white px-4 py-2"
-  >
-    ⬇️ Download
-  </button>
+            <button
+              onClick={() => window.open(video.videoFile.url, "_blank")}
+              className="flex items-center justify-center bg-[#222222] rounded-4xl text-white px-4 py-2"
+            >
+              ⬇️ Download
+            </button>
 
-  <Playlist video={video} />
-</div>     
+            <Playlist video={video} />
+          </div>
         </div>
         <div className="w-full bg-[#222222] rounded-3xl p-4 hover:bg-[#6e2424] pt-2 text-white">
           <div className="flex gap-4 text-sm text-gray-400 mb-2">

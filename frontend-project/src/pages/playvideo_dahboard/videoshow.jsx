@@ -68,52 +68,52 @@ const VideoCard = ({ video, onSelect }) => {
         </div>
       )}
 
-<div className="relative group w-[400px]">
-  <div
-    className="cursor-pointer bg-black rounded-2xl overflow-hidden"
-    onClick={() => onSelect(video._id)}
-  >
-    <div className="flex gap-3 p-3">
-      <div className="relative flex-shrink-0">
-        <img
-          src={video.thumbnail.url}
-          alt={video.title}
-          className="w-40 h-28 object-cover rounded-2xl"
-        />
-        <div className="absolute bottom-1 right-1 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">
-          {formatDuration(video.duration)}
+      <div className="relative group w-[400px]">
+        <div
+          className="cursor-pointer bg-black rounded-2xl overflow-hidden"
+          onClick={() => onSelect(video._id)}
+        >
+          <div className="flex gap-3 p-3">
+            <div className="relative flex-shrink-0">
+              <img
+                src={video.thumbnail.url}
+                alt={video.title}
+                className="w-40 h-28 object-cover rounded-2xl"
+              />
+              <div className="absolute bottom-1 right-1 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">
+                {formatDuration(video.duration)}
+              </div>
+            </div>
+
+            <div className="flex flex-col justify-between flex-1 min-w-0">
+              <h3 className="text-white font-semibold text-md break-words leading-snug line-clamp-2">
+                {video.title}
+              </h3>
+
+              <div className="flex items-center gap-2 mt-1">
+                <img
+                  src={video.owner?.avatar?.url || "/default-avatar.png"}
+                  alt={video.owner?.username}
+                  className="w-5 h-5 rounded-full object-cover"
+                />
+                <span className="text-white text-xs truncate">
+                  {video.owner?.username}
+                </span>
+              </div>
+
+              <div className="flex gap-2 text-gray-400 text-xs mt-1">
+                <span>{video.views} views</span>
+                <span>·</span>
+                <span>{uploadTime}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="absolute top-2 right-2 z-50">
+          <Playlist video={video} />
         </div>
       </div>
-
-      <div className="flex flex-col justify-between flex-1 min-w-0">
-        <h3 className="text-white font-semibold text-md break-words leading-snug line-clamp-2">
-          {video.title}
-        </h3>
-
-        <div className="flex items-center gap-2 mt-1">
-          <img
-            src={video.owner?.avatar?.url || "/default-avatar.png"}
-            alt={video.owner?.username}
-            className="w-5 h-5 rounded-full object-cover"
-          />
-          <span className="text-white text-xs truncate">{video.owner?.username}</span>
-        </div>
-
-        <div className="flex gap-2 text-gray-400 text-xs mt-1">
-          <span>{video.views} views</span>
-          <span>·</span>
-          <span>{uploadTime}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div className="absolute top-2 right-2 z-50">
-    <Playlist video={video} />
-  </div>
-</div>
-
-
     </>
   );
 };

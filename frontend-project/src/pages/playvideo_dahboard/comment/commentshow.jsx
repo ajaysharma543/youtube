@@ -147,7 +147,6 @@ const CommentList = ({
                 </p>
               )}
               <Likecomment commentId={comment._id} />
-
             </div>
           </div>
         );

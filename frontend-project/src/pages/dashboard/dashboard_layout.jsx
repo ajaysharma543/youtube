@@ -8,7 +8,7 @@ const DashboardLayout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false); // ✅ For mobile drawer
 
   return (
-    <div className="flex flex-col mt-15 min-h-screen bg-black text-white">
+    <div className="flex flex-col flex-wrap mt-15 min-h-screen bg-black text-white">
       <LogoutButton />
 
       <Navbar

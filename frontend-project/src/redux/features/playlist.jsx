@@ -54,22 +54,25 @@ export const getUserPlaylists = (userId) => async (dispatch) => {
   }
 };
 
-export const addVideoToPlaylist = (playlistId, videoId) => async (dispatch, getState) => {
-  try {
-    dispatch(setPlaylistLoading(true));
-    const res = await playlistApi.addVideoToPlaylist({ playlistId, videoId });
-    const updatedPlaylist = res.data.data;
-    console.log("play",updatedPlaylist);
-    const { list } = getState().playlist
-    const updatedList = list.map((p) =>
-      p._id === updatedPlaylist._id ? updatedPlaylist : p
-    );
-console.log("playlist",updatedList);
-    dispatch(setPlaylistState(updatedList));
-    return updatedList;
-  } catch (error) {
-    dispatch(setPlaylistError(error.response?.data?.message || error.message));
-  } finally {
-    dispatch(setPlaylistLoading(false));
-  }
-};
+export const addVideoToPlaylist =
+  (playlistId, videoId) => async (dispatch, getState) => {
+    try {
+      dispatch(setPlaylistLoading(true));
+      const res = await playlistApi.addVideoToPlaylist({ playlistId, videoId });
+      const updatedPlaylist = res.data.data;
+      console.log("play", updatedPlaylist);
+      const { list } = getState().playlist;
+      const updatedList = list.map((p) =>
+        p._id === updatedPlaylist._id ? updatedPlaylist : p
+      );
+      console.log("playlist", updatedList);
+      dispatch(setPlaylistState(updatedList));
+      return updatedList;
+    } catch (error) {
+      dispatch(
+        setPlaylistError(error.response?.data?.message || error.message)
+      );
+    } finally {
+      dispatch(setPlaylistLoading(false));
+    }
+  };

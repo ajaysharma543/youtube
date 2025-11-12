@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import likeApi from "../../api/like";
 import Playlist from "../playvideo_dahboard/playlist/playlist";
+import { useNavigate } from "react-router-dom";
 
 function Liked() {
   const [liked, setLiked] = useState([]);
   const [loading, setLoading] = useState(true);
+const navigate = useNavigate()
 
   useEffect(() => {
     const fetchLiked = async () => {
@@ -12,10 +14,11 @@ function Liked() {
         setLoading(true);
         const res = await likeApi.getLikedVideos();
         const likedVideos = res.data.data.map((item) => item.likedvideo);
-        likedVideos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        likedVideos.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
         setLiked(likedVideos);
         console.log(likedVideos);
-        
       } catch (err) {
         console.error("Error fetching liked videos:", err);
       } finally {
@@ -24,6 +27,9 @@ function Liked() {
     };
     fetchLiked();
   }, []);
+    const handleVideoClick = (id) => {
+    navigate(`/video/${id}`);
+  };
 
   const formatDuration = (seconds) => {
     if (!seconds && seconds !== 0) return "";
@@ -35,8 +41,12 @@ function Liked() {
       : `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  if (loading) return <p className="text-white text-center py-4">Loading liked videos...</p>;
-  if (!liked.length) return <p className="text-white text-center py-4">No liked videos yet!</p>;
+  if (loading)
+    return (
+      <p className="text-white text-center py-4">Loading liked videos...</p>
+    );
+  if (!liked.length)
+    return <p className="text-white text-center py-4">No liked videos yet!</p>;
 
   const latestVideo = liked[0];
 
@@ -68,7 +78,9 @@ function Liked() {
             <div>
               <h2 className="text-2xl font-bold">Liked videos</h2>
               <h6 className="text-sm d">{latestVideo.owner.username}</h6>
-              <span className="text-gray-400 mt-1">{latestVideo.views} views</span>
+              <span className="text-gray-400 mt-1">
+                {latestVideo.views} views
+              </span>
               <span className="text-gray-400 mt-1"> updated today</span>
             </div>
 
@@ -89,9 +101,11 @@ function Liked() {
           {liked.map((video, idx) => (
             <div
               key={video._id}
-              className="flex items-center gap-4 bg-neutral-900 rounded-2xl p-3 mb-3"
+              className="flex items-center gap-4 bg-neutral-900 rounded-2xl p-3 mb-3"onClick={()=>handleVideoClick(video._id)}
             >
-              <div className="text-gray-400 font-semibold w-6 text-right">{idx + 1}</div>
+              <div className="text-gray-400 font-semibold w-6 text-right">
+                {idx + 1}
+              </div>
 
               {/* THUMBNAIL */}
               <div className="relative w-48 h-28 rounded-lg overflow-hidden flex-shrink-0">
@@ -120,7 +134,8 @@ function Liked() {
                   {video.title}
                 </h3>
                 <p className="text-gray-400 text-sm mt-1">
-                  {video.views ?? 0} views • {new Date(video.createdAt).toLocaleDateString()}
+                  {video.views ?? 0} views •{" "}
+                  {new Date(video.createdAt).toLocaleDateString()}
                 </p>
               </div>
 

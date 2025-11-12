@@ -23,6 +23,8 @@ import Mainvideo_page from "./pages/playvideo_dahboard/mainvideo_page";
 import History from "./pages/dashboard/history";
 import Playlistdashboard from "./pages/dashboard/playlistdashboard";
 import Liked from "./pages/dashboard/liked";
+import Playlist from "./pages/dashboard/playlistshow/playlist";
+import Watchlater from "./pages/dashboard/playlistshow/watchlater";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -86,7 +88,7 @@ function App() {
           </DashboardLayout>
         }
       />
-        <Route
+      <Route
         path="/History"
         element={
           <DashboardLayout>
@@ -94,15 +96,23 @@ function App() {
           </DashboardLayout>
         }
       />
-         <Route
+      <Route
         path="/Playlist"
         element={
           <DashboardLayout>
-            <Playlistdashboard />
+            <Playlist />
           </DashboardLayout>
         }
-      />
-         <Route
+      /><Route
+        path="/watchlater"
+        element={
+          <DashboardLayout>
+            <Watchlater />
+          </DashboardLayout>
+        }
+      />'
+      
+      <Route
         path="/liked"
         element={
           <DashboardLayout>
