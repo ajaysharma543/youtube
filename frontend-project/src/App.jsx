@@ -21,7 +21,8 @@ import Dashboardpage from "./pages/profile/dashboard/dashboard";
 import VideoDashboardLayout from "./pages/playvideo_dahboard/dashboard_layout";
 import Mainvideo_page from "./pages/playvideo_dahboard/mainvideo_page";
 import History from "./pages/dashboard/history";
-import Playlist from "./pages/dashboard/playlist";
+import Playlistdashboard from "./pages/dashboard/playlistdashboard";
+import Liked from "./pages/dashboard/liked";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -97,7 +98,15 @@ function App() {
         path="/Playlist"
         element={
           <DashboardLayout>
-            <Playlist />
+            <Playlistdashboard />
+          </DashboardLayout>
+        }
+      />
+         <Route
+        path="/liked"
+        element={
+          <DashboardLayout>
+            <Liked />
           </DashboardLayout>
         }
       />

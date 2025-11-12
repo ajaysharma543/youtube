@@ -1,15 +1,23 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserPlaylists } from "../../../redux/features/playlist";
 
 function Playlist() {
   const { list = [], loading } = useSelector((state) => state.playlist || {});
+    const { data: user } = useSelector((state) => state.user);
   console.log(list);
+ const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (user?._id) {
+      dispatch(getUserPlaylists(user._id));
+    }
+  }, [user, dispatch]);
   if (loading) return <p>Loading...</p>;
   if (!list.length) return <p>No playlists found.</p>;
 
   return (
-    <div className="flex flex-row gap-4 cursor-pointer overflow-x-auto py-2">
+    <div className="flex flex-row gap-15 cursor-pointer overflow-x-auto py-2">
       {list.map((playlist) => {
         const lastUpdated = playlist.updatedAt
           ? new Date(playlist.updatedAt).toLocaleDateString()
@@ -42,11 +50,14 @@ function Playlist() {
               
             </div>
 
-            {/* Playlist Info */}
             <div className="flex flex-col w-full px-2">
+             
               <h3 className="text-white font-semibold text-md truncate">
                 {playlist.name}
               </h3>
+                <p className="text-white   truncate">
+                private :Playlists videos
+              </p>
                <div className="absolute bottom-10 right-1 text-white text-xl cursor-pointer">
                 ⋮
               </div>

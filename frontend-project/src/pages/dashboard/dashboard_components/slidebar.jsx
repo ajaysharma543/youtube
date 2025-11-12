@@ -1,5 +1,5 @@
 import React from "react";
-import { History, Home, PlayCircleIcon, Settings, Users, Video } from "lucide-react";
+import { History, Home, PlayCircleIcon, Settings, ThumbsUp, Users, Video } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Sidebar = ({ collapse }) => {
@@ -24,6 +24,11 @@ const Sidebar = ({ collapse }) => {
       name: "your videos",
       icon: <Video className="w-5 h-5" />,
       path: "/content",
+    },
+     {
+      name: "Liked videos",
+      icon: <ThumbsUp className="w-5 h-5" />,
+      path: "/liked",
     },
       {
       name: "Settings",

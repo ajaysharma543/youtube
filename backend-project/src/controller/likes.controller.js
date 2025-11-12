@@ -77,7 +77,10 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
 
   await Dislike.findOneAndDelete({ comment: commentId, dislikedBy: userId });
 
-  const existingLike = await Like.findOne({ comment: commentId, likedBy: userId });
+  const existingLike = await Like.findOne({
+    comment: commentId,
+    likedBy: userId,
+  });
   let isLiked;
 
   if (existingLike) {
@@ -92,15 +95,16 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
   const likeCount = await Like.countDocuments({ comment: commentId });
   const dislikeCount = await Dislike.countDocuments({ comment: commentId });
 
-  return res.status(200).json(
-    new ApiResponse(
-      200,
-      { isLiked, likeCount, dislikeCount },
-      isLiked ? "Comment liked successfully" : "Like removed"
-    )
-  );
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { isLiked, likeCount, dislikeCount },
+        isLiked ? "Comment liked successfully" : "Like removed"
+      )
+    );
 });
-
 
 const getCommentLikeStatus = asyncHandler(async (req, res) => {
   const { commentId } = req.params;
@@ -112,7 +116,10 @@ const getCommentLikeStatus = asyncHandler(async (req, res) => {
 
   const likeCount = await Like.countDocuments({ comment: commentId });
   const dislikeCount = await Dislike.countDocuments({ comment: commentId });
-  const existingLike = await Like.findOne({ comment: commentId, likedBy: userId });
+  const existingLike = await Like.findOne({
+    comment: commentId,
+    likedBy: userId,
+  });
 
   res.status(200).json(
     new ApiResponse(200, {

@@ -9,6 +9,8 @@ const likeApi = {
     axiosclient.post(`/like/toggle-comment/${videoId}`),
     getCommentLikeStatus: (commentId) =>
     axiosclient.get(`/like/toggle-comment/${commentId}`),
+    getLikedVideos : () => 
+      axiosclient.get(`like/videos`),
 };
 
 export default likeApi;

@@ -137,7 +137,6 @@ const getCommentDislikeStatus = asyncHandler(async (req, res) => {
   );
 });
 
-
 const getdisLikedVideos = asyncHandler(async (req, res) => {
   const dislikedaggregate = await Dislike.aggregate([
     {
@@ -208,4 +207,10 @@ const getdisLikedVideos = asyncHandler(async (req, res) => {
     );
 });
 
-export { getdisLikedVideos,toggleCommentDislike,getCommentDislikeStatus, getVideoDislikeStatus, toggleVideodisLike };
+export {
+  getdisLikedVideos,
+  toggleCommentDislike,
+  getCommentDislikeStatus,
+  getVideoDislikeStatus,
+  toggleVideodisLike,
+};
