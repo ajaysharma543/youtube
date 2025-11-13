@@ -25,6 +25,7 @@ import Playlistdashboard from "./pages/dashboard/playlistdashboard";
 import Liked from "./pages/dashboard/liked";
 import Playlist from "./pages/dashboard/playlistshow/playlist";
 import Watchlater from "./pages/dashboard/playlistshow/watchlater";
+import PlaylistVideos from "./pages/dashboard/playlistshow/getplaylistbyid";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -103,7 +104,17 @@ function App() {
             <Playlist />
           </DashboardLayout>
         }
-      /><Route
+      />
+       <Route
+  path="/Playlist/show/:playlistId"
+  element={
+    <DashboardLayout>
+      <PlaylistVideos />
+    </DashboardLayout>
+  }
+/>
+
+      <Route
         path="/watchlater"
         element={
           <DashboardLayout>
