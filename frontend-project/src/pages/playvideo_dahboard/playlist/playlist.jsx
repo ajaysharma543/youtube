@@ -9,7 +9,7 @@ import {
 import Showplaylist from "./showplaylist";
 import WatchApi from "../../../api/watchlater";
 
-function Playlist({ video }) {
+function Playlist({ video ,children}) {
     const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [showPlaylistMenu, setShowPlaylistMenu] = useState(false);
@@ -113,6 +113,7 @@ function Playlist({ video }) {
             >
               💾 Save to Playlist
             </button>
+            {children}
           </div>
         )}
 

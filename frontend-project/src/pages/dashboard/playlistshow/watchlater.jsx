@@ -3,6 +3,7 @@ import WatchApi from "../../../api/watchlater";
 import { useSelector } from "react-redux";
 import Playlist from "../../playvideo_dahboard/playlist/playlist";
 import { useNavigate } from "react-router-dom";
+import { Delete } from "lucide-react";
 
 function Watchlater() {
   const { data: user } = useSelector((state) => state.user);
@@ -28,6 +29,22 @@ const navigate = useNavigate()
    const handleVideoClick = (id) => {
     navigate(`/video/${id}`);
   };
+
+   const deletewatchlater = async(videoId) => {
+     try {
+       const res = await WatchApi.removeFromWatchLater(videoId)
+       console.log("res",res.data.data);
+        setVideos((prev) => prev.filter((v) => v._id !== videoId));
+     } catch (error) {
+      setLoading(false);
+      console.log(error);
+      
+     }
+     finally{
+      setLoading(false)
+     }
+    }
+    
 
 
   if (loading)
@@ -77,7 +94,17 @@ const navigate = useNavigate()
 
     {/* Three dots menu */}
     <div className="absolute bottom-3 right-3 z-50">
-      <Playlist video={video} />
+      <Playlist video={video} >
+         <button
+                        onClick={(e) => 
+                        {  e.stopPropagation(),
+                          deletewatchlater(video._id)}}
+                        className=" w-full flex text-left justify-center px-4 py-2 hover:bg-gray-700 text-white"
+                      >
+                        <Delete  />
+                        Remove
+                      </button>
+      </Playlist>
     </div>
   </div>
 </div>

@@ -65,7 +65,6 @@ const handleRemoveFromPlaylist = async (videoId) => {
               onClick={() =>handleVideoClick(video._id)}
               className="relative bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg hover:scale-105 transform transition-all duration-300 cursor-pointer"
             >
-              {/* Thumbnail */}
               <div className="relative w-full h-48 bg-black" >
                 <img
                   src={video.thumbnail?.url || "/default-thumbnail.jpg"}

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/apierror.js";
 import { ApiResponse } from "../utils/apiresponse.js";
@@ -368,6 +368,7 @@ const changeusercoverimage = asyncHandler(async (req, res) => {
 
 const getUserChannelProfile = asyncHandler(async (req, res) => {
   const { username } = req.params;
+
   if (!username) {
     throw new ApiError(400, "username is missing");
   }
@@ -378,6 +379,8 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
         username: username?.toLowerCase(),
       },
     },
+
+    // Who subscribed to THIS channel
     {
       $lookup: {
         from: "subscriptions",
@@ -386,6 +389,8 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
         as: "subscriber",
       },
     },
+
+    // What channels THIS USER subscribes to
     {
       $lookup: {
         from: "subscriptions",
@@ -394,23 +399,39 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
         as: "subscribedTo",
       },
     },
+
+    // Fetch full channel details for all channels the user subscribed to
+    {
+      $lookup: {
+        from: "users",
+        localField: "subscribedTo.channel",
+        foreignField: "_id",
+        as: "mysubscribedchannels",
+        pipeline: [
+          {
+            $project: {
+              _id: 1,
+              username: 1,
+              fullname: 1,
+              "avatar.url": 1,
+              "coverImage.url": 1,
+            },
+          },
+        ],
+      },
+    },
+
+    // Add subscriber counts + issubscribed
     {
       $addFields: {
-        totalsubscriber: {
-          $size: "$subscriber",
-        },
-        totalchannelsubscriber: {
-          $size: "$subscribedTo",
-        },
+        totalsubscriber: { $size: "$subscriber" },
+        totalchannelsubscriber: { $size: "$subscribedTo" },
         issubscribed: {
-          $cond: {
-            if: { $in: [req.user?._id, "$subscriber.subscriber"] },
-            then: true,
-            else: false,
-          },
+          $in: [req.user?._id, "$subscriber.subscriber"],
         },
       },
     },
+
     {
       $project: {
         username: 1,
@@ -421,19 +442,26 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
         totalchannelsubscriber: 1,
         issubscribed: 1,
         email: 1,
+        mysubscribedchannels: 1, // <-- Added here
       },
     },
   ]);
+
   if (!Channel?.length) {
-    throw new ApiError(404, "channel does not exists");
+    throw new ApiError(404, "channel does not exist");
   }
 
-  res
+  return res
     .status(200)
     .json(
-      new ApiResponse(200, Channel[0], "channel details fetched successfully")
+      new ApiResponse(
+        200,
+        Channel[0],
+        "channel details fetched successfully"
+      )
     );
 });
+
 
 const getWatchHistory = asyncHandler(async (req, res) => {
   const user = await User.aggregate([
@@ -493,10 +521,51 @@ const getWatchHistory = asyncHandler(async (req, res) => {
     );
 });
 
+const deleteWatchHistory = asyncHandler(async (req, res) => {
+  const {videoId} = req.params;
+
+  if(!isValidObjectId(videoId)) {
+    throw new ApiError(400, "video not found")
+  }
+
+  const updateduser = await User.findByIdAndUpdate(
+    req.user._id, 
+    {
+      $pull : {watchhistory : videoId}
+    },
+    {new : true}
+  )
+  if (!updateduser) {
+    throw new ApiError(404, "User not found");
+  }
+  return res.status(200).json(new ApiResponse(200, updateduser ,"deleted"))
+})
+
+const deleteallWatchHistory = asyncHandler(async (req, res) => {
+const userId = req.user._id;
+
+  if(!isValidObjectId(userId)) {
+    throw new ApiError(400, "userId not found")
+  }
+
+  const updateduser = await User.findByIdAndUpdate(
+    req.user._id, 
+    {
+      $set : {watchhistory : []}
+    },
+    {new : true}
+  )
+  if (!updateduser) {
+    throw new ApiError(404, "User not found");
+  }
+  return res.status(200).json(new ApiResponse(200, updateduser ,"deleted"))
+})
 export {
   registeruser,
   loginUser,
+  deleteallWatchHistory,
   logoutuser,
+  deleteWatchHistory,
   refreshAccesstoken,
   changeCurrentPassword,
   changeaccountdetails,

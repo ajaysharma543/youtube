@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import likeApi from "../../api/like";
 import Playlist from "../playvideo_dahboard/playlist/playlist";
 import { useNavigate } from "react-router-dom";
+import { Delete, Trash } from "lucide-react";
 
 function Liked() {
   const [liked, setLiked] = useState([]);
@@ -31,6 +32,19 @@ const navigate = useNavigate()
     navigate(`/video/${id}`);
   };
 
+const removelike = async (videoId) => {
+  try {
+    const res = await likeApi.toggleVideoLike(videoId);
+console.log(res.data.data);
+
+    setLiked((prev) => prev.filter((v) => v._id !== videoId));
+
+  } catch (err) {
+    console.error("Error removing liked video:", err);
+  }
+};
+
+
   const formatDuration = (seconds) => {
     if (!seconds && seconds !== 0) return "";
     const hrs = Math.floor(seconds / 3600);
@@ -40,6 +54,8 @@ const navigate = useNavigate()
       ? `${hrs}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
       : `${mins}:${secs.toString().padStart(2, "0")}`;
   };
+
+
 
   if (loading)
     return (
@@ -141,7 +157,19 @@ const navigate = useNavigate()
 
               {/* 3-DOTS MENU */}
               <div className="ml-auto relative z-50">
-                <Playlist video={video} />
+                <Playlist video={video} >
+        <button
+  onClick={(e) => {
+    e.stopPropagation();       
+    removelike(video._id);
+  }}
+  className="w-full flex items-center text-left hover:bg-gray-700 text-white px-4 py-2"
+>
+  <Trash className="mr-2 w-5 h-5" />
+  Remove
+</button>
+
+                </Playlist>
               </div>
             </div>
           ))}

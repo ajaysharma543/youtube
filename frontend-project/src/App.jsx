@@ -26,6 +26,7 @@ import Liked from "./pages/dashboard/liked";
 import Playlist from "./pages/dashboard/playlistshow/playlist";
 import Watchlater from "./pages/dashboard/playlistshow/watchlater";
 import PlaylistVideos from "./pages/dashboard/playlistshow/getplaylistbyid";
+import Subscriptondash from "./pages/dashboard/subscription/subscriptondash";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -128,6 +129,14 @@ function App() {
         element={
           <DashboardLayout>
             <Liked />
+          </DashboardLayout>
+        }
+      />
+      <Route
+        path="/Subscription"
+        element={
+          <DashboardLayout>
+            <Subscriptondash />
           </DashboardLayout>
         }
       />

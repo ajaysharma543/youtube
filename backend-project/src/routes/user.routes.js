@@ -4,6 +4,8 @@ import {
   changeCurrentPassword,
   changeuseravatar,
   changeusercoverimage,
+  deleteallWatchHistory,
+  deleteWatchHistory,
   getCurrentUser,
   getUserChannelProfile,
   getWatchHistory,
@@ -47,6 +49,8 @@ router
   .patch(veryfyJWT, uplaod.single("coverImage"), changeusercoverimage);
 router.route("/c/:username").get(veryfyJWT, getUserChannelProfile);
 router.route("/watch-history").get(veryfyJWT, getWatchHistory);
+router.route("/delete-history/:videoId").delete(veryfyJWT, deleteWatchHistory);
+router.route("/delete-history").delete(veryfyJWT, deleteallWatchHistory);
 router.post("/reset-password", resetPassword);
 
 export default router;
