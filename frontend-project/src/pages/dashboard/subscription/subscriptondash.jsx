@@ -1,17 +1,91 @@
-import React, { useEffect } from 'react'
-import subscriberApi from '../../../api/subscribers'
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import authApi from "../../../api/userapi";
+import { resetSubscriptionState, setSubscriptionState, toggleSubscriptionFailure } from "../../../redux/features/subscription";
+import subscriberApi from "../../../api/subscribers";
 
 function Subscriptondash() {
+  const { data: user } = useSelector((state) => state.user);
+  const [subs, setSubs] = useState([]);
+  const dispatch = useDispatch()
+  useEffect(() => {
+    const getsubs = async () => {
+      if (!user?.username) return;
 
-    useEffect(() => {
-        const getsubs = async() => {
-            const res = await subscriberApi.subscribedchannel()
-        }
-    })
+      const res = await authApi.getUserChannelProfile(user.username);
+
+      console.log("Subscribed Channels:", res.data.data.mysubscribedchannels);
+
+      setSubs(res.data.data.mysubscribedchannels || []);
+    };
+
+    getsubs();
+  }, [user]);
+  const handleSubscriber = async (channelId) => {
+  dispatch(resetSubscriptionState());
+
+  try {
+    const res = await subscriberApi.subscribe(channelId)
+const subscribed = res.data?.data?.subscribe;
+    console.log("Subscription response:", subscribed);
+
+    setSubs((prev) =>
+      prev.map((ch) =>
+        ch._id === channelId ? { ...ch, issubscribed: subscribed } : ch
+      )
+    );
+
+    dispatch(setSubscriptionState(subscribed));
+  } catch (error) {
+    console.log("Subscription failed:", error);
+    dispatch(toggleSubscriptionFailure());
+  }
+};
+
 
   return (
-    <div>Subscriptondash</div>
-  )
+    <div className="p-4 ">
+
+      <h1 className="text-2xl font-bold mb-4">All Subscriptions</h1>
+      <div className="flex justify-center items-center flex-col">
+        {subs.map((ch) => (
+          <div
+            key={ch._id}
+            className="flex w-[80%] justify-center gap-2 bg-black p-4 rounded-xl shadow"
+          >
+            <img
+              src={ch.avatar?.url || "/default-avatar.png"}
+              alt="avatar"
+              className="w-30 h-30 rounded-full object-cover"
+            />
+
+            <div className="flex flex-col">
+              <h2 className="text-lg font-semibold">{ch.fullname}</h2>
+               <div className="text-center flex ">
+                              <p className="text-gray-400">@{ch.username} :</p>
+              <p className="text-gray-400 pl-2 ">{ch.totalsubscriber || 0}</p>
+              <span className="text-gray-400 pl-2 text-sm">Subscribers</span>
+            </div>
+
+            </div>
+
+            <div className="flex-1"></div>
+
+           
+            <div onClick={() => handleSubscriber(ch._id) }>
+              <span
+                className={`px-4 py-2 rounded-lg cursor-pointer text-lg font-semibold ${
+                  ch.issubscribed ? "bg-green-600" : "bg-red-600"
+                }`}
+              >
+                {ch.issubscribed ? "Subscribed" : "Not Subscribed"}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-export default Subscriptondash
+export default Subscriptondash;

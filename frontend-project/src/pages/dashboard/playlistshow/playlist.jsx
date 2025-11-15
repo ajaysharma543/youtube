@@ -90,11 +90,15 @@ const navigate = useNavigate()
       {/* Thumbnail */}
       <div className="relative w-full h-48 rounded-2xl overflow-hidden flex-shrink-0" onClick={() => navigate(`/playlist/show/${playlist._id}`)}>
         {playlist.videos && playlist.videos.length > 0 ? (
-          <img
-            src={playlist.videos[playlist.videos.length - 1].thumbnail.url}
-            alt={playlist.name}
-            className="w-full h-full object-cover rounded-2xl"
-          />
+         <img
+  src={
+    playlist?.videos?.[playlist.videos.length - 1]?.thumbnail?.url ||
+    "/default-thumb.jpg"
+  }
+  alt={playlist.name}
+  className="w-full h-full object-cover rounded-2xl"
+/>
+
         ) : (
           <div className="w-full h-full bg-black flex items-center justify-center text-white">
             🎵

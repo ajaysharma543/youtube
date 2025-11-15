@@ -27,6 +27,7 @@ import Playlist from "./pages/dashboard/playlistshow/playlist";
 import Watchlater from "./pages/dashboard/playlistshow/watchlater";
 import PlaylistVideos from "./pages/dashboard/playlistshow/getplaylistbyid";
 import Subscriptondash from "./pages/dashboard/subscription/subscriptondash";
+import ChannelPage from "./pages/dashboard/channelshow";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -140,6 +141,15 @@ function App() {
           </DashboardLayout>
         }
       />
+       <Route
+        path="/c/:username"
+        element={
+          <DashboardLayout>
+            <ChannelPage />
+          </DashboardLayout>
+        }
+      />
+      
       <Route
         path="/channel-customize"
         element={

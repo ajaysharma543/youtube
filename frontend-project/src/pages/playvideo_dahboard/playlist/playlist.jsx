@@ -31,7 +31,6 @@ function Playlist({ video ,children}) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
   useEffect(() => {
     if (user?._id) {
       dispatch(getUserPlaylists(user._id));

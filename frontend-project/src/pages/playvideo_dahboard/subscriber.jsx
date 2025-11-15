@@ -15,35 +15,28 @@ function Subscriber({ video }) {
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   useEffect(() => {
-    if (video?.owner?.issubscribed) {
-      dispatch(setSubscriptionState(true));
-    }
-  }, [video, dispatch]);
+    dispatch(setSubscriptionState(video?.owner?.issubscribed || false));
+  }, [video]);
 
   const handleSubscriber = async () => {
     if (!user?._id) {
       navigate("/login");
       return;
     }
+
     dispatch(resetSubscriptionState());
+
     try {
-      const res = await dispatch(toggleSubscriptions(video.owner._id));
-      const subscribed = res.subscribe;
-      console.log("Subscription response:", subscribed);
-      dispatch(setSubscriptionState(subscribed));
+      const subscribed = await dispatch(toggleSubscriptions(video.owner._id));
+      dispatch(setSubscriptionState(subscribed)); 
     } catch (error) {
-      console.log(
-        "Subscription failed:",
-        error.response?.data || error.message
-      );
-      dispatch(toggleSubscriptionFailure());
-    } finally {
       dispatch(toggleSubscriptionFailure());
     }
   };
 
-  if (error) return <p>please try again</p>;
+  if (error) return <p>Please try again</p>;
 
   return (
     <>
@@ -63,7 +56,7 @@ function Subscriber({ video }) {
           isSubscribed ? "bg-[#222222] text-white" : "bg-white text-black"
         } ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
       >
-        {isSubscribed ? "subscribed" : "Subscribe"}
+        {isSubscribed ? "Subscribed" : "Subscribe"}
       </button>
     </>
   );
