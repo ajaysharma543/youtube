@@ -62,9 +62,12 @@ const subscribed = res.data?.data?.subscribe;
             <div className="flex flex-col">
               <h2 className="text-lg font-semibold">{ch.fullname}</h2>
                <div className="text-center flex ">
-                              <p className="text-gray-400">@{ch.username} :</p>
-              <p className="text-gray-400 pl-2 ">{ch.totalsubscriber || 0}</p>
+                              <p className="text-gray-400 text-sm">@{ch.username} :</p>
+              <p className="text-gray-400 pl-2 text-sm">{ch.totalsubscriber || 0}</p>
               <span className="text-gray-400 pl-2 text-sm">Subscribers</span>
+            </div>
+            <div className="text-sm text-gray-400">
+              {ch.description}
             </div>
 
             </div>
