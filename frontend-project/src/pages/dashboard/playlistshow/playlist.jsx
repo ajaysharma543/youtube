@@ -75,7 +75,7 @@ const navigate = useNavigate()
    
   }
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p className=" flex items-center justify-center">Loading...</p>;
   if (error) return <p>error...</p>;
 
   return (

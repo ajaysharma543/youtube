@@ -28,6 +28,7 @@ const navigate = useNavigate()
     };
     fetchLiked();
   }, []);
+  
     const handleVideoClick = (id) => {
     navigate(`/video/${id}`);
   };

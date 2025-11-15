@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Play } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserVideos } from "../../redux/features/fetchvideoslice";
+import { useNavigate } from "react-router-dom";
 
 const timeAgo = (dateString) => {
   const date = new Date(dateString);
@@ -26,13 +27,19 @@ const timeAgo = (dateString) => {
   return "just now";
 };
 
+ 
 function ShowAllVideos() {
   const dispatch = useDispatch();
+    const navigate = useNavigate();
   const { videos, loading } = useSelector((state) => state.videos);
   const publishedVideos = videos.filter((v) => v.isPublished);
   useEffect(() => {
     dispatch(fetchUserVideos());
   }, [dispatch]);
+
+ const handleVideoClick = (id) => {
+    navigate(`/video/${id}`);
+  };
 
   if (loading) {
     return (
@@ -55,7 +62,8 @@ function ShowAllVideos() {
       {publishedVideos.map((v) => (
         <div
           key={v._id}
-          className="from-gray-900 via-black cursor-pointer to-gray-900 rounded-2xl overflow-hidden hover:shadow-red-600/20 "
+          onClick = {() => handleVideoClick(v._id) }
+          className="from-gray-900 via-black cursor-pointer to-gray-900 rounded-2xl overflow-hidden hover:shadow-red-600/20"
         >
           <div className="relative group">
             <img

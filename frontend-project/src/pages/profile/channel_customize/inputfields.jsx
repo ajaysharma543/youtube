@@ -9,7 +9,7 @@ function Inputfields({
   type = "text",
   placeholder,
   showOtpButton = false,
-  onSendOtp, // 🔥 function for sending OTP
+  onSendOtp,
   isSendingOtp = false,
 }) {
   return (

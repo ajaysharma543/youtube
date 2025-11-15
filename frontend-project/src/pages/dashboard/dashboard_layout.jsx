@@ -9,7 +9,7 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <div className="flex flex-col flex-wrap mt-15 min-h-screen bg-black text-white">
-      {/* <LogoutButton /> */}
+      <LogoutButton />
 
       <Navbar
         onToggleSidebar={() => setCollapse((prev) => !prev)}

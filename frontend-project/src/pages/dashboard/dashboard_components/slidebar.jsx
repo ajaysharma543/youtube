@@ -92,7 +92,7 @@ useEffect(() => {
         `flex items-center justify-between text-md px-2 py-1.5 rounded-2xl transition-all duration-200 ${
           isActive
             ? "bg-[#1c1c1c] text-white shadow-md"
-            : "hover:text-red-400 hover:bg-gray-800"
+            : "hover:text-white hover:bg-gray-800"
         }`
       }
     >
@@ -111,21 +111,26 @@ useEffect(() => {
       subscriptions.length > 0 && (
        <div className="flex flex-col gap-1">
   {subscriptions.map((sub) => (
-    <Link
-      key={sub._id}
-      to={`/c/${sub.username}`}
-      onClick={() => console.log(sub)
-       }
-      className="flex items-center gap-2 p-2 rounded hover:bg-[#2a2a2a] transition cursor-pointer"
-    >
-      <img
-        src={sub.avatar?.url || "/default-profile.png"}
-        alt={sub.fullname}
-        className="w-8 h-8 rounded-full object-cover"
-      />
+   <Link
+  key={sub._id}
+  to={`/c/${sub.username}`}
+  onClick={() => console.log(sub)}
+  className="flex items-center gap-3 w-full px-3 py-2 rounded-xl transition-all duration-200
+             text-white shadow-md hover:bg-gray-800"
+>
+  <div className="w-10 h-10 flex-shrink-0">
+    <img
+      src={sub.avatar?.url || "/default-profile.png"}
+      alt={sub.fullname}
+      className="w-full h-full rounded-full object-cover"
+    />
+  </div>
 
-      <span className="text-sm text-gray-300 ml-3">{sub.fullname}</span>
-    </Link>
+  <span className="text-sm text-gray-300 font-medium truncate">
+    {sub.fullname}
+  </span>
+</Link>
+
   ))}
 </div>
       )}

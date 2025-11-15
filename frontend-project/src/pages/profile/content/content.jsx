@@ -118,9 +118,21 @@ function ShowAllVideos() {
                   <h3 className="text-white font-semibold truncate">
                     {v.title}
                   </h3>
-                  <p className="text-gray-400 text-sm truncate">
-                    {v.description || "No description available"}
-                  </p>
+                <p className="text-gray-400 text-sm">
+  {(() => {
+    if (!v.description) return "No description available";
+
+    const words = v.description.trim().split(/\s+/);
+
+    if (words.length <= 30) {
+      return v.description;
+    }
+
+    const shortText = words.slice(0, 30).join(" ");
+    return shortText + " ...";
+  })()}
+</p>
+
                 </div>
 
                 <div className="flex justify-center">

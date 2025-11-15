@@ -282,6 +282,29 @@ const changeaccountdetails = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Account details updated successfully"));
 });
 
+const description = asyncHandler(async (req, res) => {
+  const { description } = req.body;
+
+  if (description === undefined) {
+    throw new ApiError(400, "Description field is required");
+  }
+
+  const user = await User.findOneAndUpdate(
+    { _id: req.user._id },   // FIXED
+    { $set: { description } },
+    { new: true }
+  ).select("-password -refreshtoken");
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Description updated successfully"));
+});
+
+
 const getCurrentUser = asyncHandler(async (req, res) => {
   return res
     .status(200)
@@ -438,7 +461,6 @@ const getchanneldetails = asyncHandler(async(req, res) => {
     )
 })
 
-
 const getUserChannelProfile = asyncHandler(async (req, res) => {
   const { username } = req.params;
 
@@ -552,7 +574,6 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     );
 });
 
-
 const getWatchHistory = asyncHandler(async (req, res) => {
   const user = await User.aggregate([
     {
@@ -665,5 +686,6 @@ export {
   getUserChannelProfile,
   getWatchHistory,
   resetPassword,
-  getchanneldetails
+  getchanneldetails,
+  description
 };

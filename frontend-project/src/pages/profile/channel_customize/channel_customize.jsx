@@ -32,6 +32,7 @@ function CustomizeChannel() {
       username: "",
       email: "",
       password: "",
+      description : ""
     },
   });
   useEffect(() => {
@@ -43,6 +44,7 @@ function CustomizeChannel() {
       setValue("username", data.username || "");
       setValue("email", data.email || "");
       setValue("password", data.password || "");
+      setValue("description",data.description || "");
       setOriginalEmail(data.email || "");
     }
   }, [data, setValue]);
@@ -59,16 +61,20 @@ function CustomizeChannel() {
   const password = watch("password");
   const oldPassword = watch("oldPassword");
   const newPassword = watch("newPassword");
+  const description = watch("description");
 
   const [otpSent, setOtpSent] = useState(false);
-  const isPublishDisabled =
-    (!banner &&
-      !avatar &&
-      !fullname &&
-      email === originalEmail &&
-      !password &&
-      !otpSent) ||
-    isloading;
+ const nothingChanged =
+  !banner &&
+  !avatar &&
+  fullname === data.fullname &&
+  description === (data.description || "") &&
+  email === originalEmail &&
+  !password &&
+  !otpSent;
+
+const isPublishDisabled = nothingChanged || isloading;
+
 
   const handlesendotp = async () => {
     if (!originalEmail) {
@@ -123,15 +129,15 @@ function CustomizeChannel() {
       let bannerResponse = null;
       let nameResponse = null;
       let passwordResponse = null;
-
-      // ✅ Avatar upload
+      let descriptionresponse = null
+      //  Avatar upload
       if (data.avatar) {
         const avatarData = new FormData();
         avatarData.append("avatar", data.avatar);
         avatarResponse = await authApi.changeavatar(avatarData);
       }
 
-      // ✅ Banner upload
+      //  Banner upload
       if (data.banner) {
         const bannerData = new FormData();
         bannerData.append("coverImage", data.banner);
@@ -154,12 +160,20 @@ function CustomizeChannel() {
         nameResponse = await authApi.userdetails(accountData);
       }
 
+      if(data.description) {
+        const descriptiondata = new FormData();
+        descriptiondata.append("description", data.description);
+if (data.description !== undefined) {
+  descriptionresponse = await authApi.description({ description: data.description })
+}      }
+
       console.log("✅ Avatar Response:", avatarResponse?.data);
       console.log("✅ Banner Response:", bannerResponse?.data);
       console.log("✅ Name Response:", nameResponse?.data);
       console.log("✅ password Response:", passwordResponse?.data);
+      console.log("✅ description Response:", descriptionresponse?.data);
 
-      // ✅ success message or redirect
+      //  success message or redirect
       navigate("/profile");
     } catch (error) {
       console.error("❌ Upload error:", error);
@@ -174,7 +188,7 @@ function CustomizeChannel() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
+    <div className="min-h-screen mt-10 bg-black text-white flex flex-col">
       {/* Header */}
       <div className="h-[30%] flex items-center justify-between px-10 pb-4 border-b border-gray-800">
         <h1 className="text-3xl font-bold">Customize Channel</h1>
@@ -261,6 +275,15 @@ function CustomizeChannel() {
           description="Choose your unique handle by adding letters and numbers. You can change your handle back within 14 days. Handles can be changed twice every 14 days. "
           register={register("username", {
             required: "Username is required",
+          })}
+          errors={errors}
+        />
+
+          <Inputfields
+          label="description"
+          description=""
+          register={register("description", {
+            required: "description is required",
           })}
           errors={errors}
         />

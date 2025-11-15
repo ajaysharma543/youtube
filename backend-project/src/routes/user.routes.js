@@ -6,6 +6,7 @@ import {
   changeusercoverimage,
   deleteallWatchHistory,
   deleteWatchHistory,
+  description,
   getchanneldetails,
   getCurrentUser,
   getUserChannelProfile,
@@ -42,6 +43,7 @@ router
   .route("/change-password")
   .patch(uplaod.none(), veryfyJWT, changeCurrentPassword);
 router.route("/change-accountdetails").patch(veryfyJWT, changeaccountdetails);
+router.route("/description").patch(veryfyJWT, description);
 router
   .route("/change-avatar")
   .patch(veryfyJWT, uplaod.single("avatar"), changeuseravatar);

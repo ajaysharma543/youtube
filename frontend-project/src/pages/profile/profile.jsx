@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Showallvideos from "./showallvideos";
+import Showallplaylist from "./showallplaylist";
 
 function Profile() {
   const { data, loading } = useSelector((state) => state.user);
@@ -82,9 +83,7 @@ function Profile() {
 
         <div className="flex-1 flex items-center justify-center">
           {activeTab === "videos" && <Showallvideos />}
-          {activeTab === "playlist" && (
-            <p className="text-gray-400 text-lg">Here are your playlists...</p>
-          )}
+          {activeTab === "playlist" && <Showallplaylist /> }
         </div>
       </div>
     </div>
