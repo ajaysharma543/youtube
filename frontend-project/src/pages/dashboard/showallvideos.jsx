@@ -4,13 +4,19 @@ import { MoreVertical } from "lucide-react";
 import Playlist from "../playvideo_dahboard/playlist/playlist";
 import { useNavigate } from "react-router-dom";
 
-function Showallvideos({ userId }) {
+function Showallvideos({ userId, 
+          limit,
+          sortBy,
+          sortType   }) {
   const [videos, setVideos] = useState([]);
   const navigate = useNavigate()
   useEffect(() => {
     const fetchUserVideos = async () => {
       try {
-        const res = await VideoApi.getallvideos({ userId });
+        const res = await VideoApi.getallvideos({  userId, 
+          limit,
+          sortBy,
+          sortType  });
         setVideos(res.data.data.docs || []);
         console.log(res.data.data);
         
@@ -19,7 +25,12 @@ function Showallvideos({ userId }) {
       }
     };
     fetchUserVideos();
-  }, [userId]);
+  }, [ userId, 
+          limit,
+          sortBy,
+          sortType ]);
+
+const displayedVideos = videos;
 
   const getTimeAgo = (dateString) => {
     const now = new Date();
@@ -63,7 +74,7 @@ function Showallvideos({ userId }) {
 
   return (
     <div className="grid grid-cols-4 gap-2 mt-4">
-      {videos.map((video) => (
+      {displayedVideos.map((video) => (
       <div
   key={video._id}
   onClick={() =>handleVideoClick(video._id)}

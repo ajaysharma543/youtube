@@ -7,7 +7,6 @@ import {
   deleteallWatchHistory,
   deleteWatchHistory,
   description,
-  getchanneldetails,
   getCurrentUser,
   getUserChannelProfile,
   getWatchHistory,
@@ -52,7 +51,6 @@ router
   .patch(veryfyJWT, uplaod.single("coverImage"), changeusercoverimage);
 router.route("/c/:username").get(veryfyJWT, getUserChannelProfile);
 router.route("/watch-history").get(veryfyJWT, getWatchHistory);
-// router.route("/:username").get(veryfyJWT, getchanneldetails);
 router.route("/delete-history/:videoId").delete(veryfyJWT, deleteWatchHistory);
 router.route("/delete-history").delete(veryfyJWT, deleteallWatchHistory);
 router.post("/reset-password", resetPassword);

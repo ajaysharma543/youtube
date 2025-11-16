@@ -51,7 +51,7 @@ console.log(res.data.data);
   if (!channel) return <p className="p-6 text-gray-400">No channel found</p>;
 
   return (
-    <div className="max-w-5xl mx-auto p-4 space-y-6">
+    <div className="max-w-6xl mx-auto p-4 space-y-6">
 
       {channel.coverImage?.url && (
         <div className="w-full h-43 overflow-hidden rounded-xl shadow-lg">
@@ -82,6 +82,9 @@ console.log(res.data.data);
               • {channel.totalsubscriber} subscribers
             </span>
           </div>
+             <div className="text-sm text-gray-400">
+              {channel.description}
+            </div>
 
       <div className="mt-4" onClick={() => handleSubscriber(channel._id)}>
   <span

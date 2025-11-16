@@ -7,6 +7,7 @@ import { deleteOnCloudinary, uploadcloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.model.js";
 import { Like } from "../models/likes.model.js";
 import { Comment } from "../models/comment.model.js";
+import { Subscription } from "../models/subscription.model.js";
 
 const getAllVideos = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
@@ -489,8 +490,77 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     );
 });
 
+const getchanneldetails = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+
+  if (!userId) {
+    throw new ApiError(401, "Unauthorized");
+  }
+  const videos = await Subscription.aggregate([
+    {
+      $match: {
+        subscriber: new mongoose.Types.ObjectId(userId)
+      }
+    },
+    {
+      $lookup: {
+        from: "videos",
+        localField: "channel",
+        foreignField: "owner",
+        as: "videos"
+      }
+    },
+
+    { $unwind: "$videos" },
+
+    {
+      $match: {
+        "videos.isPublished": true
+      }
+    },
+
+    {
+      $sort: { "videos.createdAt": -1 }
+    },
+
+    {
+      $lookup: {
+        from: "users",
+        localField: "videos.owner",
+        foreignField: "_id",
+        as: "owner"
+      }
+    },
+    { $unwind: "$owner" },
+
+    {
+      $project: {
+        _id: "$videos._id",
+        title: "$videos.title",
+        description: "$videos.description",
+        thumbnail: "$videos.thumbnail",
+        duration : "$videos.duration",
+        videoFile: "$videos.videoFile",
+        views: "$videos.views",
+        createdAt: "$videos.createdAt",
+        owner: {
+          _id: "$owner._id",
+          username: "$owner.username",
+          fullname : "$owner.fullname",
+          "avatar.url": "$owner.avatar.url"
+        }
+      }
+    }
+  ])
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, videos, "Subscribed videos fetched"));
+});
+
 export {
   publishAVideo,
+  getchanneldetails,
   getVideoById,
   updateVideo,
   deleteVideo,

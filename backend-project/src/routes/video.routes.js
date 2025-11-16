@@ -4,6 +4,7 @@ import { veryfyJWT } from "../middlewares/auth.middleware.js";
 import {
   deleteVideo,
   getAllVideos,
+  getchanneldetails,
   getVideoById,
   publishAVideo,
   togglePublishStatus,
@@ -32,6 +33,7 @@ router
   .get(veryfyJWT, getVideoById)
   .delete(veryfyJWT, deleteVideo)
   .patch(veryfyJWT, uplaod.single("thumbnail"), updateVideo);
+router.route("/channeldetails").get(veryfyJWT, getchanneldetails);
 
 router.route("/toggle-publish/:videoId").patch(veryfyJWT, togglePublishStatus);
 router.route("/all-videos").get(getAllVideos);

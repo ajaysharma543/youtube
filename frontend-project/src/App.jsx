@@ -28,6 +28,7 @@ import Watchlater from "./pages/dashboard/playlistshow/watchlater";
 import PlaylistVideos from "./pages/dashboard/playlistshow/getplaylistbyid";
 import Subscriptondash from "./pages/dashboard/subscription/subscriptondash";
 import ChannelPage from "./pages/dashboard/channelshow";
+import Allsubscriptions from "./pages/dashboard/subscription/allsubscriptions";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -141,6 +142,15 @@ function App() {
           </DashboardLayout>
         }
       />
+        <Route
+        path="/subscriptions"
+        element={
+          <DashboardLayout>
+            <Allsubscriptions />
+          </DashboardLayout>
+        }
+      />
+      
        <Route
         path="/c/:username"
         element={

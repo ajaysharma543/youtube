@@ -32,7 +32,11 @@ useEffect(() => {
   fetchSubs();
 }, [user]);
   const navItems = [
-    { name: "Home", icon: <Home className="w-5 h-5" />, path: "/" },
+    {
+       name: "Home",
+       icon: <Home className="w-5 h-5" />,
+        path: "/" 
+    },
     {
       name: "Subscriptions",
       icon: <Users className="w-5 h-5" />,

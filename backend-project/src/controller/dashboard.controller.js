@@ -106,7 +106,7 @@ const getChannelVideos = asyncHandler(async (req, res) => {
     },
     {
       $lookup: {
-        from: "comments", // ✅ assuming your comment collection name is 'comments'
+        from: "comments", 
         localField: "_id",
         foreignField: "video",
         as: "comments",
@@ -118,7 +118,7 @@ const getChannelVideos = asyncHandler(async (req, res) => {
         likecount: {
           $size: "$likes",
         },
-        commentcount: { $size: "$comments" }, // ✅ new comment count field
+        commentcount: { $size: "$comments" }, 
         likePercentage: {
           $cond: [
             { $eq: ["$views", 0] },

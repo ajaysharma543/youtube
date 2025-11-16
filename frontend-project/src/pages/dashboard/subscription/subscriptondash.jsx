@@ -77,11 +77,11 @@ const subscribed = res.data?.data?.subscribe;
            
             <div onClick={() => handleSubscriber(ch._id) }>
               <span
-                className={`px-4 py-2 rounded-lg cursor-pointer text-lg font-semibold ${
-                  ch.issubscribed ? "bg-green-600" : "bg-red-600"
+                className={`px-8 py-2 rounded-3xl cursor-pointer text-lg font-semibold ${
+                  ch.issubscribed ? "bg-gray-600" : "bg-white"
                 }`}
               >
-                {ch.issubscribed ? "Subscribed" : "Not Subscribed"}
+                {ch.issubscribed ? "Subscribed" : "Subscribe"}
               </span>
             </div>
           </div>

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Showallvideos from "./showallvideos";
+import Playlist from '../dashboard/playlistshow/playlist';
+import Homeprofile from "./homeprofile";
 
 function Profiledatashow({ userId }) {
   const [active, setActive] = useState("home");
@@ -29,9 +31,9 @@ function Profiledatashow({ userId }) {
       </div>
 
       <div className="mt-6 text-white text-xl">
-        {active === "home" && <p>Home Content</p>}
+        {active === "home" && <Homeprofile  userId={userId}/>}
         {active === "videos" && <Showallvideos userId={userId} />}
-        {active === "playlists" && <p>Playlists Content</p>}
+        {active === "playlists" && <Playlist />}
       </div>
     </div>
   );

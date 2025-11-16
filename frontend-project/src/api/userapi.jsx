@@ -14,7 +14,7 @@ const authApi = {
   deletewatchhistory: (videoId) => axiosclient.delete(`/users/delete-history/${videoId}`),
   deleteallwatchhistory: () => axiosclient.delete("/users/delete-history"),
   getUserChannelProfile : (username) => axiosclient.get(`users/c/${username}`),
-  description : (data) => axiosclient.patch("users/description",data)
+  description : (data) => axiosclient.patch("users/description",data),
 };
 
 export default authApi;
