@@ -499,28 +499,28 @@ const getchanneldetails = asyncHandler(async (req, res) => {
   const videos = await Subscription.aggregate([
     {
       $match: {
-        subscriber: new mongoose.Types.ObjectId(userId)
-      }
+        subscriber: new mongoose.Types.ObjectId(userId),
+      },
     },
     {
       $lookup: {
         from: "videos",
         localField: "channel",
         foreignField: "owner",
-        as: "videos"
-      }
+        as: "videos",
+      },
     },
 
     { $unwind: "$videos" },
 
     {
       $match: {
-        "videos.isPublished": true
-      }
+        "videos.isPublished": true,
+      },
     },
 
     {
-      $sort: { "videos.createdAt": -1 }
+      $sort: { "videos.createdAt": -1 },
     },
 
     {
@@ -528,8 +528,8 @@ const getchanneldetails = asyncHandler(async (req, res) => {
         from: "users",
         localField: "videos.owner",
         foreignField: "_id",
-        as: "owner"
-      }
+        as: "owner",
+      },
     },
     { $unwind: "$owner" },
 
@@ -539,19 +539,19 @@ const getchanneldetails = asyncHandler(async (req, res) => {
         title: "$videos.title",
         description: "$videos.description",
         thumbnail: "$videos.thumbnail",
-        duration : "$videos.duration",
+        duration: "$videos.duration",
         videoFile: "$videos.videoFile",
         views: "$videos.views",
         createdAt: "$videos.createdAt",
         owner: {
           _id: "$owner._id",
           username: "$owner.username",
-          fullname : "$owner.fullname",
-          "avatar.url": "$owner.avatar.url"
-        }
-      }
-    }
-  ])
+          fullname: "$owner.fullname",
+          "avatar.url": "$owner.avatar.url",
+        },
+      },
+    },
+  ]);
 
   return res
     .status(200)

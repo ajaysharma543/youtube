@@ -29,6 +29,7 @@ import PlaylistVideos from "./pages/dashboard/playlistshow/getplaylistbyid";
 import Subscriptondash from "./pages/dashboard/subscription/subscriptondash";
 import ChannelPage from "./pages/dashboard/channelshow";
 import Allsubscriptions from "./pages/dashboard/subscription/allsubscriptions";
+import Mianyou from "./pages/dashboard/mianyou";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -108,15 +109,14 @@ function App() {
           </DashboardLayout>
         }
       />
-       <Route
-  path="/Playlist/show/:playlistId"
-  element={
-    <DashboardLayout>
-      <PlaylistVideos />
-    </DashboardLayout>
-  }
-/>
-
+      <Route
+        path="/Playlist/show/:playlistId"
+        element={
+          <DashboardLayout>
+            <PlaylistVideos />
+          </DashboardLayout>
+        }
+      />
       <Route
         path="/watchlater"
         element={
@@ -124,8 +124,8 @@ function App() {
             <Watchlater />
           </DashboardLayout>
         }
-      />'
-      
+      />
+      '
       <Route
         path="/liked"
         element={
@@ -142,7 +142,15 @@ function App() {
           </DashboardLayout>
         }
       />
-        <Route
+       <Route
+        path="/mainyou"
+        element={
+          <DashboardLayout>
+            <Mianyou />
+          </DashboardLayout>
+        }
+      />
+      <Route
         path="/subscriptions"
         element={
           <DashboardLayout>
@@ -150,8 +158,7 @@ function App() {
           </DashboardLayout>
         }
       />
-      
-       <Route
+      <Route
         path="/c/:username"
         element={
           <DashboardLayout>
@@ -159,7 +166,6 @@ function App() {
           </DashboardLayout>
         }
       />
-      
       <Route
         path="/channel-customize"
         element={
@@ -176,7 +182,6 @@ function App() {
           </ProfileDashboardLayout>
         }
       />
-
       <Route
         path="/edit_video/:videoId"
         element={
@@ -201,7 +206,6 @@ function App() {
           </VideoDashboardLayout>
         }
       />
-
       {/* Auth Routes */}
       <Route path="/signup" element={<Signup />} />
       <Route path="/signup-email" element={<SignupStep2 />} />
@@ -209,7 +213,6 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/login/resetpassword" element={<Resetpassword />} />
       <Route path="/login/newpassword" element={<New_password />} />
-
       {/* Video Upload Routes */}
       <Route path="/upload" element={<Videouploads />} />
       <Route path="/video-details" element={<VideoUpload />} />

@@ -7,7 +7,7 @@ import { Delete, Trash } from "lucide-react";
 function Liked() {
   const [liked, setLiked] = useState([]);
   const [loading, setLoading] = useState(true);
-const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLiked = async () => {
@@ -28,23 +28,21 @@ const navigate = useNavigate()
     };
     fetchLiked();
   }, []);
-  
-    const handleVideoClick = (id) => {
+
+  const handleVideoClick = (id) => {
     navigate(`/video/${id}`);
   };
 
-const removelike = async (videoId) => {
-  try {
-    const res = await likeApi.toggleVideoLike(videoId);
-console.log(res.data.data);
+  const removelike = async (videoId) => {
+    try {
+      const res = await likeApi.toggleVideoLike(videoId);
+      console.log(res.data.data);
 
-    setLiked((prev) => prev.filter((v) => v._id !== videoId));
-
-  } catch (err) {
-    console.error("Error removing liked video:", err);
-  }
-};
-
+      setLiked((prev) => prev.filter((v) => v._id !== videoId));
+    } catch (err) {
+      console.error("Error removing liked video:", err);
+    }
+  };
 
   const formatDuration = (seconds) => {
     if (!seconds && seconds !== 0) return "";
@@ -55,8 +53,6 @@ console.log(res.data.data);
       ? `${hrs}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
       : `${mins}:${secs.toString().padStart(2, "0")}`;
   };
-
-
 
   if (loading)
     return (
@@ -118,7 +114,8 @@ console.log(res.data.data);
           {liked.map((video, idx) => (
             <div
               key={video._id}
-              className="flex items-center gap-4 bg-neutral-900 rounded-2xl p-3 mb-3"onClick={()=>handleVideoClick(video._id)}
+              className="flex items-center gap-4 bg-neutral-900 rounded-2xl p-3 mb-3"
+              onClick={() => handleVideoClick(video._id)}
             >
               <div className="text-gray-400 font-semibold w-6 text-right">
                 {idx + 1}
@@ -158,18 +155,17 @@ console.log(res.data.data);
 
               {/* 3-DOTS MENU */}
               <div className="ml-auto relative z-50">
-                <Playlist video={video} >
-        <button
-  onClick={(e) => {
-    e.stopPropagation();       
-    removelike(video._id);
-  }}
-  className="w-full flex items-center text-left hover:bg-gray-700 text-white px-4 py-2"
->
-  <Trash className="mr-2 w-5 h-5" />
-  Remove
-</button>
-
+                <Playlist video={video}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removelike(video._id);
+                    }}
+                    className="w-full flex items-center text-left hover:bg-gray-700 text-white px-4 py-2"
+                  >
+                    <Trash className="mr-2 w-5 h-5" />
+                    Remove
+                  </button>
                 </Playlist>
               </div>
             </div>

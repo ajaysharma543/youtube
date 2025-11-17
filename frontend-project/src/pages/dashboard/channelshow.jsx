@@ -20,7 +20,7 @@ function ChannelPage() {
         const res = await authApi.getUserChannelProfile(`${username}`);
         setChannel(res.data?.data || null);
       } catch (err) {
-        setError("Failed to load channel",err);
+        setError("Failed to load channel", err);
       } finally {
         setLoading(false);
       }
@@ -29,22 +29,19 @@ function ChannelPage() {
     fetchChannel();
   }, [username]);
 
+  const handleSubscriber = async (channelId) => {
+    try {
+      const res = await subscriberApi.subscribe(channelId);
+      console.log(res.data.data);
 
-const handleSubscriber = async (channelId) => {
-  try {
-    const res = await subscriberApi.subscribe(channelId);
-console.log(res.data.data);
-
-    setChannel((prev) => ({
-      ...prev,
-      issubscribed: !prev.issubscribed
-    }));
-
-  } catch (err) {
-    console.log("Subscription error:", err);
-  }
-};
-
+      setChannel((prev) => ({
+        ...prev,
+        issubscribed: !prev.issubscribed,
+      }));
+    } catch (err) {
+      console.log("Subscription error:", err);
+    }
+  };
 
   if (loading) return <p className="p-6 text-gray-400">Loading...</p>;
   if (error) return <p className="p-6 text-red-400">{error}</p>;
@@ -52,7 +49,6 @@ console.log(res.data.data);
 
   return (
     <div className="max-w-6xl mx-auto p-4 space-y-6">
-
       {channel.coverImage?.url && (
         <div className="w-full h-43 overflow-hidden rounded-xl shadow-lg">
           <img
@@ -64,7 +60,6 @@ console.log(res.data.data);
       )}
 
       <div className="flex gap-6 items-center mt-4">
-
         <img
           src={channel.avatar?.url || "/default-profile.png"}
           className="w-41 h-41 rounded-full object-cover border-2 border-gray-700 shadow-md"
@@ -82,25 +77,22 @@ console.log(res.data.data);
               • {channel.totalsubscriber} subscribers
             </span>
           </div>
-             <div className="text-sm text-gray-400">
-              {channel.description}
-            </div>
+          <div className="text-sm text-gray-400">{channel.description}</div>
 
-      <div className="mt-4" onClick={() => handleSubscriber(channel._id)}>
-  <span
-    className={`px-7 py-2 rounded-lg cursor-pointer text-lg font-semibold shadow-md transition-all ${
-      channel.issubscribed
-        ? "bg-[#232121] text-white"
-        : "bg-white text-black"
-    }`}
-  >
-    {channel.issubscribed ? "Subscribed" : "Subscribe"}
-  </span>
-</div>
-
+          <div className="mt-4" onClick={() => handleSubscriber(channel._id)}>
+            <span
+              className={`px-7 py-2 rounded-lg cursor-pointer text-lg font-semibold shadow-md transition-all ${
+                channel.issubscribed
+                  ? "bg-[#232121] text-white"
+                  : "bg-white text-black"
+              }`}
+            >
+              {channel.issubscribed ? "Subscribed" : "Subscribe"}
+            </span>
+          </div>
         </div>
       </div>
-<Profiledatashow userId={channel._id} />
+      <Profiledatashow userId={channel._id} />
     </div>
   );
 }

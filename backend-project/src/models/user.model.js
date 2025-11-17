@@ -28,18 +28,18 @@ const userSchema = new Schema(
     avatar: {
       type: {
         public_id: String,
-        url: String, 
+        url: String,
       },
       required: true,
     },
     coverImage: {
       type: {
         public_id: String,
-        url: String, 
+        url: String,
       },
     },
-    description : {
-      type : String,
+    description: {
+      type: String,
       default: "",
     },
     watchhistory: [

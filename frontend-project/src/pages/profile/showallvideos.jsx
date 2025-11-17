@@ -27,17 +27,16 @@ const timeAgo = (dateString) => {
   return "just now";
 };
 
- 
 function ShowAllVideos() {
   const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const { videos, loading } = useSelector((state) => state.videos);
   const publishedVideos = videos.filter((v) => v.isPublished);
   useEffect(() => {
     dispatch(fetchUserVideos());
   }, [dispatch]);
 
- const handleVideoClick = (id) => {
+  const handleVideoClick = (id) => {
     navigate(`/video/${id}`);
   };
 
@@ -62,7 +61,7 @@ function ShowAllVideos() {
       {publishedVideos.map((v) => (
         <div
           key={v._id}
-          onClick = {() => handleVideoClick(v._id) }
+          onClick={() => handleVideoClick(v._id)}
           className="from-gray-900 via-black cursor-pointer to-gray-900 rounded-2xl overflow-hidden hover:shadow-red-600/20"
         >
           <div className="relative group">

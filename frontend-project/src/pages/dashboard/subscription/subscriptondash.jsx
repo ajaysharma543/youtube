@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import authApi from "../../../api/userapi";
-import { resetSubscriptionState, setSubscriptionState, toggleSubscriptionFailure } from "../../../redux/features/subscription";
+import {
+  resetSubscriptionState,
+  setSubscriptionState,
+  toggleSubscriptionFailure,
+} from "../../../redux/features/subscription";
 import subscriberApi from "../../../api/subscribers";
 
 function Subscriptondash() {
   const { data: user } = useSelector((state) => state.user);
   const [subs, setSubs] = useState([]);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     const getsubs = async () => {
       if (!user?.username) return;
@@ -22,30 +26,28 @@ function Subscriptondash() {
     getsubs();
   }, [user]);
   const handleSubscriber = async (channelId) => {
-  dispatch(resetSubscriptionState());
+    dispatch(resetSubscriptionState());
 
-  try {
-    const res = await subscriberApi.subscribe(channelId)
-const subscribed = res.data?.data?.subscribe;
-    console.log("Subscription response:", subscribed);
+    try {
+      const res = await subscriberApi.subscribe(channelId);
+      const subscribed = res.data?.data?.subscribe;
+      console.log("Subscription response:", subscribed);
 
-    setSubs((prev) =>
-      prev.map((ch) =>
-        ch._id === channelId ? { ...ch, issubscribed: subscribed } : ch
-      )
-    );
+      setSubs((prev) =>
+        prev.map((ch) =>
+          ch._id === channelId ? { ...ch, issubscribed: subscribed } : ch
+        )
+      );
 
-    dispatch(setSubscriptionState(subscribed));
-  } catch (error) {
-    console.log("Subscription failed:", error);
-    dispatch(toggleSubscriptionFailure());
-  }
-};
-
+      dispatch(setSubscriptionState(subscribed));
+    } catch (error) {
+      console.log("Subscription failed:", error);
+      dispatch(toggleSubscriptionFailure());
+    }
+  };
 
   return (
     <div className="p-4 ">
-
       <h1 className="text-2xl font-bold mb-4">All Subscriptions</h1>
       <div className="flex justify-center items-center flex-col">
         {subs.map((ch) => (
@@ -61,21 +63,19 @@ const subscribed = res.data?.data?.subscribe;
 
             <div className="flex flex-col">
               <h2 className="text-lg font-semibold">{ch.fullname}</h2>
-               <div className="text-center flex ">
-                              <p className="text-gray-400 text-sm">@{ch.username} :</p>
-              <p className="text-gray-400 pl-2 text-sm">{ch.totalsubscriber || 0}</p>
-              <span className="text-gray-400 pl-2 text-sm">Subscribers</span>
-            </div>
-            <div className="text-sm text-gray-400">
-              {ch.description}
-            </div>
-
+              <div className="text-center flex ">
+                <p className="text-gray-400 text-sm">@{ch.username} :</p>
+                <p className="text-gray-400 pl-2 text-sm">
+                  {ch.totalsubscriber || 0}
+                </p>
+                <span className="text-gray-400 pl-2 text-sm">Subscribers</span>
+              </div>
+              <div className="text-sm text-gray-400">{ch.description}</div>
             </div>
 
             <div className="flex-1"></div>
 
-           
-            <div onClick={() => handleSubscriber(ch._id) }>
+            <div onClick={() => handleSubscriber(ch._id)}>
               <span
                 className={`px-8 py-2 rounded-3xl cursor-pointer text-lg font-semibold ${
                   ch.issubscribed ? "bg-gray-600" : "bg-white"

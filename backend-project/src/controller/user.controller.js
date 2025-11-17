@@ -290,7 +290,7 @@ const description = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findOneAndUpdate(
-    { _id: req.user._id },   // FIXED
+    { _id: req.user._id }, // FIXED
     { $set: { description } },
     { new: true }
   ).select("-password -refreshtoken");
@@ -303,7 +303,6 @@ const description = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, user, "Description updated successfully"));
 });
-
 
 const getCurrentUser = asyncHandler(async (req, res) => {
   return res
@@ -389,9 +388,6 @@ const changeusercoverimage = asyncHandler(async (req, res) => {
     );
 });
 
-
-
-
 const getUserChannelProfile = asyncHandler(async (req, res) => {
   const { username } = req.params;
 
@@ -424,48 +420,46 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
       },
     },
 
- {
-  $lookup: {
-    from: "users",
-    localField: "subscribedTo.channel",
-    foreignField: "_id",
-    as: "mysubscribedchannels",
-    pipeline: [
+    {
+      $lookup: {
+        from: "users",
+        localField: "subscribedTo.channel",
+        foreignField: "_id",
+        as: "mysubscribedchannels",
+        pipeline: [
+          {
+            $lookup: {
+              from: "subscriptions",
+              localField: "_id",
+              foreignField: "channel",
+              as: "channelSubscribers",
+            },
+          },
 
-      {
-        $lookup: {
-          from: "subscriptions",
-          localField: "_id",
-          foreignField: "channel",
-          as: "channelSubscribers"
-        }
+          {
+            $addFields: {
+              totalsubscriber: { $size: "$channelSubscribers" },
+              issubscribed: {
+                $in: [req.user?._id, "$channelSubscribers.subscriber"],
+              },
+            },
+          },
+
+          {
+            $project: {
+              _id: 1,
+              username: 1,
+              fullname: 1,
+              "avatar.url": 1,
+              "coverImage.url": 1,
+              totalsubscriber: 1,
+              description: 1,
+              issubscribed: 1,
+            },
+          },
+        ],
       },
-
-      {
-        $addFields: {
-          totalsubscriber: { $size: "$channelSubscribers" },
-          issubscribed: {
-            $in: [req.user?._id, "$channelSubscribers.subscriber"]
-          }
-        }
-      },
-
-      {
-        $project: {
-          _id: 1,
-          username: 1,
-          fullname: 1,
-          "avatar.url": 1,
-          "coverImage.url": 1,
-          totalsubscriber: 1,
-          description : 1,
-          issubscribed: 1,
-        }
-      }
-    ]
-  }
-},
-
+    },
 
     {
       $addFields: {
@@ -478,18 +472,18 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     },
 
     {
-  $project: {
-    fullname: 1,
-    username: 1,
-    avatar: 1,
-    coverImage: 1,
-    totalsubscriber: 1,
-    description : 1,
-    totalchannelsubscriber: 1,
-    issubscribed: 1,
-    mysubscribedchannels: 1,
-  }
-}
+      $project: {
+        fullname: 1,
+        username: 1,
+        avatar: 1,
+        coverImage: 1,
+        totalsubscriber: 1,
+        description: 1,
+        totalchannelsubscriber: 1,
+        issubscribed: 1,
+        mysubscribedchannels: 1,
+      },
+    },
   ]);
 
   if (!Channel?.length) {
@@ -499,11 +493,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(
-        200,
-        Channel[0],
-        "channel details fetched successfully"
-      )
+      new ApiResponse(200, Channel[0], "channel details fetched successfully")
     );
 });
 
@@ -566,44 +556,44 @@ const getWatchHistory = asyncHandler(async (req, res) => {
 });
 
 const deleteWatchHistory = asyncHandler(async (req, res) => {
-  const {videoId} = req.params;
+  const { videoId } = req.params;
 
-  if(!isValidObjectId(videoId)) {
-    throw new ApiError(400, "video not found")
+  if (!isValidObjectId(videoId)) {
+    throw new ApiError(400, "video not found");
   }
 
   const updateduser = await User.findByIdAndUpdate(
-    req.user._id, 
+    req.user._id,
     {
-      $pull : {watchhistory : videoId}
+      $pull: { watchhistory: videoId },
     },
-    {new : true}
-  )
+    { new: true }
+  );
   if (!updateduser) {
     throw new ApiError(404, "User not found");
   }
-  return res.status(200).json(new ApiResponse(200, updateduser ,"deleted"))
-})
+  return res.status(200).json(new ApiResponse(200, updateduser, "deleted"));
+});
 
 const deleteallWatchHistory = asyncHandler(async (req, res) => {
-const userId = req.user._id;
+  const userId = req.user._id;
 
-  if(!isValidObjectId(userId)) {
-    throw new ApiError(400, "userId not found")
+  if (!isValidObjectId(userId)) {
+    throw new ApiError(400, "userId not found");
   }
 
   const updateduser = await User.findByIdAndUpdate(
-    req.user._id, 
+    req.user._id,
     {
-      $set : {watchhistory : []}
+      $set: { watchhistory: [] },
     },
-    {new : true}
-  )
+    { new: true }
+  );
   if (!updateduser) {
     throw new ApiError(404, "User not found");
   }
-  return res.status(200).json(new ApiResponse(200, updateduser ,"deleted"))
-})
+  return res.status(200).json(new ApiResponse(200, updateduser, "deleted"));
+});
 export {
   registeruser,
   loginUser,
@@ -619,5 +609,5 @@ export {
   getUserChannelProfile,
   getWatchHistory,
   resetPassword,
-  description
+  description,
 };

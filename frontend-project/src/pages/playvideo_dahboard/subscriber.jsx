@@ -22,7 +22,6 @@ function Subscriber({ video }) {
 
   const isOwner = user?._id === video?.owner?._id;
 
-
   const handleSubscriber = async () => {
     if (!user?._id) {
       navigate("/login");
@@ -33,10 +32,10 @@ function Subscriber({ video }) {
 
     try {
       const subscribed = await dispatch(toggleSubscriptions(video.owner._id));
-      dispatch(setSubscriptionState(subscribed)); 
+      dispatch(setSubscriptionState(subscribed));
     } catch (error) {
       console.log(error);
-      
+
       dispatch(toggleSubscriptionFailure());
     }
   };
@@ -54,17 +53,17 @@ function Subscriber({ video }) {
         </p>
       </div>
 
-   {
-    !isOwner && (   <button
-        onClick={handleSubscriber}
-        disabled={loading}
-        className={`px-4 py-2 rounded-4xl ml-4 cursor-pointer transition-all duration-300 ${
-          isSubscribed ? "bg-[#222222] text-white" : "bg-white text-black"
-        } ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
-      >
-        {isSubscribed ? "Subscribed" : "Subscribe"}
-      </button>)
-   }
+      {!isOwner && (
+        <button
+          onClick={handleSubscriber}
+          disabled={loading}
+          className={`px-4 py-2 rounded-4xl ml-4 cursor-pointer transition-all duration-300 ${
+            isSubscribed ? "bg-[#222222] text-white" : "bg-white text-black"
+          } ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
+        >
+          {isSubscribed ? "Subscribed" : "Subscribe"}
+        </button>
+      )}
     </>
   );
 }

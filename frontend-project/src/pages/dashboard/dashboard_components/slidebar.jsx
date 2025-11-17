@@ -6,6 +6,7 @@ import {
   PlayCircleIcon,
   Settings,
   ThumbsUp,
+  User,
   Users,
   Video,
   Watch,
@@ -14,33 +15,35 @@ import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import authApi from "../../../api/userapi";
 
-
-
 const Sidebar = ({ collapse }) => {
   const { data: user } = useSelector((state) => state.user);
   const [subscriptions, setSubscriptions] = useState([]);
 
-useEffect(() => {
-  const fetchSubs = async () => {
-    if (!user?.username) return;
+  useEffect(() => {
+    const fetchSubs = async () => {
+      if (!user?.username) return;
 
-    const res = await authApi.getUserChannelProfile(user.username);
-    setSubscriptions(res.data?.data?.mysubscribedchannels || []);
-    
-  };
+      const res = await authApi.getUserChannelProfile(user.username);
+      setSubscriptions(res.data?.data?.mysubscribedchannels || []);
+    };
 
-  fetchSubs();
-}, [user]);
+    fetchSubs();
+  }, [user]);
   const navItems = [
     {
-       name: "Home",
-       icon: <Home className="w-5 h-5" />,
-        path: "/" 
+      name: "Home",
+      icon: <Home className="w-5 h-5" />,
+      path: "/",
     },
     {
       name: "Subscriptions",
       icon: <Users className="w-5 h-5" />,
       path: "/subscriptions",
+    },
+    {
+      name: "mainyou",
+      icon: <User className="w-5 h-5" />,
+      path: "/mainyou",
     },
     {
       name: "history",
@@ -52,7 +55,7 @@ useEffect(() => {
       icon: <PlayCircleIcon className="w-5 h-5" />,
       path: "/Playlist",
     },
-    
+
     {
       name: "your videos",
       icon: <Video className="w-5 h-5" />,
@@ -88,85 +91,86 @@ useEffect(() => {
         } min-h-screen bg-linear-to-b from-black via-gray-900 to-black text-white p-6 border-r border-gray-800 transition-all duration-300`}
       >
         <nav className="flex flex-col gap-1 text-white">
-        {navItems.map((item) => (
-  <React.Fragment key={item.name}>
-    <NavLink
-      to={item.path}
-      className={({ isActive }) =>
-        `flex items-center justify-between text-md px-2 py-1.5 rounded-2xl transition-all duration-200 ${
-          isActive
-            ? "bg-[#1c1c1c] text-white shadow-md"
-            : "hover:text-white hover:bg-gray-800"
-        }`
-      }
-    >
-      <div className="flex items-center gap-2">
-        {item.icon}
-        {!collapse && <span>{item.name}</span>}
-      </div>
+          {navItems.map((item) => (
+            <React.Fragment key={item.name}>
+              <NavLink
+                to={item.path}
+                className={({ isActive }) =>
+                  `flex items-center justify-between text-md px-2 py-1.5 rounded-2xl transition-all duration-200 ${
+                    isActive
+                      ? "bg-[#1c1c1c] text-white shadow-md"
+                      : "hover:text-white hover:bg-gray-800"
+                  }`
+                }
+              >
+                <div className="flex items-center gap-2">
+                  {item.icon}
+                  {!collapse && <span>{item.name}</span>}
+                </div>
 
-      {!collapse && item.name === "Subscription" && (
-        <ChevronRight className="w-4 h-4 text-gray-400" />
-      )}
-    </NavLink>
+                {!collapse && item.name === "Subscription" && (
+                  <ChevronRight className="w-4 h-4 text-gray-400" />
+                )}
+                  {!collapse && item.name === "mainyou" && (
+                  <ChevronRight className="w-4 h-4 text-gray-400" />
+                )}
+              </NavLink>
 
-    {item.name === "Subscription" &&
-      !collapse &&
-      subscriptions.length > 0 && (
-       <div className="flex flex-col gap-1">
-  {subscriptions.map((sub) => (
-   <Link
-  key={sub._id}
-  to={`/c/${sub.username}`}
-  onClick={() => console.log(sub)}
-  className="flex items-center gap-3 w-full px-3 py-2 rounded-xl transition-all duration-200
+              {item.name === "Subscription" &&
+                !collapse &&
+                subscriptions.length > 0 && (
+                  <div className="flex flex-col gap-1">
+                    {subscriptions.map((sub) => (
+                      <Link
+                        key={sub._id}
+                        to={`/c/${sub.username}`}
+                        onClick={() => console.log(sub)}
+                        className="flex items-center gap-3 w-full px-3 py-2 rounded-xl transition-all duration-200
              text-white shadow-md hover:bg-gray-800"
->
-  <div className="w-10 h-10 flex-shrink-0">
-    <img
-      src={sub.avatar?.url || "/default-profile.png"}
-      alt={sub.fullname}
-      className="w-full h-full rounded-full object-cover"
-    />
-  </div>
+                      >
+                        <div className="w-10 h-10 flex-shrink-0">
+                          <img
+                            src={sub.avatar?.url || "/default-profile.png"}
+                            alt={sub.fullname}
+                            className="w-full h-full rounded-full object-cover"
+                          />
+                        </div>
 
-  <span className="text-sm text-gray-300 font-medium truncate">
-    {sub.fullname}
-  </span>
-</Link>
+                        <span className="text-sm text-gray-300 font-medium truncate">
+                          {sub.fullname}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
 
-  ))}
-</div>
-      )}
-
-    {item.name === "Subscriptions" && (
-      <div className="border-b border-gray-700 my-4"></div>
-    )}
-       {item.name === "Liked-videos" && (
-      <div className="border-b border-gray-700 my-4"></div>
-    )}
-  </React.Fragment>
-))}
-
+              {item.name === "Subscriptions" && (
+                <div className="border-b border-gray-700 my-4"></div>
+              )}
+              {item.name === "Liked-videos" && (
+                <div className="border-b border-gray-700 my-4"></div>
+              )}
+            </React.Fragment>
+          ))}
         </nav>
       </aside>
 
       <nav className="fixed bottom-0 left-0 w-full bg-gray-900 border-t border-gray-700 flex justify-around items-center p-2 md:hidden z-50">
         {navItems.map((item) => (
-         <NavLink
-  key={item.name}
-  to={item.path}
-  className={({ isActive }) =>
+          <NavLink
+            key={item.name}
+            to={item.path}
+            className={({ isActive }) =>
               `flex items-center gap-2 text-lg px-3 rounded-xl transition-all duration-200 ${
                 isActive
                   ? "bg-red-600 text-white shadow-md"
                   : "hover:text-red-400 hover:bg-gray-800"
               }`
             }
->
-  {item.icon}
-  {!collapse && <span>{item.name}</span>}
-</NavLink>
+          >
+            {item.icon}
+            {!collapse && <span>{item.name}</span>}
+          </NavLink>
         ))}
       </nav>
     </>

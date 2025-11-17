@@ -1,4 +1,3 @@
-
 import { createSlice } from "@reduxjs/toolkit";
 import subscriberApi from "../../api/subscribers";
 
@@ -39,9 +38,9 @@ export const toggleSubscriptions = (channelId) => async (dispatch) => {
   try {
     dispatch(resetSubscriptionState());
     const res = await subscriberApi.subscribe(channelId);
-const subscribed = res.data?.data?.subscribe ?? false;
+    const subscribed = res.data?.data?.subscribe ?? false;
     dispatch(setSubscriptionState(subscribed));
-return subscribed;
+    return subscribed;
   } catch (error) {
     dispatch(
       toggleSubscriptionFailure(

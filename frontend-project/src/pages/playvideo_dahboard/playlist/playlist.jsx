@@ -9,8 +9,8 @@ import {
 import Showplaylist from "./showplaylist";
 import WatchApi from "../../../api/watchlater";
 
-function Playlist({ video ,children}) {
-    const [loading, setLoading] = useState(false);
+function Playlist({ video, children }) {
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [showPlaylistMenu, setShowPlaylistMenu] = useState(false);
   const [createPlaylistMenu, setcreatePlaylistMenu] = useState(false);
@@ -58,29 +58,26 @@ function Playlist({ video ,children}) {
     }
   };
 
-    const watchlater = async(e) => {
-      e.stopPropagation();
+  const watchlater = async (e) => {
+    e.stopPropagation();
     setLoading(true);
-   try {
-     const res = await WatchApi.addToWatchLater(video._id)
-     console.log("res",res.data.data);
-   } catch (error) {
-    setLoading(false);
-    console.log(error);
-    
-   }
-   finally{
-    setLoading(false)
-   }
-  }
-  
+    try {
+      const res = await WatchApi.addToWatchLater(video._id);
+      console.log("res", res.data.data);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
       <div className="relative pl-4" ref={dropdownRef}>
         <button
           onClick={(e) => {
-            e.stopPropagation(); 
+            e.stopPropagation();
             setOpen(!open);
             setShowPlaylistMenu(false);
             setcreatePlaylistMenu(false);
@@ -94,8 +91,8 @@ function Playlist({ video ,children}) {
           <div className="absolute -top-8 right-6 mt-2 w-44 bg-[#222222] text-white rounded-xl shadow-lg border border-gray-700 z-9999">
             <button
               className="w-full text-left px-4 py-2 hover:bg-[#333333] transition-colors"
-              onClick={(e) => {setOpen(false),
-                watchlater(e)
+              onClick={(e) => {
+                (setOpen(false), watchlater(e));
               }}
             >
               ▶️ Watch Later

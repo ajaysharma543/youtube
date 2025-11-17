@@ -11,10 +11,11 @@ const authApi = {
   changepassword: (data) => axiosclient.patch("users/change-password", data),
   resetPassword: (data) => axiosclient.post("/users/reset-password", data),
   getwatchhistory: () => axiosclient.get("/users/watch-history"),
-  deletewatchhistory: (videoId) => axiosclient.delete(`/users/delete-history/${videoId}`),
+  deletewatchhistory: (videoId) =>
+    axiosclient.delete(`/users/delete-history/${videoId}`),
   deleteallwatchhistory: () => axiosclient.delete("/users/delete-history"),
-  getUserChannelProfile : (username) => axiosclient.get(`users/c/${username}`),
-  description : (data) => axiosclient.patch("users/description",data),
+  getUserChannelProfile: (username) => axiosclient.get(`users/c/${username}`),
+  description: (data) => axiosclient.patch("users/description", data),
 };
 
 export default authApi;

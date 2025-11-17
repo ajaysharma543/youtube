@@ -4,33 +4,28 @@ import { MoreVertical } from "lucide-react";
 import Playlist from "../playvideo_dahboard/playlist/playlist";
 import { useNavigate } from "react-router-dom";
 
-function Showallvideos({ userId, 
-          limit,
-          sortBy,
-          sortType   }) {
+function Showallvideos({ userId, limit, sortBy, sortType }) {
   const [videos, setVideos] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchUserVideos = async () => {
       try {
-        const res = await VideoApi.getallvideos({  userId, 
+        const res = await VideoApi.getallvideos({
+          userId,
           limit,
           sortBy,
-          sortType  });
+          sortType,
+        });
         setVideos(res.data.data.docs || []);
         console.log(res.data.data);
-        
       } catch (err) {
         console.log("Error:", err);
       }
     };
     fetchUserVideos();
-  }, [ userId, 
-          limit,
-          sortBy,
-          sortType ]);
+  }, [userId, limit, sortBy, sortType]);
 
-const displayedVideos = videos;
+  const displayedVideos = videos;
 
   const getTimeAgo = (dateString) => {
     const now = new Date();
@@ -68,43 +63,43 @@ const displayedVideos = videos;
     }
   };
 
-   const handleVideoClick = (id) => {
+  const handleVideoClick = (id) => {
     navigate(`/video/${id}`);
   };
 
   return (
     <div className="grid grid-cols-4 gap-2 mt-4">
       {displayedVideos.map((video) => (
-      <div
-  key={video._id}
-  onClick={() =>handleVideoClick(video._id)}
-  className="bg-[#0f0f0f] cursor-pointer rounded-xl p-1 hover:bg-[#181818] transition-all relative"
->
-  <div className="relative">
-   <img src={ video?.thumbnail?.url || "/default-thumb.jpg"}
-      className="w-full h-32 object-cover rounded-lg"
-    />
+        <div
+          key={video._id}
+          onClick={() => handleVideoClick(video._id)}
+          className="bg-[#0f0f0f] cursor-pointer rounded-xl p-1 hover:bg-[#181818] transition-all relative"
+        >
+          <div className="relative">
+            <img
+              src={video?.thumbnail?.url || "/default-thumb.jpg"}
+              className="w-full h-32 object-cover rounded-lg"
+            />
 
-    <span className="absolute bottom-1 right-1 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">
-      {formatDuration(video.duration)}
-    </span>
-  </div>
+            <span className="absolute bottom-1 right-1 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">
+              {formatDuration(video.duration)}
+            </span>
+          </div>
 
-  <div className="mt-3 px-1">
-    <h3 className="text-white font-semibold  text-md truncate">
-      {video.title}
-    </h3>
+          <div className="mt-3 px-1">
+            <h3 className="text-white font-semibold  text-md truncate">
+              {video.title}
+            </h3>
 
-    <p className="text-gray-400 text-xs mt-1">
-      {video.views} views · {getTimeAgo(video.createdAt)}
-    </p>
-  </div>
+            <p className="text-gray-400 text-xs mt-1">
+              {video.views} views · {getTimeAgo(video.createdAt)}
+            </p>
+          </div>
 
-  <div className="absolute bottom-2 right-2 text-sm">
-    <Playlist video={video} />
-  </div>
-</div>
-
+          <div className="absolute bottom-2 right-2 text-sm">
+            <Playlist video={video} />
+          </div>
+        </div>
       ))}
     </div>
   );

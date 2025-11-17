@@ -7,8 +7,8 @@ function PlaylistVideos() {
   const { playlistId } = useParams();
   const [playlist, setPlaylist] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [menuOpen, setMenuOpen] = useState(null); 
-const navigate = useNavigate()
+  const [menuOpen, setMenuOpen] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
@@ -19,7 +19,10 @@ const navigate = useNavigate()
         const playlistData = res.data?.data?.[0];
         setPlaylist(playlistData || null);
       } catch (error) {
-        console.error("Error loading playlist:", error.response?.data || error.message);
+        console.error(
+          "Error loading playlist:",
+          error.response?.data || error.message
+        );
       } finally {
         setLoading(false);
       }
@@ -28,23 +31,23 @@ const navigate = useNavigate()
     fetchPlaylist();
   }, [playlistId]);
 
-const handleRemoveFromPlaylist = async (videoId) => {
-  try {
-    await playlistApi.removeVideoFromPlaylist({ playlistId, videoId });
+  const handleRemoveFromPlaylist = async (videoId) => {
+    try {
+      await playlistApi.removeVideoFromPlaylist({ playlistId, videoId });
 
-    setPlaylist((prev) => {
-      if (!prev) return prev; // if null, just skip
-      return {
-        ...prev,
-        videos: prev.videos.filter((v) => v._id !== videoId),
-      };
-    });
+      setPlaylist((prev) => {
+        if (!prev) return prev; // if null, just skip
+        return {
+          ...prev,
+          videos: prev.videos.filter((v) => v._id !== videoId),
+        };
+      });
 
-    setMenuOpen(null);
-  } catch (error) {
-    console.error("Error removing video:", error);
-  }
-};
+      setMenuOpen(null);
+    } catch (error) {
+      console.error("Error removing video:", error);
+    }
+  };
   const handleVideoClick = (id) => {
     navigate(`/video/${id}`);
   };
@@ -62,10 +65,10 @@ const handleRemoveFromPlaylist = async (videoId) => {
           {playlist.videos.map((video) => (
             <div
               key={video._id}
-              onClick={() =>handleVideoClick(video._id)}
+              onClick={() => handleVideoClick(video._id)}
               className="relative bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg hover:scale-105 transform transition-all duration-300 cursor-pointer"
             >
-              <div className="relative w-full h-48 bg-black" >
+              <div className="relative w-full h-48 bg-black">
                 <img
                   src={video.thumbnail?.url || "/default-thumbnail.jpg"}
                   alt={video.title}

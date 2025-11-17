@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Showallvideos from "./showallvideos";
-import Playlist from '../dashboard/playlistshow/playlist';
+import Playlist from "../dashboard/playlistshow/playlist";
 import Homeprofile from "./homeprofile";
 
 function Profiledatashow({ userId }) {
@@ -9,7 +9,7 @@ function Profiledatashow({ userId }) {
   const tabs = [
     { id: "home", label: "Home" },
     { id: "videos", label: "Videos" },
-    { id: "playlists", label: "Playlists" }
+    { id: "playlists", label: "Playlists" },
   ];
 
   return (
@@ -31,7 +31,7 @@ function Profiledatashow({ userId }) {
       </div>
 
       <div className="mt-6 text-white text-xl">
-        {active === "home" && <Homeprofile  userId={userId}/>}
+        {active === "home" && <Homeprofile userId={userId} />}
         {active === "videos" && <Showallvideos userId={userId} />}
         {active === "playlists" && <Playlist />}
       </div>

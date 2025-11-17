@@ -24,8 +24,6 @@ function Liked() {
     fetchLiked();
   }, []);
 
-  
-
   if (loading) {
     return (
       <p className="text-white text-center py-4">Loading liked videos...</p>
@@ -42,7 +40,7 @@ function Liked() {
     <div className=" py-2">
       {/* Latest liked video card */}
       <div className="flex flex-col items-start justify-start gap-2 bg-black rounded-2xl relative w-72 mx-auto">
-        <div className="relative w-full h-48 rounded-2xl overflow-hidden flex-shrink-0" >
+        <div className="relative w-full h-48 rounded-2xl overflow-hidden flex-shrink-0">
           {latestVideo.thumbnail?.url ? (
             <img
               src={latestVideo.thumbnail.url}
@@ -75,7 +73,6 @@ function Liked() {
           </p>
         </div>
       </div>
-
     </div>
   );
 }

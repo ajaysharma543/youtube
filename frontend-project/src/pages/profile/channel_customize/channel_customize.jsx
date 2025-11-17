@@ -32,7 +32,7 @@ function CustomizeChannel() {
       username: "",
       email: "",
       password: "",
-      description : ""
+      description: "",
     },
   });
   useEffect(() => {
@@ -44,7 +44,7 @@ function CustomizeChannel() {
       setValue("username", data.username || "");
       setValue("email", data.email || "");
       setValue("password", data.password || "");
-      setValue("description",data.description || "");
+      setValue("description", data.description || "");
       setOriginalEmail(data.email || "");
     }
   }, [data, setValue]);
@@ -64,17 +64,16 @@ function CustomizeChannel() {
   const description = watch("description");
 
   const [otpSent, setOtpSent] = useState(false);
- const nothingChanged =
-  !banner &&
-  !avatar &&
-  fullname === data.fullname &&
-  description === (data.description || "") &&
-  email === originalEmail &&
-  !password &&
-  !otpSent;
+  const nothingChanged =
+    !banner &&
+    !avatar &&
+    fullname === data.fullname &&
+    description === (data.description || "") &&
+    email === originalEmail &&
+    !password &&
+    !otpSent;
 
-const isPublishDisabled = nothingChanged || isloading;
-
+  const isPublishDisabled = nothingChanged || isloading;
 
   const handlesendotp = async () => {
     if (!originalEmail) {
@@ -129,7 +128,7 @@ const isPublishDisabled = nothingChanged || isloading;
       let bannerResponse = null;
       let nameResponse = null;
       let passwordResponse = null;
-      let descriptionresponse = null
+      let descriptionresponse = null;
       //  Avatar upload
       if (data.avatar) {
         const avatarData = new FormData();
@@ -160,12 +159,15 @@ const isPublishDisabled = nothingChanged || isloading;
         nameResponse = await authApi.userdetails(accountData);
       }
 
-      if(data.description) {
+      if (data.description) {
         const descriptiondata = new FormData();
         descriptiondata.append("description", data.description);
-if (data.description !== undefined) {
-  descriptionresponse = await authApi.description({ description: data.description })
-}      }
+        if (data.description !== undefined) {
+          descriptionresponse = await authApi.description({
+            description: data.description,
+          });
+        }
+      }
 
       console.log("✅ Avatar Response:", avatarResponse?.data);
       console.log("✅ Banner Response:", bannerResponse?.data);
@@ -279,7 +281,7 @@ if (data.description !== undefined) {
           errors={errors}
         />
 
-          <Inputfields
+        <Inputfields
           label="description"
           description=""
           register={register("description", {

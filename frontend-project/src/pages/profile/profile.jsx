@@ -83,7 +83,7 @@ function Profile() {
 
         <div className="flex-1 flex items-center justify-center">
           {activeTab === "videos" && <Showallvideos />}
-          {activeTab === "playlist" && <Showallplaylist /> }
+          {activeTab === "playlist" && <Showallplaylist />}
         </div>
       </div>
     </div>

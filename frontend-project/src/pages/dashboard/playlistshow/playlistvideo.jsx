@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function Playlistvideo() {
-  return (
-    <div>Playlistvideo</div>
-  )
+  return <div>Playlistvideo</div>;
 }
 
-export default Playlistvideo
+export default Playlistvideo;
