@@ -41,7 +41,7 @@ const Sidebar = ({ collapse }) => {
       path: "/subscriptions",
     },
     {
-      name: "mainyou",
+      name: "You",
       icon: <User className="w-5 h-5" />,
       path: "/mainyou",
     },
@@ -86,33 +86,35 @@ const Sidebar = ({ collapse }) => {
   return (
     <>
       <aside
-        className={`hidden md:flex flex-col ${
+        className={`hidden md:flex flex-col fixed ${
           collapse ? "w-20" : "w-64"
-        } min-h-screen bg-linear-to-b from-black via-gray-900 to-black text-white p-6 border-r border-gray-800 transition-all duration-300`}
+        } h-screen bg-black text-white p-6 
+   transition-all duration-300 overflow-y-auto scrollbar-hide z-40`}
       >
-        <nav className="flex flex-col gap-1 text-white">
+        <nav className="flex flex-col gap-1 text-white pb-13">
           {navItems.map((item) => (
             <React.Fragment key={item.name}>
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center justify-between text-md px-2 py-1.5 rounded-2xl transition-all duration-200 ${
+                  `flex items-center justify-start text-md px-2 py-1.5 rounded-2xl transition-all duration-200 ${
                     isActive
                       ? "bg-[#1c1c1c] text-white shadow-md"
-                      : "hover:text-white hover:bg-gray-800"
+                      : "hover:text-white hover:bg-[#1c1c1c]"
                   }`
                 }
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center p-1 gap-2">
                   {item.icon}
                   {!collapse && <span>{item.name}</span>}
                 </div>
 
                 {!collapse && item.name === "Subscription" && (
-                  <ChevronRight className="w-4 h-4 text-gray-400" />
+                  <ChevronRight className="w-4 h-4 ml-2 text-gray-400" />
                 )}
-                  {!collapse && item.name === "mainyou" && (
-                  <ChevronRight className="w-4 h-4 text-gray-400" />
+
+                {!collapse && item.name === "You" && (
+                  <ChevronRight className="w-4 h-4 ml-2 text-gray-400" />
                 )}
               </NavLink>
 
@@ -124,9 +126,8 @@ const Sidebar = ({ collapse }) => {
                       <Link
                         key={sub._id}
                         to={`/c/${sub.username}`}
-                        onClick={() => console.log(sub)}
-                        className="flex items-center gap-3 w-full px-3 py-2 rounded-xl transition-all duration-200
-             text-white shadow-md hover:bg-gray-800"
+                        className="flex items-center gap-3 w-full px-3 py-2
+                    rounded-xl transition-all duration-200 text-white shadow-md hover:bg-gray-800"
                       >
                         <div className="w-10 h-10 flex-shrink-0">
                           <img

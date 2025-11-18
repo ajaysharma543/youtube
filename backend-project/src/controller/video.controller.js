@@ -83,6 +83,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
         owner: {
           _id: 1,
           username: 1,
+          fullname: 1,
           "avatar.url": 1,
         },
       },

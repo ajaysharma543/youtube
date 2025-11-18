@@ -73,9 +73,9 @@ const registeruser = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // false for localhost
-    sameSite: "lax", // helps cookies work between frontend and backend on localhost
-    maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 10 * 24 * 60 * 60 * 1000, // Matches REFRESH_TOKEN_EXPIRY=10d
   };
 
   res
@@ -122,9 +122,9 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // false for localhost
-    sameSite: "lax", // helps cookies work between frontend and backend on localhost
-    maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 10 * 24 * 60 * 60 * 1000, // Matches REFRESH_TOKEN_EXPIRY=10d
   };
 
   res
@@ -398,10 +398,12 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
   const Channel = await User.aggregate([
     {
       $match: {
-        username: username?.toLowerCase(),
+        $or: [
+          { username: { $regex: username, $options: "i" } },
+          { fullname: { $regex: username, $options: "i" } },
+        ],
       },
     },
-
     {
       $lookup: {
         from: "subscriptions",

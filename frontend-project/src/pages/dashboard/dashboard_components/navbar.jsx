@@ -16,12 +16,16 @@ function Navbar({ onToggleSidebar, onToggleMobile }) {
     dispatch(fetchCurrentUser());
   }, [dispatch]);
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      dispatch(setSearchQuery(searchValue));
-    }, 500);
-    return () => clearTimeout(handler);
-  }, [searchValue, data, dispatch]);
+  // useEffect(() => {
+  //   const handler = setTimeout(() => {
+  //     dispatch(setSearchQuery(searchValue));
+  //   }, 500);
+  //   return () => clearTimeout(handler);
+  // }, [searchValue, data, dispatch]);
+
+  const handleSearch = () => {
+    dispatch(setSearchQuery(searchValue));
+  };
 
   const handleUploadClick = () => {
     setShowDropdown(false);
@@ -30,7 +34,7 @@ function Navbar({ onToggleSidebar, onToggleMobile }) {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between bg-gradient-to-r from-black via-gray-900 to-black px-6 py-3 shadow-lg border-b border-gray-800">
+    <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between bg-black px-6 py-3 shadow-lg">
       <div className="flex items-center gap-3 cursor-pointer">
         <Menu
           className="text-white mr-3 w-7 h-7"
@@ -47,15 +51,21 @@ function Navbar({ onToggleSidebar, onToggleMobile }) {
         <PartyPopperIcon className="text-yellow-400 w-5 h-5 animate-bounce" />
       </div>
 
-      {/* Search bar */}
-      <div className="relative w-72 hidden md:block">
-        <Search className="absolute right-3 top-2.5 text-gray-400 w-5 h-5" />
+      <div className="relative w-150 hidden md:block">
+        <Search
+          onClick={handleSearch}
+          className="absolute right-0 top-1/2 bg-[#252525] rounded-r-full -translate-y-1/2 text-gray-400 w-16 h-10 cursor-pointer"
+        />
+
         <input
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch();
+          }}
           type="search"
           placeholder="Search videos..."
-          className="w-full bg-gray-900 text-white placeholder-gray-500 rounded-full pl-5 pr-10 py-2 outline-none focus:ring-2 focus:ring-red-600 transition"
+          className="w-full border border-gray-700 text-white placeholder-gray-500 rounded-full pl-5 pr-10 py-2 outline-none focus:ring-2 focus:ring-white transition"
         />
       </div>
 

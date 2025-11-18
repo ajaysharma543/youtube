@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import authApi from '../../api/userapi';
-import Playlists from '../dashboard/playlistshow/playlist';
-import Playlist from "../playvideo_dahboard/playlist/playlist"
-import { useSelector } from 'react-redux';
-import { Delete, Trash } from 'lucide-react';
-import Watchlater from './playlistshow/watchlater';
-import Liked from './liked';
-import likeApi from '../../api/like';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import authApi from "../../api/userapi";
+import Playlists from "../dashboard/playlistshow/playlist";
+import Playlist from "../playvideo_dahboard/playlist/playlist";
+import { useSelector } from "react-redux";
+import { Delete, Trash } from "lucide-react";
+import Watchlater from "./playlistshow/watchlater";
+import Liked from "./liked";
+import likeApi from "../../api/like";
+import { useNavigate } from "react-router-dom";
 
 function Mianyou() {
-
   const [history, setHistory] = useState([]);
   const { data: user } = useSelector((state) => state.user);
 
@@ -26,12 +25,10 @@ function Mianyou() {
     };
     fetchHistory();
   }, []);
-    const {
-      list = [],
-    } = useSelector((state) => state.playlist || {});
-// const limitedPlaylist = list.slice(0,4);
+  const { list = [] } = useSelector((state) => state.playlist || {});
+  // const limitedPlaylist = list.slice(0,4);
 
-    const removeFromHistory = async (videoId) => {
+  const removeFromHistory = async (videoId) => {
     try {
       await authApi.deletewatchhistory(videoId);
       setHistory((prev) => prev.filter((v) => v._id !== videoId));
@@ -44,8 +41,9 @@ function Mianyou() {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
-    if (hrs > 0) return `${hrs}:${mins.toString().padStart(2,"0")}:${secs.toString().padStart(2,"0")}`;
-    return `${mins}:${secs.toString().padStart(2,"0")}`;
+    if (hrs > 0)
+      return `${hrs}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   const getTimeAgo = (dateString) => {
@@ -53,8 +51,13 @@ function Mianyou() {
     const created = new Date(dateString);
     const diff = Math.floor((now - created) / 1000);
     const intervals = {
-      year: 31536000, month: 2592000, week: 604800,
-      day: 86400, hour: 3600, minute: 60, second: 1,
+      year: 31536000,
+      month: 2592000,
+      week: 604800,
+      day: 86400,
+      hour: 3600,
+      minute: 60,
+      second: 1,
     };
     for (const [unit, sec] of Object.entries(intervals)) {
       const count = Math.floor(diff / sec);
@@ -64,7 +67,7 @@ function Mianyou() {
   };
   const latestFour = list.slice(-4).reverse();
 
-    const [liked, setLiked] = useState([]);
+  const [liked, setLiked] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -111,11 +114,12 @@ function Mianyou() {
   if (!liked.length)
     return <p className="text-white text-center py-4">No liked videos yet!</p>;
 
-
-
   return (
     <div>
-      <div className="flex items-center gap-4 mb-6  pb-4 cursor-pointer" onClick={() => navigate("/profile")}>
+      <div
+        className="flex items-center gap-4 mb-6  pb-4 cursor-pointer"
+        onClick={() => navigate("/profile")}
+      >
         <img
           src={user?.avatar?.url || "/default-avatar.png"}
           alt={user?.fullname}
@@ -124,23 +128,27 @@ function Mianyou() {
 
         <div>
           <p className="text-white text-lg font-semibold">{user?.fullname}</p>
-         <div className='flex'>
-             <p className="text-gray-400 text-sm">@{user?.username}</p>
+          <div className="flex">
+            <p className="text-gray-400 text-sm">@{user?.username}</p>
 
-          <p className="text-blue-400 pl-2 text-sm cursor-pointer hover:underline">
-            View Channel
-          </p>
-         </div>
+            <p className="text-blue-400 pl-2 text-sm cursor-pointer hover:underline">
+              View Channel
+            </p>
+          </div>
         </div>
       </div>
-     <div className='flex justify-between mt-10 mb-4'>
-         <h1 className="text-white text-xl font-semibold mb-4">Watch History</h1>
-      <button className='hover:bg-gray-700 px-7 py-2 rounded-2xl' onClick={() => navigate("/history") }>see all</button>
-     </div>
+      <div className="flex justify-between mt-10 mb-4">
+        <h1 className="text-white text-xl font-semibold mb-4">Watch History</h1>
+        <button
+          className="hover:bg-gray-700 px-7 py-2 rounded-2xl"
+          onClick={() => navigate("/history")}
+        >
+          see all
+        </button>
+      </div>
       <div className="grid grid-cols-4">
         {history.map((v) => (
           <div key={v._id} className="cursor-pointer relative">
-
             <div className="relative w-[94%]">
               <img
                 src={v.thumbnail?.url}
@@ -175,98 +183,112 @@ function Mianyou() {
               </div>
             </div>
 
-             <div
-                            onClick={(e) => e.stopPropagation()}
-                            className="absolute bottom-0 right-7 z-50"
-                          >
-                            <Playlist video={v}>
-                              <button
-                                onClick={() => removeFromHistory(v._id)}
-                                className=" w-full flex text-left justify-center px-4 py-2 hover:bg-gray-700 text-white"
-                              >
-                                <Delete />
-                                Remove
-                              </button>
-                            </Playlist>
-                          </div>
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="absolute bottom-0 right-7 z-50"
+            >
+              <Playlist video={v}>
+                <button
+                  onClick={() => removeFromHistory(v._id)}
+                  className=" w-full flex text-left justify-center px-4 py-2 hover:bg-gray-700 text-white"
+                >
+                  <Delete />
+                  Remove
+                </button>
+              </Playlist>
+            </div>
           </div>
         ))}
-
-
       </div>
 
-    <div className='flex justify-between mt-10 mb-4'>
+      <div className="flex justify-between mt-10 mb-4">
         <h1 className="text-white text-xl font-semibold">Your Playlists</h1>
-      <button className='hover:bg-gray-700 px-7  rounded-2xl' onClick={() => navigate("/playlist") }>see all</button>
-     </div>
-<div className="grid grid-cols-4 gap-4">
-  {latestFour.map((p) => (
-    <Playlists key={p._id} data={p} />
-  ))}
-</div>
-    <div className='flex justify-between mt-10 mb-4'>
-<h1 className="text-white text-xl font-semibold">Liked Videos</h1>
-      <button className='hover:bg-gray-700 px-7  rounded-2xl' onClick={() => navigate("/liked") }>see all</button>
-     </div>
-   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-  {latestlikes.map((video) => (
-    <div
-      key={video._id}
-      onClick={() => handleVideoClick(video._id)}
-      className="bg-neutral-900 rounded-xl shadow-lg hover:scale-105 transform transition-all cursor-pointer overflow-hidden"
-    >
-      {/* Thumbnail */}
-      <div className="w-full h-48 bg-black overflow-hidden">
-        <img
-          src={video.thumbnail?.url || "/default-thumbnail.jpg"}
-          alt={video.title}
-          className="w-full h-full object-cover"
-        />
+        <button
+          className="hover:bg-gray-700 px-7  rounded-2xl"
+          onClick={() => navigate("/playlist")}
+        >
+          see all
+        </button>
+      </div>
+      <div className="grid grid-cols-4 gap-4">
+        {latestFour.map((p) => (
+          <Playlists key={p._id} data={p} />
+        ))}
+      </div>
+      <div className="flex justify-between mt-10 mb-4">
+        <h1 className="text-white text-xl font-semibold">Liked Videos</h1>
+        <button
+          className="hover:bg-gray-700 px-7  rounded-2xl"
+          onClick={() => navigate("/liked")}
+        >
+          see all
+        </button>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {latestlikes.map((video) => (
+          <div
+            key={video._id}
+            onClick={() => handleVideoClick(video._id)}
+            className="bg-neutral-900 rounded-xl shadow-lg hover:scale-105 transform transition-all cursor-pointer overflow-hidden"
+          >
+            {/* Thumbnail */}
+            <div className="w-full h-48 bg-black overflow-hidden">
+              <img
+                src={video.thumbnail?.url || "/default-thumbnail.jpg"}
+                alt={video.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Details */}
+            <div className="p-4 relative">
+              <h3 className="text-white font-semibold text-base truncate">
+                {video.title}
+              </h3>
+
+              <p className="text-gray-400 text-sm mt-1">
+                {video.views ?? 0} views •{" "}
+                {new Date(video.createdAt).toLocaleDateString()}
+              </p>
+
+              {typeof video.duration === "number" && (
+                <span className="absolute top-2 right-2 bg-black bg-opacity-80 text-xs px-2 py-0.5 rounded">
+                  {formatDuration(video.duration)}
+                </span>
+              )}
+
+              {/* 3-DOTS MENU */}
+              <div className="absolute bottom-3 right-3 z-50">
+                <Playlist video={video}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removelike(video._id);
+                    }}
+                    className="w-full flex items-center text-left hover:bg-gray-700 text-white px-4 py-2"
+                  >
+                    <Trash className="mr-2 w-5 h-5" />
+                    Remove
+                  </button>
+                </Playlist>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* Details */}
-      <div className="p-4 relative">
-        <h3 className="text-white font-semibold text-base truncate">
-          {video.title}
-        </h3>
-
-        <p className="text-gray-400 text-sm mt-1">
-          {video.views ?? 0} views • {new Date(video.createdAt).toLocaleDateString()}
-        </p>
-
-        {typeof video.duration === "number" && (
-          <span className="absolute top-2 right-2 bg-black bg-opacity-80 text-xs px-2 py-0.5 rounded">
-            {formatDuration(video.duration)}
-          </span>
-        )}
-
-        {/* 3-DOTS MENU */}
-        <div className="absolute bottom-3 right-3 z-50">
-          <Playlist video={video}>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                removelike(video._id);
-              }}
-              className="w-full flex items-center text-left hover:bg-gray-700 text-white px-4 py-2"
-            >
-              <Trash className="mr-2 w-5 h-5" />
-              Remove
-            </button>
-          </Playlist>
-        </div>
+      <div className="flex justify-between mt-10 mb-4">
+        <h1 className="text-white text-xl font-semibold ">Watch Later</h1>
+        <button
+          className="hover:bg-gray-700 px-7  rounded-2xl"
+          onClick={() => navigate("/watchlater")}
+        >
+          see all
+        </button>
       </div>
-    </div>
-  ))}
-</div>
-
-    <div className='flex justify-between mt-10 mb-4'>
-<h1 className="text-white text-xl font-semibold ">Watch Later</h1>
-      <button className='hover:bg-gray-700 px-7  rounded-2xl' onClick={() => navigate("/watchlater") }>see all</button>
-     </div>
-<div className="p-0">
-  <Watchlater />
-</div>
+      <div className="p-0">
+        <Watchlater />
+      </div>
     </div>
   );
 }

@@ -23,7 +23,13 @@ const DashboardLayout = ({ children }) => {
           setMobileOpen={setMobileOpen}
         />
 
-        <main className="flex-1 overflow-y-auto p-6">{children}</main>
+        <main
+          className={`flex-1 overflow-y-auto p-6 transition-all duration-300 ${
+            collapse ? "ml-20" : "ml-64"
+          }`}
+        >
+          {children}
+        </main>
       </div>
     </div>
   );

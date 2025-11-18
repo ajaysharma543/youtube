@@ -42,7 +42,7 @@ function CustomizeChannel() {
     if (data) {
       setValue("fullname", data.fullname || "");
       setValue("username", data.username || "");
-      setValue("email", data.email || "");
+      // setValue("email", data.email || "");
       setValue("password", data.password || "");
       setValue("description", data.description || "");
       setOriginalEmail(data.email || "");

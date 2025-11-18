@@ -30,6 +30,7 @@ import Subscriptondash from "./pages/dashboard/subscription/subscriptondash";
 import ChannelPage from "./pages/dashboard/channelshow";
 import Allsubscriptions from "./pages/dashboard/subscription/allsubscriptions";
 import Mianyou from "./pages/dashboard/mianyou";
+import Seting from "./pages/dashboard/seting";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -125,12 +126,19 @@ function App() {
           </DashboardLayout>
         }
       />
-      '
       <Route
         path="/liked"
         element={
           <DashboardLayout>
             <Liked />
+          </DashboardLayout>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <DashboardLayout>
+            <Seting />
           </DashboardLayout>
         }
       />
@@ -142,7 +150,7 @@ function App() {
           </DashboardLayout>
         }
       />
-       <Route
+      <Route
         path="/mainyou"
         element={
           <DashboardLayout>

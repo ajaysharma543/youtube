@@ -35,7 +35,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="min-h-screen w-64 bg-linear-to-b from-black via-gray-900 to-black text-white flex flex-col items-center py-10 border-r border-gray-800">
+    <div className="min-h-screen w-64 bg-black text-white flex flex-col items-center py-10 border-r border-black">
       {/* Profile Section */}
       <div className="flex flex-col items-center mb-12">
         <div className="w-28 h-28 flex items-center justify-center rounded-full bg-gray-800 text-5xl font-bold shadow-lg">
@@ -56,8 +56,8 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `flex items-center gap-4 text-lg px-3 py-2 rounded-xl transition-all duration-200 ${
                 isActive
-                  ? "bg-red-600 text-white shadow-md"
-                  : "hover:text-red-400 hover:bg-gray-800"
+                  ? "bg-[#1c1c1c] text-white shadow-md"
+                  : "hover:text-white hover:bg-[#1c1c1c]"
               }`
             }
           >

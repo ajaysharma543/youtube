@@ -9,7 +9,7 @@ import playlistApi from "../../../api/playlist";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-function Playlist({data }) {
+function Playlist({ data }) {
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [editingPlaylist, setEditingPlaylist] = useState(null);
 
@@ -18,7 +18,7 @@ function Playlist({data }) {
     loading,
     error,
   } = useSelector((state) => state.playlist || {});
-      const playlistsToShow = data ? [data] : list;
+  const playlistsToShow = data ? [data] : list;
 
   const { data: user } = useSelector((state) => state.user);
   const { register, handleSubmit, reset } = useForm();
