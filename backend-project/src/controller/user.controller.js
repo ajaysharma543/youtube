@@ -20,7 +20,7 @@ const registeruser = asyncHandler(async (req, res) => {
   }
 
   const avatarLocalPath = req.files?.avatar?.[0]?.path;
-  let coverImageLocalPath = null; // ✅ Declare properly
+  let coverImageLocalPath = null;
   let coverImage = null;
 
   if (
@@ -71,12 +71,15 @@ const registeruser = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Something went wrong while registering the user");
   }
 
-  const options = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 10 * 24 * 60 * 60 * 1000, // Matches REFRESH_TOKEN_EXPIRY=10d
-  };
+const isProduction = process.env.NODE_ENV === "production";
+
+const options = {
+  httpOnly: true,
+  secure: isProduction,            // HTTPS only
+  sameSite: isProduction ? "none" : "lax",  // allow cross-origin in prod
+  maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
+};
+
 
   res
     .status(200)
@@ -85,7 +88,7 @@ const registeruser = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        { user: accesstoken, refreshtoken },
+        { user: accesstoken, refreshtoken }, createdUser,
         "User registered successfully"
       )
     );
@@ -120,12 +123,14 @@ const loginUser = asyncHandler(async (req, res) => {
     "-password -refreshtoken"
   );
 
-  const options = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 10 * 24 * 60 * 60 * 1000, // Matches REFRESH_TOKEN_EXPIRY=10d
-  };
+const isProduction = process.env.NODE_ENV === "production";
+
+const options = {
+  httpOnly: true,
+  secure: isProduction,            // HTTPS only
+  sameSite: isProduction ? "none" : "lax",  // allow cross-origin in prod
+  maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
+};
 
   res
     .status(200)
@@ -144,6 +149,7 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 
+
 const logoutuser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user?._id,
@@ -156,10 +162,12 @@ const logoutuser = asyncHandler(async (req, res) => {
       new: true,
     }
   );
-  const options = {
-    httpOnly: true,
-    secure: true,
-  };
+const options = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+};
+
 
   return res
     .status(200)
@@ -231,6 +239,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, {}, "Password changed successfully"));
 });
+
 const resetPassword = asyncHandler(async (req, res) => {
   const { email, newPassword } = req.body;
 
@@ -251,6 +260,15 @@ const resetPassword = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, {}, "Password reset successfully"));
+});
+const checkEmail = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  if (!email) throw new ApiError(400, "Email is required");
+
+  const user = await User.findOne({ email });
+  if (!user) throw new ApiError(404, "User not found");
+
+  return res.status(200).json(new ApiResponse(200, {}, "Email exists"));
 });
 
 const changeaccountdetails = asyncHandler(async (req, res) => {
@@ -612,4 +630,5 @@ export {
   getWatchHistory,
   resetPassword,
   description,
+  checkEmail
 };

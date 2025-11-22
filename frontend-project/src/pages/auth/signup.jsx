@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";   // ✔ added
 import { useForm } from "react-hook-form";
 import { setBasicInfo } from "../../redux/features/singupslice";
 import InputField from "../../components/inputfiled";
@@ -16,20 +16,25 @@ function SignupStep1() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // ✅ React Hook Form setup
+  const { user, token } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (user || token) {
+      navigate("/");
+    }
+  }, [user, token, navigate]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  // ✅ Handle file upload normally
   const handleFileChange = (e) => {
     if (e.target.name === "avatar") setAvatar(e.target.files[0]);
     if (e.target.name === "coverImage") setCoverImage(e.target.files[0]);
   };
 
-  // ✅ Submit handler
   const onSubmit = async (data) => {
     if (!avatar) {
       alert("Please upload an avatar!");
@@ -39,10 +44,7 @@ function SignupStep1() {
     setLoading(true);
     try {
       dispatch(setBasicInfo({ ...data, avatar, coverImage }));
-
       navigate("/signup-email");
-    } catch (error) {
-      console.error("❌ Signup step 1 error:", error);
     } finally {
       setLoading(false);
     }
@@ -75,6 +77,7 @@ function SignupStep1() {
             onChange={handleFileChange}
           />
         </div>
+
         <InputField
           label="Full Name"
           type="text"
@@ -85,7 +88,6 @@ function SignupStep1() {
           <p className="text-red-500 text-sm">{errors.fullname.message}</p>
         )}
 
-        {/* ✅ Username field */}
         <InputField
           label="Username"
           type="text"
@@ -96,9 +98,6 @@ function SignupStep1() {
           <p className="text-red-500 text-sm">{errors.username.message}</p>
         )}
 
-        {/* ✅ File upload fields */}
-
-        {/* ✅ Button with loading state */}
         <Button
           type="submit"
           text={loading ? "Loading..." : "Next"}
