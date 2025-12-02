@@ -34,7 +34,7 @@ function Subscriber({ video }) {
       const subscribed = await dispatch(toggleSubscriptions(video.owner._id));
       dispatch(setSubscriptionState(subscribed));
     } catch (error) {
-      console.log(error);
+      // console.log(error);
 
       dispatch(toggleSubscriptionFailure());
     }
@@ -44,15 +44,6 @@ function Subscriber({ video }) {
 
   return (
     <>
-      <div className="flex flex-col">
-        <h2 className="text-white font-semibold">
-          {video.owner?.fullname || "Unknown"}
-        </h2>
-        <p className="text-gray-400 text-sm">
-          {video.owner?.subscriberscount || 0} subscribers
-        </p>
-      </div>
-
       {!isOwner && (
         <button
           onClick={handleSubscriber}

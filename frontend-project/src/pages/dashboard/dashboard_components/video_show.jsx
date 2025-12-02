@@ -72,19 +72,19 @@ const VideoCard = ({ video }) => {
 
       <div className="relative group cursor-pointer bg-black rounded-2xl">
         <div
-          className="absolute inset-0 bg-[#5d5151] rounded-2xl scale-100 opacity-0 
+          className="absolute inset-0 bg-[#3b3333] rounded-2xl scale-100 opacity-0 
                   group-hover:scale-106 group-hover:opacity-100 
                   transition-all duration-700 ease-in-out pointer-events-none"
         ></div>
 
         <div
           onClick={handleClick}
-          className="relative pb-4 bg-black rounded-2xl hover:bg-[#252525] transition-all duration-700 ease-in-out"
+          className="relative pb-4 p-0 bg-black rounded-2xl transition-all duration-700 ease-in-out"
         >
           <img
             src={video.thumbnail.url}
             alt={video.title}
-            className="w-full h-48 object-cover rounded-t-2xl"
+            className="w-full h-55 sm:h-65 md:h-68 lg:h-50 xl:h-60 2xl:h-76 object-cover rounded-t-2xl"
           />
           <div className="p-3">
             <h3 className="text-white font-semibold text-lg truncate">

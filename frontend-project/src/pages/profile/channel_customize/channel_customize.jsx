@@ -12,26 +12,26 @@ import InputField from "../../../components/inputfiled";
 function CustomizeChannel() {
   const { data } = useSelector((state) => state.user);
   const [originalEmail, setOriginalEmail] = useState("");
-const [emailVerified, setEmailVerified] = useState(false);
-const [tempEmail, setTempEmail] = useState("");
-const [emailStepCompleted, setEmailStepCompleted] = useState(false);
-const [emailChanged, setEmailChanged] = useState(false);
-const [showEmailChange, setShowEmailChange] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [tempEmail, setTempEmail] = useState("");
+  const [emailStepCompleted, setEmailStepCompleted] = useState(false);
+  const [emailChanged, setEmailChanged] = useState(false);
+  const [showEmailChange, setShowEmailChange] = useState(false);
 
-const verifyEmail = async () => {
-  try {
-    const res = await authApi.checkEmail({ email: tempEmail });
+  const verifyEmail = async () => {
+    try {
+      const res = await authApi.checkEmail({ email: tempEmail });
 
-    if (res.data.success) {
-      setEmailVerified(true);
-      setValue("email", "");  
+      if (res.data.success) {
+        setEmailVerified(true);
+        setValue("email", "");
+      }
+    } catch (err) {
+      setError("email", {
+        message: err.response?.data?.message || "Email not found",
+      });
     }
-  } catch (err) {
-    setError("email", {
-      message: err.response?.data?.message || "Email not found"
-    });
-  }
-};
+  };
 
   const {
     handleSubmit,
@@ -53,17 +53,17 @@ const verifyEmail = async () => {
       description: "",
     },
   });
-useEffect(() => {
-  if (data) {
-    setValue("fullname", data.fullname || "");
-    setValue("username", data.username || "");
-    // setValue("email", data.email || "");
-    setValue("email", "");   // new email box empty
-    setValue("password", data.password || "");
-    setValue("description", data.description || "");
-    setOriginalEmail(data.email || "");
-  }
-}, [data, setValue]);
+  useEffect(() => {
+    if (data) {
+      setValue("fullname", data.fullname || "");
+      setValue("username", data.username || "");
+      // setValue("email", data.email || "");
+      setValue("email", ""); // new email box empty
+      setValue("password", data.password || "");
+      setValue("description", data.description || "");
+      setOriginalEmail(data.email || "");
+    }
+  }, [data, setValue]);
 
   const navigate = useNavigate();
 
@@ -80,14 +80,14 @@ useEffect(() => {
   const newPassword = watch("newPassword");
   const description = watch("description");
 
-const nothingChanged =
-  !banner &&
-  !avatar &&
-  fullname === (data?.fullname || "") &&
-  username === (data?.username || "")&&
-  description === (data?.description || "") &&
-  !emailChanged &&            // ✅ email changed only when user edited it
-  !password;
+  const nothingChanged =
+    !banner &&
+    !avatar &&
+    fullname === (data?.fullname || "") &&
+    username === (data?.username || "") &&
+    description === (data?.description || "") &&
+    !emailChanged && // ✅ email changed only when user edited it
+    !password;
 
   const isPublishDisabled = nothingChanged || isloading;
 
@@ -123,20 +123,20 @@ const nothingChanged =
         passwordResponse = await authApi.changepassword(passwordData);
       }
 
-    if (emailChanged) {
-    // email is changed → only then send email update API
-    nameResponse = await authApi.userdetails({
-      fullname: data.fullname,
-      username: data.username,
-      email: data.email
-    });
-} else {
-    // email unchanged → don't send email
-    nameResponse = await authApi.userdetails({
-      fullname: data.fullname,
-      username: data.username
-    });
-}
+      if (emailChanged) {
+        // email is changed → only then send email update API
+        nameResponse = await authApi.userdetails({
+          fullname: data.fullname,
+          username: data.username,
+          email: data.email,
+        });
+      } else {
+        // email unchanged → don't send email
+        nameResponse = await authApi.userdetails({
+          fullname: data.fullname,
+          username: data.username,
+        });
+      }
 
       if (data.description) {
         const descriptiondata = new FormData();
@@ -148,11 +148,11 @@ const nothingChanged =
         }
       }
 
-      console.log("✅ Avatar Response:", avatarResponse?.data);
-      console.log("✅ Banner Response:", bannerResponse?.data);
-      console.log("✅ Name Response:", nameResponse?.data);
-      console.log("✅ password Response:", passwordResponse?.data);
-      console.log("✅ description Response:", descriptionresponse?.data);
+      // console.log("✅ Avatar Response:", avatarResponse?.data);
+      // console.log("✅ Banner Response:", bannerResponse?.data);
+      // console.log("✅ Name Response:", nameResponse?.data);
+      // console.log("✅ password Response:", passwordResponse?.data);
+      // console.log("✅ description Response:", descriptionresponse?.data);
 
       navigate("/profile");
     } catch (error) {
@@ -168,45 +168,110 @@ const nothingChanged =
   };
 
   return (
-    <div className="min-h-screen mt-10 bg-black text-white flex flex-col">
-      {/* Header */}
-      <div className="h-[30%] flex items-center justify-between px-10 pb-4 border-b border-gray-800">
-        <h1 className="text-3xl font-bold">Customize Channel</h1>
-        <div className="flex gap-4">
+    <div className="min-h-screen mt-10 bg-black  text-white flex flex-col">
+      <div
+        className="
+    h-[30%] 
+    flex items-center justify-between
+    px-10 pb-4 
+    border-b border-gray-800
+
+    /* BELOW 640px */
+    max-[640px]:flex-col 
+    max-[640px]:items-start 
+    max-[640px]:justify-start 
+    max-[640px]:px-4 
+    max-[640px]:py-4
+  "
+      >
+        {/* TITLE */}
+        <h1
+          className="
+      text-3xl font-bold
+      max-[640px]:text-xl 
+      max-[640px]:pb-4
+    "
+        >
+          Customize Channel
+        </h1>
+
+        {/* BUTTON ROW / COLUMN */}
+        <div
+          className="
+      flex gap-4 
+      items-center
+
+      /* BELOW 640px → Keep ROW but tighter spacing */
+      max-[640px]:gap-2 
+      max-[640px]:w-full
+      max-[640px]:justify-between
+
+      /* BELOW 400px → SWITCH TO COLUMN */
+      max-[400px]:flex-col 
+      max-[400px]:items-stretch
+      max-[400px]:gap-3
+    "
+        >
+          {/* BUTTON 1 */}
           <button
             type="button"
             onClick={() => navigate("/profile")}
-            className="bg-gray-800 hover:bg-gray-700 px-5 py-2 rounded-full font-semibold"
+            className="
+        bg-gray-800 hover:bg-gray-700 
+        px-5 py-2 rounded-full font-semibold
+
+        max-[640px]:px-3 max-[640px]:py-1 max-[640px]:text-sm
+        max-[400px]:w-full
+      "
           >
             View Your Channel
           </button>
-          <button
-            type="button"
-            className="bg-gray-700 hover:bg-gray-600 px-5 py-2 rounded-full font-semibold"
-          >
-            Cancel
-          </button>
 
-          <button
-            form="channelForm"
-            type="submit"
-            disabled={isPublishDisabled}
-            className={`px-5 py-2 rounded-full font-semibold flex items-center justify-center gap-2 transition-all ${
-              isPublishDisabled
-                ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                : "bg-red-600 hover:bg-red-700 cursor-pointer"
-            }`}
-          >
-            {isloading && <Loader2 className="animate-spin w-5 h-5" />}
-            {isloading ? "Publishing..." : "Publish"}
-          </button>
+          {/* BUTTON 2 */}
+          <div className="flex justify-end">
+            <button
+              type="button"
+              className="
+        bg-gray-700 hover:bg-gray-600 
+        px-5 py-2 rounded-full font-semibold mr-3
+
+        max-[640px]:px-3 max-[640px]:py-1 max-[640px]:text-sm
+        max-[400px]:w-full
+      "
+            >
+              Cancel
+            </button>
+
+            {/* BUTTON 3 */}
+            <button
+              form="channelForm"
+              type="submit"
+              disabled={isPublishDisabled}
+              className={`
+        px-5 py-2 rounded-full font-semibold 
+        flex items-center justify-center gap-2 transition-all
+
+        max-[640px]:px-3 max-[640px]:py-1 max-[640px]:text-sm
+        max-[400px]:w-full
+
+        ${
+          isPublishDisabled
+            ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+            : "bg-red-600 hover:bg-red-700 cursor-pointer"
+        }
+      `}
+            >
+              {isloading && <Loader2 className="animate-spin w-5 h-5" />}
+              {isloading ? "Publishing..." : "Publish"}
+            </button>
+          </div>
         </div>
       </div>
 
       <form
         id="channelForm"
         onSubmit={handleSubmit(onSubmit)}
-        className="flex-1 p-10 flex flex-col gap-10"
+        className="flex-1 p-10 max-[640px]:p-3 max-[400px]:p-0 max-[640px]:pb-20 max-[400px]:pb-30 flex flex-col gap-10"
       >
         <Controller
           name="banner"
@@ -259,99 +324,99 @@ const nothingChanged =
           errors={errors}
         />
 
-     <Inputfields
-  label="description"
-  description=""
-  register={register("description")}
-  errors={errors}
-/>
-<button
-  type="button"
-  onClick={() => setShowEmailChange(true)}
-  className="text-blue-500 underline"
->
-  Change Email
-</button>
-{showEmailChange && (
-  <>
-    {!emailVerified && !emailStepCompleted && (
-      <div>
         <Inputfields
-          label="Enter Current Email"
-          register={register("currentEmail", {
-            required: "Email is required",
-            onChange: (e) => setTempEmail(e.target.value)
-          })}
+          label="description"
+          description=""
+          register={register("description")}
           errors={errors}
         />
-
         <button
           type="button"
-          onClick={verifyEmail}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          onClick={() => setShowEmailChange(true)}
+          className="text-blue-500 underline"
         >
-          Verify Email
+          Change Email
         </button>
-      </div>
-    )}
+        {showEmailChange && (
+          <>
+            {!emailVerified && !emailStepCompleted && (
+              <div>
+                <Inputfields
+                  label="Enter Current Email"
+                  register={register("currentEmail", {
+                    required: "Email is required",
+                    onChange: (e) => setTempEmail(e.target.value),
+                  })}
+                  errors={errors}
+                />
 
-    {emailVerified && !emailStepCompleted && (
-      <div>
-        <Inputfields
-          label="New Email"
-          register={register("email", {
-            required: "New email is required",
-            onChange: (e) => {
-              if (e.target.value !== originalEmail) setEmailChanged(true);
-              else setEmailChanged(false);
-            }
-          })}
-          errors={errors}
-        />
+                <button
+                  type="button"
+                  onClick={verifyEmail}
+                  className="bg-blue-600 text-white px-4 py-2 rounded"
+                >
+                  Verify Email
+                </button>
+              </div>
+            )}
 
-        <button
-          type="button"
-          onClick={() => {
-            setEmailVerified(false);
-            setEmailStepCompleted(true);
-            // setEmailChanged(false);
-          }}
-          className="bg-green-600 text-white px-4 py-2 rounded"
-        >
-          OK
-        </button>
-      </div>
-    )}
+            {emailVerified && !emailStepCompleted && (
+              <div>
+                <Inputfields
+                  label="New Email"
+                  register={register("email", {
+                    required: "New email is required",
+                    onChange: (e) => {
+                      if (e.target.value !== originalEmail)
+                        setEmailChanged(true);
+                      else setEmailChanged(false);
+                    },
+                  })}
+                  errors={errors}
+                />
 
-    {emailStepCompleted && (
-      <div>
-        <Inputfields
-          label="Email"
-          register={register("email", {
-            onChange: () => setEmailChanged(true)
-          })}
-          errors={errors}
-        />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEmailVerified(false);
+                    setEmailStepCompleted(true);
+                    // setEmailChanged(false);
+                  }}
+                  className="bg-green-600 text-white px-4 py-2 rounded"
+                >
+                  OK
+                </button>
+              </div>
+            )}
 
-        {emailChanged && (
-          <button
-            type="button"
-            onClick={() => {
-              setEmailStepCompleted(false);
-              setEmailVerified(false);
-            }}
-            className="bg-blue-600 text-white px-4 py-2 rounded mt-2"
-          >
-            Verify Again
-          </button>
+            {emailStepCompleted && (
+              <div>
+                <Inputfields
+                  label="Email"
+                  register={register("email", {
+                    onChange: () => setEmailChanged(true),
+                  })}
+                  errors={errors}
+                />
+
+                {emailChanged && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmailStepCompleted(false);
+                      setEmailVerified(false);
+                    }}
+                    className="bg-blue-600 text-white px-4 py-2 rounded mt-2"
+                  >
+                    Verify Again
+                  </button>
+                )}
+              </div>
+            )}
+          </>
         )}
-      </div>
-    )}
-  </>
-)}
 
-        <div className="flex items-center">
-        </div>
+        <div className="flex items-center"></div>
         <Inputfields
           label="Current Password"
           description="Enter your current password"

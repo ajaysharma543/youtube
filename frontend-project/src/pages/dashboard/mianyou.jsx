@@ -3,7 +3,7 @@ import authApi from "../../api/userapi";
 import Playlists from "../dashboard/playlistshow/playlist";
 import Playlist from "../playvideo_dahboard/playlist/playlist";
 import { useSelector } from "react-redux";
-import { Delete, Trash } from "lucide-react";
+import { ArrowLeft, ArrowRight, Delete, Trash } from "lucide-react";
 import Watchlater from "./playlistshow/watchlater";
 import Liked from "./liked";
 import likeApi from "../../api/like";
@@ -12,19 +12,42 @@ import { useNavigate } from "react-router-dom";
 function Mianyou() {
   const [history, setHistory] = useState([]);
   const { data: user } = useSelector((state) => state.user);
+  const [itemsToShow, setItemsToShow] = useState(4);
+
+  useEffect(() => {
+    const updateCount = () => {
+      if (window.innerWidth >= 1024) {
+        setItemsToShow(4); // lg and above
+      } else if (window.innerWidth >= 768) {
+        setItemsToShow(3); // md
+      } else {
+        setItemsToShow(2); // below md
+      }
+    };
+
+    updateCount(); // set on load
+    window.addEventListener("resize", updateCount);
+
+    return () => window.removeEventListener("resize", updateCount);
+  }, []);
 
   useEffect(() => {
     const fetchHistory = async () => {
       try {
         const res = await authApi.getwatchhistory();
-        const limited = res.data.data.slice(-4).reverse();
+        const limited = res.data.data
+          .slice(-itemsToShow) // responsive count
+          .reverse();
+
         setHistory(limited);
       } catch (error) {
         console.error(error);
       }
     };
+
     fetchHistory();
-  }, []);
+  }, [itemsToShow]);
+
   const { list = [] } = useSelector((state) => state.playlist || {});
   // const limitedPlaylist = list.slice(0,4);
 
@@ -65,8 +88,10 @@ function Mianyou() {
     }
     return "just now";
   };
-const latestFour = Array.isArray(list) ? list.slice(-4).reverse() : [];
-// console.log("LIST VALUE:", list);
+  const latestFour = Array.isArray(list)
+    ? list.slice(-itemsToShow).reverse()
+    : [];
+  // console.log("LIST VALUE:", list);
 
   const [liked, setLiked] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -106,7 +131,7 @@ const latestFour = Array.isArray(list) ? list.slice(-4).reverse() : [];
       console.error("Error removing liked video:", err);
     }
   };
-  const latestlikes = liked.slice(-4).reverse();
+  const latestlikes = liked.slice(-itemsToShow).reverse();
 
   if (loading)
     return (
@@ -115,8 +140,8 @@ const latestFour = Array.isArray(list) ? list.slice(-4).reverse() : [];
   return (
     <div>
       <div
-        className="flex items-center gap-4 mb-6  pb-4 cursor-pointer"
-       onClick={() => navigate(`/c/${user.username}`)}
+        className="flex items-center gap-4 mb-6 mt-5 pb-4 cursor-pointer"
+        onClick={() => navigate(`/c/${user.username}`)}
       >
         <img
           src={user?.avatar?.url || "/default-avatar.png"}
@@ -135,18 +160,22 @@ const latestFour = Array.isArray(list) ? list.slice(-4).reverse() : [];
           </div>
         </div>
       </div>
-      <div className="flex justify-between mt-10 cursor-pointer mb-4"onClick={() => navigate("/history")}>
+      <div
+        className="flex justify-between mt-10 cursor-pointer mb-4"
+        onClick={() => navigate("/history")}
+      >
         <h1 className="text-white text-xl font-semibold mb-4">Watch History</h1>
-        <button
-          className="hover:bg-gray-700 px-7 py-2 rounded-2xl"
-          
-        >
+        <button className="hover:bg-gray-700 px-7 py-2 rounded-2xl">
           see all
         </button>
       </div>
-      <div className="grid grid-cols-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {history.map((v) => (
-          <div key={v._id} className="cursor-pointer relative w-[97%]" onClick={() => handleVideoClick(v._id)}>
+          <div
+            key={v._id}
+            className="cursor-pointer relative w-[97%]"
+            onClick={() => handleVideoClick(v._id)}
+          >
             <div className="relative w-[94%]">
               <img
                 src={v.thumbnail?.url}
@@ -199,35 +228,31 @@ const latestFour = Array.isArray(list) ? list.slice(-4).reverse() : [];
         ))}
       </div>
 
-      <div className="flex justify-between mt-10 mb-4 cursor-pointer" onClick={() => navigate("/playlist")}>
+      <div
+        className="flex justify-between mt-10 mb-4 cursor-pointer"
+        onClick={() => navigate("/playlist")}
+      >
         <h1 className="text-white text-xl font-semibold">Your Playlists</h1>
-        <button
-          className="hover:bg-gray-700 px-7  rounded-2xl"
-          
-        >
-          see all
-        </button>
+        <button className="hover:bg-gray-700 px-7  rounded-2xl">see all</button>
       </div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {latestFour.map((p) => (
           <Playlists key={p._id} data={p} />
         ))}
       </div>
-      <div className="flex justify-between mt-10 mb-4 cursor-pointer" onClick={() => navigate("/liked")}>
+      <div
+        className="flex justify-between mt-10 mb-4 cursor-pointer"
+        onClick={() => navigate("/liked")}
+      >
         <h1 className="text-white text-xl font-semibold">Liked Videos</h1>
-        <button
-          className="hover:bg-gray-700 px-7  rounded-2xl"
-          
-        >
-          see all
-        </button>
+        <button className="hover:bg-gray-700 px-7  rounded-2xl">see all</button>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {latestlikes.map((video) => (
           <div
             key={video._id}
             onClick={() => handleVideoClick(video._id)}
-className=" rounded-xl shadow-lg hover:scale-105 transform transition-all cursor-pointer overflow-visible"
+            className=" rounded-xl shadow-lg hover:scale-105 transform transition-all cursor-pointer overflow-visible"
           >
             {/* Thumbnail */}
             <div className="w-full relative h-48 bg-black overflow-hidden">
@@ -254,8 +279,6 @@ className=" rounded-xl shadow-lg hover:scale-105 transform transition-all cursor
                 {new Date(video.createdAt).toLocaleDateString()}
               </p>
 
-              
-
               {/* 3-DOTS MENU */}
               <div className="absolute bottom-3 right-0 z-50">
                 <Playlist video={video}>
@@ -276,17 +299,15 @@ className=" rounded-xl shadow-lg hover:scale-105 transform transition-all cursor
         ))}
       </div>
 
-      <div className="flex justify-between mt-10 mb-4 cursor-pointer" onClick={() => navigate("/watchlater")}>
+      <div
+        className="flex justify-between mt-10 mb-4 cursor-pointer"
+        onClick={() => navigate("/watchlater")}
+      >
         <h1 className="text-white text-xl font-semibold ">Watch Later</h1>
-        <button
-          className="hover:bg-gray-700 px-7  rounded-2xl"
-         
-        >
-          see all
-        </button>
+        <button className="hover:bg-gray-700 px-7  rounded-2xl">see all</button>
       </div>
       <div className="p-0">
-        <Watchlater />
+        <Watchlater itemsToShow={itemsToShow} />
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ function Allsubscriptions() {
       try {
         const res = await VideoApi.getchanneldetails();
         setSubscriptions(res.data.data);
-        console.log(res.data.data);
+        // console.log(res.data.data);
       } catch (err) {
         console.error(err);
       }
@@ -70,10 +70,10 @@ function Allsubscriptions() {
   };
 
   return (
-    <div className="p-4 ">
-      <div className="w-[90%] flex justify-end">
+    <div className="p-4  max-[640px]:p-0">
+      <div className="w-[90%] flex justify-end max-[640px]:hidden">
         <button
-          className="font-bold cursor-pointer p-2 rounded-2xl text-blue-400 hover:bg-gray-600"
+          className="font-bold cursor-pointer p-2  rounded-2xl text-blue-400 hover:bg-gray-600"
           onClick={() => navigate("/Subscription")}
         >
           manage
@@ -84,10 +84,12 @@ function Allsubscriptions() {
           <div className="border-b border-gray-500">
             <div
               key={video._id}
-              className="relative cursor-pointer pb-8 w-[80%]  overflow-hidden shadow-md hover:shadow-lg transition-shadow"
-             
+              className="relative cursor-pointer pb-16  w-[80%] max-[640px]:w-full overflow-hidden shadow-md hover:shadow-lg transition-shadow"
             >
-              <div className="flex items-center gap-3 p-3" onClick={() => navigate(`/c/${video.owner.username}`)}>
+              <div
+                className="flex max-[640px]:hidden items-center gap-3 p-3"
+                onClick={() => navigate(`/c/${video.owner.username}`)}
+              >
                 <img
                   src={video.owner.avatar?.url || "/default-avatar.png"}
                   alt={video.owner.fullname}
@@ -98,12 +100,15 @@ function Allsubscriptions() {
                 </span>
               </div>
 
-              <div className="flex gap-4"  onClick={() => navigate(`/video/${video._id}`)}>
-                <div className=" w-63 relative">
+              <div
+                className="flex  max-[640px]:flex-col max-[640px]:w-full  gap-4"
+                onClick={() => navigate(`/video/${video._id}`)}
+              >
+                <div className=" w-63 max-[640px]:w-full  max-[640px]:h-55 relative">
                   <img
                     src={video.thumbnail.url || "/default-thumbnail.jpg"}
                     alt={video.title}
-                    className="w-full h-36 object-cover rounded-lg"
+                    className="w-full h-full object-cover rounded-lg"
                   />
                   <div className="absolute bottom-1 right-1 bg-black opacity-70 bg-opacity-80 text-white text-xs px-2 py-1 rounded">
                     {formatDuration(video.duration)}
@@ -114,17 +119,34 @@ function Allsubscriptions() {
                   <h3 className="text-white mb-2 font-semibold text-2xl">
                     {video.title}
                   </h3>
-                  <div className="flex w-[50%] justify-start  mb-3 text-gray-300 text-sm">
-                    <span>{video.owner.fullname}</span>
-                    <span className="pl-2">{video.views} views</span>
-                    <span className="pl-2">{getTimeAgo(video.createdAt)} </span>
+                  <div className="flex flex-col w-[80%] justify-start items-start mb-3 text-gray-300 text-sm">
+                    <div className="flex items-center mb-1">
+                      <img
+                        src={video.owner.avatar?.url || "/default-avatar.png"}
+                        alt="avatar"
+                        className="w-10 h-10 rounded-full mr-3 object-cover"
+                      />
+                      <span>{video.owner.username}</span>
+                    </div>
+
+                    <div className="flex items-center ml-10">
+                      <span className="pr-3">{video.views} views</span>
+                      <span>{getTimeAgo(video.createdAt)}</span>
+                    </div>
                   </div>
-                  <p className="text-gray-400 text-sm w-full">
+
+                  <p className="text-gray-400 text-sm w-full max-[640px]:hidden">
                     {truncateWords(video.description, 30)}
                   </p>
                 </div>
               </div>
-              <div className="absolute top-13 right-0 z-50">
+              <div
+                className="absolute right-0 z-50 
+  top-7           
+  max-[640px]:top-auto 
+  max-[640px]:bottom-30
+"
+              >
                 <Playlist video={video} />
               </div>
             </div>

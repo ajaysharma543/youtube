@@ -110,10 +110,11 @@ function EditVideo() {
   }
 
   return (
-    <div className="flex h-screen bg-[#0f0f0f] text-white">
-      {/* Left side — edit form */}
-      <div className="w-1/2 p-8 flex flex-col gap-6 border-r border-gray-800">
+    <div className="flex h-screen bg-[#0f0f0f] text-white max-sm:flex-col">
+      {/* LEFT SIDE */}
+      <div className="w-1/2 max-sm:w-full p-8 flex flex-col gap-6 border-r border-gray-800">
         <h2 className="text-3xl font-bold mb-2">Edit Video</h2>
+
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           {/* Thumbnail */}
           <div>
@@ -132,6 +133,7 @@ function EditVideo() {
                   No thumbnail selected
                 </div>
               )}
+
               <input
                 type="file"
                 accept="image/*"
@@ -141,6 +143,7 @@ function EditVideo() {
                 title="Upload new thumbnail"
               />
             </div>
+
             <button
               type="button"
               onClick={() =>
@@ -194,12 +197,12 @@ function EditVideo() {
         </form>
       </div>
 
-      {/* Right side — video preview */}
-      <div className="w-1/2 p-8 flex justify-center items-center">
+      {/* RIGHT PREVIEW SIDE */}
+      <div className="w-1/2 max-sm:hidden p-8 max-[640px]:pb-20 max-[640px]:p-3 flex justify-center items-center">
         <video
           src={video.videoFile?.url}
           controls
-          className="rounded-lg w-full h-[70%] object-cover border border-gray-700"
+          className="rounded-lg w-full h-full object-cover border border-gray-700"
         />
       </div>
     </div>
