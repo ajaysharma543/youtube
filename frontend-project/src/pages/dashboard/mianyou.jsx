@@ -169,64 +169,65 @@ function Mianyou() {
           see all
         </button>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {history.map((v) => (
-          <div
-            key={v._id}
-            className="cursor-pointer relative w-[97%]"
-            onClick={() => handleVideoClick(v._id)}
-          >
-            <div className="relative w-[94%]">
-              <img
-                src={v.thumbnail?.url}
-                alt={v.title}
-                className="w-full h-35 object-cover rounded-lg"
-              />
+     <div className="grid grid-cols-2 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+  {history.map((v) => (
+    <div
+      key={v._id}
+      className="cursor-pointer relative w-full"
+      onClick={() => handleVideoClick(v._id)}
+    >
+      {/* Thumbnail */}
+      <div className="relative w-full">
+        <img
+          src={v.thumbnail?.url}
+          alt={v.title}
+          className="w-full h-36 sm:h-40 md:h-44 object-cover rounded-xl"
+        />
 
-              <span className="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1.5 py-0.5 rounded">
-                {formatDuration(v.duration)}
-              </span>
-            </div>
-
-            <div className="flex gap-3 mt-3">
-              <img
-                src={v.owner?.avatar?.url || "/default-avatar.png"}
-                alt={v.owner?.fullname}
-                className="w-9 h-9 rounded-full object-cover"
-              />
-
-              <div>
-                <p className="text-white font-semibold text-sm line-clamp-2">
-                  {v.title}
-                </p>
-
-                <p className="text-gray-300 text-xs mt-1">
-                  {v.owner?.fullname}
-                </p>
-
-                <p className="text-gray-500 text-xs">
-                  {v.views} views • {getTimeAgo(v.createdAt)}
-                </p>
-              </div>
-            </div>
-
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className="absolute bottom-0 right-7 z-50"
-            >
-              <Playlist video={v}>
-                <button
-                  onClick={() => removeFromHistory(v._id)}
-                  className=" w-full flex text-left justify-center px-4 py-2 hover:bg-gray-700 text-white"
-                >
-                  <Delete />
-                  Remove
-                </button>
-              </Playlist>
-            </div>
-          </div>
-        ))}
+        <span className="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1.5 py-0.5 rounded">
+          {formatDuration(v.duration)}
+        </span>
       </div>
+
+      {/* Video Info */}
+      <div className="flex gap-3 mt-3">
+        <img
+          src={v.owner?.avatar?.url || "/default-avatar.png"}
+          alt={v.owner?.fullname}
+          className="w-9 h-9 rounded-full object-cover"
+        />
+
+        <div>
+          <p className="text-white font-semibold text-sm line-clamp-2">
+            {v.title}
+          </p>
+
+          <p className="text-gray-300 text-xs mt-1">{v.owner?.fullname}</p>
+
+          <p className="text-gray-500 text-xs">
+            {v.views} views • {getTimeAgo(v.createdAt)}
+          </p>
+        </div>
+      </div>
+
+      {/* Three Dots Dropdown */}
+      <div
+        className="absolute bottom-2 right-2 z-50"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Playlist video={v}>
+          <button
+            onClick={() => removeFromHistory(v._id)}
+            className="w-full flex text-left justify-center px-4 py-2 hover:bg-gray-700 text-white"
+          >
+            <Delete size={18} />
+            Remove
+          </button>
+        </Playlist>
+      </div>
+    </div>
+  ))}
+</div>
 
       <div
         className="flex justify-between mt-10 mb-4 cursor-pointer"
@@ -235,7 +236,7 @@ function Mianyou() {
         <h1 className="text-white text-xl font-semibold">Your Playlists</h1>
         <button className="hover:bg-gray-700 px-7  rounded-2xl">see all</button>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 p-2 lg:grid-cols-4 gap-4">
         {latestFour.map((p) => (
           <Playlists key={p._id} data={p} />
         ))}
@@ -247,14 +248,13 @@ function Mianyou() {
         <h1 className="text-white text-xl font-semibold">Liked Videos</h1>
         <button className="hover:bg-gray-700 px-7  rounded-2xl">see all</button>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 p-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {latestlikes.map((video) => (
           <div
             key={video._id}
             onClick={() => handleVideoClick(video._id)}
             className=" rounded-xl shadow-lg hover:scale-105 transform transition-all cursor-pointer overflow-visible"
           >
-            {/* Thumbnail */}
             <div className="w-full relative h-48 bg-black overflow-hidden">
               <img
                 src={video.thumbnail?.url || "/default-thumbnail.jpg"}
@@ -268,7 +268,6 @@ function Mianyou() {
               )}
             </div>
 
-            {/* Details */}
             <div className="p-4 relative">
               <h3 className="text-white font-semibold text-base truncate">
                 {video.title}
@@ -279,7 +278,6 @@ function Mianyou() {
                 {new Date(video.createdAt).toLocaleDateString()}
               </p>
 
-              {/* 3-DOTS MENU */}
               <div className="absolute bottom-3 right-0 z-50">
                 <Playlist video={video}>
                   <button
